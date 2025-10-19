@@ -1,0 +1,9 @@
+--- Extracted Features from 2f7432874d94e346a59f840c539a2fa5.apk ---
+
+Feature 1: Permission: android.permission.INTERNET
+Feature 2: Permission: android.permission.READ_PHONE_STATE
+Feature 3: Permission: android.permission.WRITE_SMS
+Feature 4: Permission: android.permission.ACCESS_WIFI_STATE
+Feature 5: Permission: android.permission.READ_SMS
+Feature 6: Permission: android.permission.ACCESS_COARSE_LOCATION
+Feature 7: Permission: android.permission.ACCESS_NETWORK_STATE

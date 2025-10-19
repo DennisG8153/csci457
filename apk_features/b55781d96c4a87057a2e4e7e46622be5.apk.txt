@@ -1,0 +1,13 @@
+--- Extracted Features from b55781d96c4a87057a2e4e7e46622be5.apk ---
+
+Feature 1: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 2: Permission: android.permission.INTERNET
+Feature 3: Permission: android.permission.WRITE_SMS
+Feature 4: Permission: android.permission.READ_PHONE_STATE
+Feature 5: Permission: android.permission.ACCESS_WIFI_STATE
+Feature 6: Permission: android.permission.ACCESS_FINE_LOCATION
+Feature 7: Permission: com.android.browser.permission.READ_HISTORY_BOOKMARKS
+Feature 8: Permission: android.permission.READ_SMS
+Feature 9: Permission: android.permission.ACCESS_COARSE_LOCATION
+Feature 10: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 11: Permission: android.permission.WAKE_LOCK

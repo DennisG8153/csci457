@@ -1,0 +1,20 @@
+--- Extracted Features from af37ee375da2b5263eace5c38218a100.apk ---
+
+Feature 1: Permission: android.permission.SYSTEM_ALERT_WINDOW
+Feature 2: Permission: android.permission.RECEIVE_BOOT_COMPLETED
+Feature 3: Permission: android.permission.READ_CALENDAR
+Feature 4: Permission: android.permission.GET_TASKS
+Feature 5: Permission: android.permission.RECEIVE_SMS
+Feature 6: Permission: android.permission.DELETE_CACHE_FILES
+Feature 7: Permission: android.permission.INTERNET
+Feature 8: Permission: android.permission.READ_SYNC_STATS
+Feature 9: Permission: android.permission.READ_PHONE_STATE
+Feature 10: Permission: android.permission.ACCESS_FINE_LOCATION
+Feature 11: Permission: android.permission.MANAGE_ACCOUNTS
+Feature 12: Permission: android.permission.SET_ANIMATION_SCALE
+Feature 13: Permission: android.permission.READ_SMS
+Feature 14: Permission: android.permission.KILL_BACKGROUND_PROCESSES
+Feature 15: Permission: android.permission.ACCESS_COARSE_LOCATION
+Feature 16: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 17: Permission: android.permission.READ_SYNC_SETTINGS
+Feature 18: Permission: android.permission.WAKE_LOCK

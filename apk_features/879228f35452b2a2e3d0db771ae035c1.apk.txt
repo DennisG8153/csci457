@@ -1,0 +1,10 @@
+--- Extracted Features from 879228f35452b2a2e3d0db771ae035c1.apk ---
+
+Feature 1: Permission: android.permission.RECEIVE_BOOT_COMPLETED
+Feature 2: Permission: android.permission.CHANGE_WIFI_STATE
+Feature 3: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 4: Permission: android.permission.INTERNET
+Feature 5: Permission: android.permission.READ_PHONE_STATE
+Feature 6: Permission: android.permission.ACCESS_WIFI_STATE
+Feature 7: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 8: Permission: android.permission.WAKE_LOCK

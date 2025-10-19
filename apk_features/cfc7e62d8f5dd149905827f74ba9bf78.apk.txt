@@ -1,0 +1,12 @@
+--- Extracted Features from cfc7e62d8f5dd149905827f74ba9bf78.apk ---
+
+Feature 1: Permission: android.permission.SET_WALLPAPER_HINTS
+Feature 2: Permission: android.permission.RECEIVE_BOOT_COMPLETED
+Feature 3: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 4: Permission: android.permission.SET_WALLPAPER
+Feature 5: Permission: android.permission.INTERNET
+Feature 6: Permission: android.permission.READ_PHONE_STATE
+Feature 7: Permission: android.permission.ACCESS_WIFI_STATE
+Feature 8: Permission: android.permission.GET_TASKS
+Feature 9: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 10: Permission: android.permission.WAKE_LOCK

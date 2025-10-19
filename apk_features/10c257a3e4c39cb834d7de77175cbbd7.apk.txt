@@ -1,0 +1,7 @@
+--- Extracted Features from 10c257a3e4c39cb834d7de77175cbbd7.apk ---
+
+Feature 1: Permission: com.motorola.blur.service.blur.Permissions.INTERACT_BLUR_SERVICE
+Feature 2: Permission: android.permission.READ_PHONE_STATE
+Feature 3: Permission: android.permission.ACCESS_CACHE_FILESYSTEM
+Feature 4: Permission: android.permission.REBOOT
+Feature 5: Permission: android.permission.DEVICE_POWER

@@ -1,0 +1,9 @@
+--- Extracted Features from e8d56d9eaf3eb2d951aa6c9b536bd1d7.apk ---
+
+Feature 1: Permission: android.permission.SEND_SMS
+Feature 2: Permission: android.permission.BLUETOOTH_ADMIN
+Feature 3: Permission: android.permission.RECEIVE_SMS
+Feature 4: Permission: android.permission.INTERNET
+Feature 5: Permission: android.permission.READ_PHONE_STATE
+Feature 6: Permission: android.permission.BLUETOOTH
+Feature 7: Permission: android.permission.ACCESS_NETWORK_STATE

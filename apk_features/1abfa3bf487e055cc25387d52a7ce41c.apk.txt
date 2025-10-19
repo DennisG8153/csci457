@@ -1,0 +1,11 @@
+--- Extracted Features from 1abfa3bf487e055cc25387d52a7ce41c.apk ---
+
+Feature 1: Permission: android.permission.SYSTEM_ALERT_WINDOW
+Feature 2: Permission: android.permission.RESTART_PACKAGES
+Feature 3: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 4: Permission: android.permission.INTERNET
+Feature 5: Permission: android.permission.READ_PHONE_STATE
+Feature 6: Permission: android.permission.ACCESS_WIFI_STATE
+Feature 7: Permission: android.permission.GET_TASKS
+Feature 8: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 9: Permission: android.permission.WAKE_LOCK

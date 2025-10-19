@@ -1,0 +1,5 @@
+--- Extracted Features from d299ee3c749195f680be6300b512c5ca.apk ---
+
+Feature 1: Permission: android.permission.READ_PHONE_STATE
+Feature 2: Permission: android.permission.BROADCAST_STICKY
+Feature 3: Permission: android.permission.INTERNET

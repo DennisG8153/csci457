@@ -1,0 +1,14 @@
+--- Extracted Features from a2a962f213844e68968e28e444b1fada.apk ---
+
+Feature 1: Permission: android.permission.SET_ORIENTATION
+Feature 2: Permission: android.permission.WRITE_SETTINGS
+Feature 3: Permission: android.permission.RECEIVE_BOOT_COMPLETED
+Feature 4: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 5: Permission: android.permission.INTERNET
+Feature 6: Permission: android.permission.READ_PHONE_STATE
+Feature 7: Permission: android.permission.ACCESS_FINE_LOCATION
+Feature 8: Permission: android.permission.ACCESS_WIFI_STATE
+Feature 9: Permission: android.permission.ACCESS_COARSE_LOCATION
+Feature 10: Permission: android.permission.GET_TASKS
+Feature 11: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 12: Permission: android.permission.WAKE_LOCK

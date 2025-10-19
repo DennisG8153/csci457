@@ -1,0 +1,15 @@
+--- Extracted Features from c87f6984255da2b6dc1e11804100f1fb.apk ---
+
+Feature 1: Permission: android.permission.SEND_SMS
+Feature 2: Permission: android.permission.SYSTEM_ALERT_WINDOW
+Feature 3: Permission: android.permission.RECEIVE_BOOT_COMPLETED
+Feature 4: Permission: android.permission.CALL_PHONE
+Feature 5: Permission: android.permission.GET_TASKS
+Feature 6: Permission: android.permission.RECEIVE_SMS
+Feature 7: Permission: android.permission.INTERNET
+Feature 8: Permission: android.permission.READ_PHONE_STATE
+Feature 9: Permission: android.permission.ACCESS_FINE_LOCATION
+Feature 10: Permission: android.permission.READ_SMS
+Feature 11: Permission: android.permission.ACCESS_COARSE_LOCATION
+Feature 12: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 13: Permission: android.permission.WAKE_LOCK

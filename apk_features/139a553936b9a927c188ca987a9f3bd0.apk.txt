@@ -1,0 +1,9 @@
+--- Extracted Features from 139a553936b9a927c188ca987a9f3bd0.apk ---
+
+Feature 1: Permission: android.permission.SEND_SMS
+Feature 2: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 3: Permission: android.permission.RECORD_AUDIO
+Feature 4: Permission: android.permission.INTERNET
+Feature 5: Permission: android.permission.READ_PHONE_STATE
+Feature 6: Permission: android.permission.GET_TASKS
+Feature 7: Permission: android.permission.ACCESS_NETWORK_STATE

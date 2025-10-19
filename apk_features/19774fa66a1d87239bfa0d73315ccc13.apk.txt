@@ -1,0 +1,10 @@
+--- Extracted Features from 19774fa66a1d87239bfa0d73315ccc13.apk ---
+
+Feature 1: Permission: android.permission.RECEIVE_BOOT_COMPLETED
+Feature 2: Permission: android.permission.INTERNET
+Feature 3: Permission: android.permission.READ_PHONE_STATE
+Feature 4: Permission: android.permission.ACCESS_FINE_LOCATION
+Feature 5: Permission: android.permission.ACCESS_COARSE_LOCATION
+Feature 6: Permission: android.permission.GET_TASKS
+Feature 7: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 8: Permission: android.permission.WAKE_LOCK

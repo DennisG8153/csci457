@@ -1,0 +1,14 @@
+--- Extracted Features from 8cd3b9522274ccb52488346452973c29.apk ---
+
+Feature 1: Permission: android.permission.CHANGE_WIFI_STATE
+Feature 2: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 3: Permission: android.permission.VIBRATE
+Feature 4: Permission: android.permission.RECORD_AUDIO
+Feature 5: Permission: android.permission.READ_EXTERNAL_STORAGE
+Feature 6: Permission: android.permission.READ_PHONE_STATE
+Feature 7: Permission: android.permission.INTERNET
+Feature 8: Permission: android.permission.ACCESS_WIFI_STATE
+Feature 9: Permission: android.permission.ACCESS_FINE_LOCATION
+Feature 10: Permission: android.permission.ACCESS_COARSE_LOCATION
+Feature 11: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 12: Permission: android.permission.WAKE_LOCK

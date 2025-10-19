@@ -1,0 +1,10 @@
+--- Extracted Features from d4cb163ee3dce6348197ed8293e1e0eb.apk ---
+
+Feature 1: Permission: android.permission.SEND_SMS
+Feature 2: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 3: Permission: android.permission.RECEIVE_SMS
+Feature 4: Permission: android.permission.INTERNET
+Feature 5: Permission: android.permission.RECORD_AUDIO
+Feature 6: Permission: android.permission.READ_PHONE_STATE
+Feature 7: Permission: android.permission.MODIFY_AUDIO_SETTINGS
+Feature 8: Permission: android.permission.ACCESS_NETWORK_STATE

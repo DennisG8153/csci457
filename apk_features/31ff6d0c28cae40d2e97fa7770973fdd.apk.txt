@@ -1,0 +1,16 @@
+--- Extracted Features from 31ff6d0c28cae40d2e97fa7770973fdd.apk ---
+
+Feature 1: Permission: android.permission.RECEIVE_BOOT_COMPLETED
+Feature 2: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 3: Permission: android.permission.VIBRATE
+Feature 4: Permission: android.permission.DELETE_PACKAGES
+Feature 5: Permission: android.permission.RECEIVE_SMS
+Feature 6: Permission: android.permission.INTERNET
+Feature 7: Permission: android.permission.INSTALL_PACKAGES
+Feature 8: Permission: android.permission.READ_PHONE_STATE
+Feature 9: Permission: android.permission.ACCESS_FINE_LOCATION
+Feature 10: Permission: android.permission.READ_SMS
+Feature 11: Permission: android.permission.ACCESS_COARSE_LOCATION
+Feature 12: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 13: Permission: android.permission.PROCESS_OUTGOING_CALLS
+Feature 14: Permission: android.permission.WAKE_LOCK

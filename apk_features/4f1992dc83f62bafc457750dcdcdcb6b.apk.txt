@@ -1,0 +1,15 @@
+--- Extracted Features from 4f1992dc83f62bafc457750dcdcdcb6b.apk ---
+
+Feature 1: Permission: android.permission.RECEIVE_BOOT_COMPLETED
+Feature 2: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 3: Permission: android.permission.VIBRATE
+Feature 4: Permission: android.permission.INTERNET
+Feature 5: Permission: com.android.browser.permission.WRITE_HISTORY_BOOKMARKS
+Feature 6: Permission: android.permission.READ_PHONE_STATE
+Feature 7: Permission: android.permission.ACCESS_FINE_LOCATION
+Feature 8: Permission: android.permission.ACCESS_WIFI_STATE
+Feature 9: Permission: com.android.launcher.permission.INSTALL_SHORTCUT
+Feature 10: Permission: com.android.browser.permission.READ_HISTORY_BOOKMARKS
+Feature 11: Permission: android.permission.READ_LOGS
+Feature 12: Permission: android.permission.GET_TASKS
+Feature 13: Permission: android.permission.ACCESS_NETWORK_STATE

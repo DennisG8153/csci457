@@ -1,0 +1,16 @@
+--- Extracted Features from 2ec2d9780a173c99fcb480038a88c3c8.apk ---
+
+Feature 1: Permission: android.permission.SEND_SMS
+Feature 2: Permission: android.permission.GET_ACCOUNTS
+Feature 3: Permission: com.android.vending.BILLING
+Feature 4: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 5: Permission: android.permission.GET_TASKS
+Feature 6: Permission: com.kiloo.subwaysurf.permission.C2D_MESSAGE
+Feature 7: Permission: android.permission.INTERNET
+Feature 8: Permission: android.permission.READ_PHONE_STATE
+Feature 9: Permission: android.permission.WRITE_SMS
+Feature 10: Permission: com.google.android.c2dm.permission.RECEIVE
+Feature 11: Permission: com.android.vending.CHECK_LICENSE
+Feature 12: Permission: android.permission.READ_SMS
+Feature 13: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 14: Permission: android.permission.WAKE_LOCK

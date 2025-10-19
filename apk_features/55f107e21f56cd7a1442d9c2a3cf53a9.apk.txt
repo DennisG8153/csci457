@@ -1,0 +1,17 @@
+--- Extracted Features from 55f107e21f56cd7a1442d9c2a3cf53a9.apk ---
+
+Feature 1: Permission: android.permission.RESTART_PACKAGES
+Feature 2: Permission: android.permission.RECEIVE_BOOT_COMPLETED
+Feature 3: Permission: android.permission.CHANGE_WIFI_STATE
+Feature 4: Permission: android.permission.MOUNT_UNMOUNT_FILESYSTEMS
+Feature 5: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 6: Permission: android.permission.VIBRATE
+Feature 7: Permission: android.permission.INTERNET
+Feature 8: Permission: android.permission.READ_PHONE_STATE
+Feature 9: Permission: android.permission.WRITE_APN_SETTINGS
+Feature 10: Permission: com.android.launcher.permission.INSTALL_SHORTCUT
+Feature 11: Permission: android.permission.ACCESS_WIFI_STATE
+Feature 12: Permission: android.permission.CHANGE_NETWORK_STATE
+Feature 13: Permission: android.permission.GET_TASKS
+Feature 14: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 15: Permission: android.permission.WAKE_LOCK

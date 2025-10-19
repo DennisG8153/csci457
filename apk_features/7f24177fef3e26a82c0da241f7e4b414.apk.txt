@@ -1,0 +1,18 @@
+--- Extracted Features from 7f24177fef3e26a82c0da241f7e4b414.apk ---
+
+Feature 1: Permission: android.permission.GET_ACCOUNTS
+Feature 2: Permission: android.permission.RECEIVE_BOOT_COMPLETED
+Feature 3: Permission: android.permission.CALL_PHONE
+Feature 4: Permission: android.permission.VIBRATE
+Feature 5: Permission: com.android.launcher.permission.UNINSTALL_SHORTCUT
+Feature 6: Permission: android.permission.USE_CREDENTIALS
+Feature 7: Permission: android.permission.INTERNET
+Feature 8: Permission: android.permission.READ_PHONE_STATE
+Feature 9: Permission: com.android.launcher.permission.READ_SETTINGS
+Feature 10: Permission: com.android.launcher.permission.INSTALL_SHORTCUT
+Feature 11: Permission: org.kman.AquaMail.LICENSING
+Feature 12: Permission: android.permission.ACCESS_COARSE_LOCATION
+Feature 13: Permission: com.android.vending.CHECK_LICENSE
+Feature 14: Permission: android.permission.GET_TASKS
+Feature 15: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 16: Permission: android.permission.WAKE_LOCK

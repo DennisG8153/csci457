@@ -1,0 +1,5 @@
+--- Extracted Features from a9d4a4daafc534c1d56c71085d10315b.apk ---
+
+Feature 1: Permission: android.permission.SEND_SMS
+Feature 2: Permission: android.permission.VIBRATE
+Feature 3: Permission: android.permission.WAKE_LOCK

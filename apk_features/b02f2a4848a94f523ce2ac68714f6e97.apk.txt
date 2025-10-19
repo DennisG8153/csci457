@@ -1,0 +1,13 @@
+--- Extracted Features from b02f2a4848a94f523ce2ac68714f6e97.apk ---
+
+Feature 1: Permission: android.permission.GET_ACCOUNTS
+Feature 2: Permission: android.permission.RECEIVE_BOOT_COMPLETED
+Feature 3: Permission: android.permission.GET_TASKS
+Feature 4: Permission: android.permission.VIBRATE
+Feature 5: Permission: android.permission.SET_WALLPAPER
+Feature 6: Permission: android.permission.USE_CREDENTIALS
+Feature 7: Permission: android.permission.INTERNET
+Feature 8: Permission: android.permission.READ_PHONE_STATE
+Feature 9: Permission: android.permission.ACCESS_COARSE_LOCATION
+Feature 10: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 11: Permission: android.permission.WAKE_LOCK

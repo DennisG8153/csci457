@@ -1,0 +1,7 @@
+--- Extracted Features from 1044c98c6cbb6baf12d7ed702686e501.apk ---
+
+Feature 1: Permission: android.permission.RECEIVE_BOOT_COMPLETED
+Feature 2: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 3: Permission: android.permission.READ_EXTERNAL_STORAGE
+Feature 4: Permission: android.permission.PACKAGE_USAGE_STATS
+Feature 5: Permission: android.permission.GET_TASKS

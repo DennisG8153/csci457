@@ -1,0 +1,125 @@
+'<manifest xmlns:android="http://schemas.android.com/apk/res/android" 
+	android:versionCode="2162" 
+	android:versionName="0.62" 
+	package="com.greenaddress.abcore">\n
+
+	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="27">\n
+	</uses-sdk>\n
+
+	<uses-permission android:name="android.permission.INTERNET">\n
+	</uses-permission>\n
+
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE">\n
+	</uses-permission>\n
+
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE">\n
+	</uses-permission>\n
+
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE">\n
+	</uses-permission>\n
+
+	<application android:theme="@7F0F0006" android:label="@7F0E001D" android:icon="@7F0D0000" android:debuggable="true" android:allowBackup="false" android:supportsRtl="true">\n
+
+		<activity android:name="com.greenaddress.abcore.MainActivity">\n
+			<intent-filter>\n
+				<action android:name="android.intent.action.MAIN">\n
+				</action>\n
+
+				<category android:name="android.intent.category.LAUNCHER">\n
+				</category>\n
+			</intent-filter>\n
+		</activity>\n
+
+		<service android:name="com.greenaddress.abcore.DownloadInstallCoreIntentService" android:exported="false">\n
+		</service>\n
+
+		<service android:name="com.greenaddress.abcore.RPCIntentService" android:exported="false">\n
+		</service>\n
+
+		<service android:name="com.greenaddress.abcore.ABCoreService" android:exported="false">\n
+		</service>\n
+
+		<activity android:name="com.greenaddress.abcore.BitcoinConfEditActivity">\n
+			<intent-filter>\n
+
+				<category android:name="android.intent.category.DEFAULT">\n
+				</category>\n
+
+				<action android:name="com.greenaddress.abcore.BitcoinConfEditActivity">\n
+				</action>\n
+
+			</intent-filter>\n
+		</activity>\n
+
+		<activity android:name="com.greenaddress.abcore.AboutActivity">\n
+		</activity>\n
+
+		<activity android:label="@7F0E0038" android:name="com.greenaddress.abcore.SettingsActivity" android:noHistory="true">\n
+		</activity>\n
+
+		<activity android:label="@7F0E0035" android:name="com.greenaddress.abcore.DownloadSettingsActivity" android:noHistory="true">\n
+		</activity>\n
+
+		<activity android:theme="@7F0F0006" android:label="@7F0E0036"android:name="com.greenaddress.abcore.PeerActivity">\n
+		</activity>\n
+
+		<activity android:theme="@7F0F0006" android:label="@7F0E0037" android:name="com.greenaddress.abcore.ProgressActivity">\n
+		</activity>\n
+
+		<activity android:name="com.greenaddress.abcore.LogActivity">\n
+		</activity>\n
+
+		<activity android:name="com.greenaddress.abcore.ConsoleActivity">\n
+		</activity>\n
+
+		<activity android:name="com.greenaddress.abcore.DownloadActivity">\n
+		</activity>\n
+
+		<receiver android:name="com.greenaddress.abcore.PowerBroadcastReceiver">\n
+			<intent-filter>\n
+				<action android:name="android.intent.action.ACTION_POWER_CONNECTED">\n
+				</action>\n
+
+				<action android:name="android.intent.action.ACTION_POWER_DISCONNECTED">\n
+				</action>\n
+
+				<action android:name="android.intent.action.ACTION_SHUTDOWN">\n
+				</action>\n
+
+				<action android:name="android.intent.action.ACTION_BATTERY_LOW">\n
+				</action>\n
+
+				<action android:name="android.net.wifi.STATE_CHANGE">\n
+				</action>\n
+			</intent-filter>\n
+		</receiver>\n
+	</application>\n
+
+</manifest>\n'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,20 @@
+--- Extracted Features from dac9a2e1a7e51c6fc750a53db9a406e5.apk ---
+
+Feature 1: Permission: android.permission.SEND_SMS
+Feature 2: Permission: android.permission.RESTART_PACKAGES
+Feature 3: Permission: android.permission.CHANGE_WIFI_STATE
+Feature 4: Permission: com.android.vending.BILLING
+Feature 5: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 6: Permission: android.permission.VIBRATE
+Feature 7: Permission: com.android.vending.CHECK_LICENSE
+Feature 8: Permission: android.permission.USE_CREDENTIALS
+Feature 9: Permission: android.permission.INTERNET
+Feature 10: Permission: android.permission.READ_PHONE_STATE
+Feature 11: Permission: android.permission.ACCESS_WIFI_STATE
+Feature 12: Permission: android.permission.MODIFY_AUDIO_SETTINGS
+Feature 13: Permission: com.google.android.c2dm.permission.RECEIVE
+Feature 14: Permission: com.gameloft.android.ANMP.GloftM3HM.permission.C2D_MESSAGE
+Feature 15: Permission: android.permission.CHANGE_NETWORK_STATE
+Feature 16: Permission: android.permission.KILL_BACKGROUND_PROCESSES
+Feature 17: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 18: Permission: android.permission.WAKE_LOCK

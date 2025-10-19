@@ -1,0 +1,17 @@
+--- Extracted Features from d20d8e408010da62bcf9d8e535ac2684.apk ---
+
+Feature 1: Permission: android.permission.SEND_SMS
+Feature 2: Permission: android.permission.RECEIVE_BOOT_COMPLETED
+Feature 3: Permission: android.permission.CALL_PHONE
+Feature 4: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 5: Permission: android.permission.DELETE_PACKAGES
+Feature 6: Permission: android.permission.RECEIVE_SMS
+Feature 7: Permission: android.permission.INTERNET
+Feature 8: Permission: android.permission.INSTALL_PACKAGES
+Feature 9: Permission: android.permission.READ_PHONE_STATE
+Feature 10: Permission: android.permission.ACCESS_FINE_LOCATION
+Feature 11: Permission: android.permission.ACCESS_WIFI_STATE
+Feature 12: Permission: android.permission.ACCESS_COARSE_LOCATION
+Feature 13: Permission: android.permission.READ_SMS
+Feature 14: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 15: Permission: android.permission.PROCESS_OUTGOING_CALLS

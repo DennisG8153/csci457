@@ -1,0 +1,6 @@
+--- Extracted Features from 97e842e0f3ac8bb5679a15246a2879bb.apk ---
+
+Feature 1: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 2: Permission: android.permission.VIBRATE
+Feature 3: Permission: android.permission.INTERNET
+Feature 4: Permission: android.permission.WAKE_LOCK

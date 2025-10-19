@@ -1,0 +1,24 @@
+--- Extracted Features from b7944ba4e16b0c90d52c7594173ac0d2.apk ---
+
+Feature 1: Permission: android.permission.RESTART_PACKAGES
+Feature 2: Permission: android.permission.CHANGE_WIFI_STATE
+Feature 3: Permission: android.permission.READ_CONTACTS
+Feature 4: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 5: Permission: android.permission.FORCE_STOP_PACKAGES
+Feature 6: Permission: android.permission.WRITE_SMS
+Feature 7: Permission: android.permission.ACCESS_WIFI_STATE
+Feature 8: Permission: android.permission.READ_SMS
+Feature 9: Permission: android.permission.ACCESS_COARSE_LOCATION
+Feature 10: Permission: android.permission.RECEIVE_BOOT_COMPLETED
+Feature 11: Permission: android.permission.WRITE_CONTACTS
+Feature 12: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 13: Permission: android.permission.INTERNET
+Feature 14: Permission: android.permission.BLUETOOTH
+Feature 15: Permission: android.permission.WAKE_LOCK
+Feature 16: Permission: android.permission.WRITE_SETTINGS
+Feature 17: Permission: android.permission.READ_PHONE_STATE
+Feature 18: Permission: com.android.launcher.permission.INSTALL_SHORTCUT
+Feature 19: Permission: android.permission.ACCESS_FINE_LOCATION
+Feature 20: Permission: android.permission.READ_LOGS
+Feature 21: Permission: android.permission.GET_TASKS
+Feature 22: Permission: android.permission.READ_OWNER_DATA

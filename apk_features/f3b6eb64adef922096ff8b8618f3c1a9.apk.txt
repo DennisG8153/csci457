@@ -1,0 +1,26 @@
+--- Extracted Features from f3b6eb64adef922096ff8b8618f3c1a9.apk ---
+
+Feature 1: Permission: android.permission.CHANGE_WIFI_STATE
+Feature 2: Permission: android.permission.GET_TASKS
+Feature 3: Permission: android.permission.READ_CONTACTS
+Feature 4: Permission: com.android.launcher.permission.UNINSTALL_SHORTCUT
+Feature 5: Permission: android.permission.WRITE_APN_SETTINGS
+Feature 6: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 7: Permission: android.permission.SEND_SMS
+Feature 8: Permission: android.permission.WRITE_SMS
+Feature 9: Permission: android.permission.ACCESS_WIFI_STATE
+Feature 10: Permission: com.android.browser.permission.READ_HISTORY_BOOKMARKS
+Feature 11: Permission: android.permission.CHANGE_NETWORK_STATE
+Feature 12: Permission: android.permission.READ_SMS
+Feature 13: Permission: android.permission.RECEIVE_BOOT_COMPLETED
+Feature 14: Permission: android.permission.CALL_PHONE
+Feature 15: Permission: android.permission.MODIFY_PHONE_STATE
+Feature 16: Permission: android.permission.INTERNET
+Feature 17: Permission: android.permission.ADD_SYSTEM_SERVICE
+Feature 18: Permission: android.permission.MODIFY_AUDIO_SETTINGS
+Feature 19: Permission: android.permission.PROCESS_OUTGOING_CALLS
+Feature 20: Permission: android.permission.WAKE_LOCK
+Feature 21: Permission: android.permission.RECEIVE_SMS
+Feature 22: Permission: android.permission.READ_PHONE_STATE
+Feature 23: Permission: com.android.launcher.permission.INSTALL_SHORTCUT
+Feature 24: Permission: com.android.browser.permission.WRITE_HISTORY_BOOKMARKS

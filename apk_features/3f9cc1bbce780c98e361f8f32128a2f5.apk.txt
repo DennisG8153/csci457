@@ -1,0 +1,11 @@
+--- Extracted Features from 3f9cc1bbce780c98e361f8f32128a2f5.apk ---
+
+Feature 1: Permission: android.permission.SEND_SMS
+Feature 2: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 3: Permission: android.permission.INTERNET
+Feature 4: Permission: android.permission.WRITE_SMS
+Feature 5: Permission: android.permission.ACCESS_WIFI_STATE
+Feature 6: Permission: com.android.vending.CHECK_LICENSE
+Feature 7: Permission: android.permission.READ_SMS
+Feature 8: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 9: Permission: android.permission.WAKE_LOCK

@@ -1,0 +1,18 @@
+--- Extracted Features from 306b55552a7afca64531aed44787279c.apk ---
+
+Feature 1: Permission: android.permission.WRITE_SETTINGS
+Feature 2: Permission: android.permission.CHANGE_WIFI_STATE
+Feature 3: Permission: android.permission.WRITE_CONTACTS
+Feature 4: Permission: android.permission.RECEIVE_BOOT_COMPLETED
+Feature 5: Permission: android.permission.READ_CONTACTS
+Feature 6: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 7: Permission: android.permission.VIBRATE
+Feature 8: Permission: android.permission.HARDWARE_TEST
+Feature 9: Permission: android.permission.INTERNET
+Feature 10: Permission: android.permission.READ_PHONE_STATE
+Feature 11: Permission: android.permission.DEVICE_POWER
+Feature 12: Permission: android.permission.ACCESS_WIFI_STATE
+Feature 13: Permission: android.permission.FACTORY_TEST
+Feature 14: Permission: android.permission.DISABLE_KEYGUARD
+Feature 15: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 16: Permission: android.permission.WAKE_LOCK

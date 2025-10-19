@@ -1,0 +1,24 @@
+--- Extracted Features from 5beae5543a3f085080c26de48a811da6.apk ---
+
+Feature 1: Permission: android.permission.CHANGE_WIFI_STATE
+Feature 2: Permission: android.permission.READ_CONTACTS
+Feature 3: Permission: com.android.launcher.permission.UNINSTALL_SHORTCUT
+Feature 4: Permission: android.permission.WRITE_APN_SETTINGS
+Feature 5: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 6: Permission: android.permission.SEND_SMS
+Feature 7: Permission: android.permission.WRITE_SMS
+Feature 8: Permission: android.permission.ACCESS_WIFI_STATE
+Feature 9: Permission: android.permission.CHANGE_NETWORK_STATE
+Feature 10: Permission: android.permission.READ_SMS
+Feature 11: Permission: android.permission.RECEIVE_BOOT_COMPLETED
+Feature 12: Permission: android.permission.CALL_PHONE
+Feature 13: Permission: android.permission.MODIFY_PHONE_STATE
+Feature 14: Permission: android.permission.INTERNET
+Feature 15: Permission: android.permission.ADD_SYSTEM_SERVICE
+Feature 16: Permission: android.permission.MODIFY_AUDIO_SETTINGS
+Feature 17: Permission: android.permission.PROCESS_OUTGOING_CALLS
+Feature 18: Permission: android.permission.WAKE_LOCK
+Feature 19: Permission: android.permission.RECEIVE_SMS
+Feature 20: Permission: android.permission.READ_PHONE_STATE
+Feature 21: Permission: com.android.launcher.permission.INSTALL_SHORTCUT
+Feature 22: Permission: android.permission.GET_TASKS

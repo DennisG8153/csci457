@@ -1,0 +1,15 @@
+--- Extracted Features from 7b3741bee9d6ee50cf76cd604d36d760.apk ---
+
+Feature 1: Permission: android.permission.SEND_SMS
+Feature 2: Permission: com.potyomkin.talkingkote.ACCESS_PRODUCTS
+Feature 3: Permission: com.android.vending.BILLING
+Feature 4: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 5: Permission: android.permission.INTERNET
+Feature 6: Permission: android.permission.RECORD_AUDIO
+Feature 7: Permission: android.permission.READ_PHONE_STATE
+Feature 8: Permission: android.permission.WRITE_SMS
+Feature 9: Permission: android.permission.ACCESS_FINE_LOCATION
+Feature 10: Permission: android.permission.ACCESS_WIFI_STATE
+Feature 11: Permission: android.permission.ACCESS_COARSE_LOCATION
+Feature 12: Permission: android.permission.READ_SMS
+Feature 13: Permission: android.permission.ACCESS_NETWORK_STATE

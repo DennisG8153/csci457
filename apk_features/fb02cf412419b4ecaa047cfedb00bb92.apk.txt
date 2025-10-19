@@ -1,0 +1,13 @@
+--- Extracted Features from fb02cf412419b4ecaa047cfedb00bb92.apk ---
+
+Feature 1: Permission: android.permission.SYSTEM_ALERT_WINDOW
+Feature 2: Permission: android.permission.RECEIVE_BOOT_COMPLETED
+Feature 3: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 4: Permission: android.permission.INTERNET
+Feature 5: Permission: android.permission.READ_PHONE_STATE
+Feature 6: Permission: android.permission.ACCESS_WIFI_STATE
+Feature 7: Permission: android.permission.ACCESS_FINE_LOCATION
+Feature 8: Permission: android.permission.ACCESS_COARSE_LOCATION
+Feature 9: Permission: android.permission.GET_TASKS
+Feature 10: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 11: Permission: android.permission.WAKE_LOCK

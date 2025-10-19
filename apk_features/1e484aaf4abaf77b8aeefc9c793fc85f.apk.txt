@@ -1,0 +1,11 @@
+--- Extracted Features from 1e484aaf4abaf77b8aeefc9c793fc85f.apk ---
+
+Feature 1: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 2: Permission: android.permission.GET_TASKS
+Feature 3: Permission: android.permission.INTERNET
+Feature 4: Permission: android.permission.READ_PHONE_STATE
+Feature 5: Permission: android.permission.ACCESS_WIFI_STATE
+Feature 6: Permission: com.android.launcher.permission.INSTALL_SHORTCUT
+Feature 7: Permission: com.android.browser.permission.WRITE_HISTORY_BOOKMARKS
+Feature 8: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 9: Permission: android.permission.WAKE_LOCK
