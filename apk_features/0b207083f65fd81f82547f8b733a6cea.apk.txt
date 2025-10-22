@@ -1,3 +1,0 @@
---- Extracted Features from 0b207083f65fd81f82547f8b733a6cea.apk ---
-
-Feature 1: Permission: android.permission.BACKUP_DATA

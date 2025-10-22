@@ -1,4 +1,0 @@
---- Extracted Features from 252fda900a531117c90e97783410f495.apk ---
-
-Feature 1: Permission: android.permission.RECEIVE_BOOT_COMPLETED
-Feature 2: Permission: android.permission.WAKE_LOCK

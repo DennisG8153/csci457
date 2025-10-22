@@ -1,3 +1,0 @@
---- Extracted Features from 65a8bd6418758bd83bdf5947f52f2596.apk ---
-
-Feature 1: Permission: android.permission.READ_LOGS

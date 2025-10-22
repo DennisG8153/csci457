@@ -1,8 +1,0 @@
---- Extracted Features from 1a91ac2d607ae86371d09ae43ce675e8.apk ---
-
-Feature 1: Permission: android.permission.SEND_SMS
-Feature 2: Permission: android.permission.RECEIVE_SMS
-Feature 3: Permission: android.permission.INTERNET
-Feature 4: Permission: android.permission.READ_PHONE_STATE
-Feature 5: Permission: android.permission.CAMERA
-Feature 6: Permission: android.permission.ACCESS_NETWORK_STATE

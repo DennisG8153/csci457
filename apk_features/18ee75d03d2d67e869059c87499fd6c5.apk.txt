@@ -1,3 +1,0 @@
---- Extracted Features from 18ee75d03d2d67e869059c87499fd6c5.apk ---
-
-Feature 1: Permission: android.permission.WRITE_EXTERNAL_STORAGE

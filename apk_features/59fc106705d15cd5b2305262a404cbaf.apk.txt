@@ -1,6 +1,0 @@
---- Extracted Features from 59fc106705d15cd5b2305262a404cbaf.apk ---
-
-Feature 1: Permission: android.permission.WRITE_EXTERNAL_STORAGE
-Feature 2: Permission: android.permission.READ_PHONE_STATE
-Feature 3: Permission: android.permission.ACCESS_NETWORK_STATE
-Feature 4: Permission: android.permission.INTERNET

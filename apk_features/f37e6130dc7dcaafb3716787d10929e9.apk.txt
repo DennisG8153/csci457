@@ -1,4 +1,0 @@
---- Extracted Features from f37e6130dc7dcaafb3716787d10929e9.apk ---
-
-Feature 1: Permission: android.permission.SEND_SMS
-Feature 2: Permission: android.permission.INTERNET

@@ -1,5 +1,0 @@
---- Extracted Features from 4afb8b2052b5337d4d28dae4c74f3e69.apk ---
-
-Feature 1: Permission: android.permission.WRITE_EXTERNAL_STORAGE
-Feature 2: Permission: android.permission.WAKE_LOCK
-Feature 3: Permission: android.permission.INTERNET

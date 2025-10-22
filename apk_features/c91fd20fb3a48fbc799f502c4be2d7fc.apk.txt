@@ -1,3 +1,0 @@
---- Extracted Features from c91fd20fb3a48fbc799f502c4be2d7fc.apk ---
-
-Feature 1: Permission: android.permission.SEND_SMS

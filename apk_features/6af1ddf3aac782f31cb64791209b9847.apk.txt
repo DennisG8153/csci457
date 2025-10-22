@@ -1,9 +1,0 @@
---- Extracted Features from 6af1ddf3aac782f31cb64791209b9847.apk ---
-
-Feature 1: Permission: android.permission.RECEIVE_BOOT_COMPLETED
-Feature 2: Permission: android.permission.VIBRATE
-Feature 3: Permission: android.permission.INTERNET
-Feature 4: Permission: android.permission.READ_PHONE_STATE
-Feature 5: Permission: android.permission.GET_TASKS
-Feature 6: Permission: android.permission.ACCESS_NETWORK_STATE
-Feature 7: Permission: android.permission.WAKE_LOCK
