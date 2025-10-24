@@ -106,6 +106,15 @@ def update_gui():
     seconds = int(elapsed_time % 60)
     timer_files_label.config(text=f"Time: {hours:02d}:{minutes:02d}:{seconds:02d} | Files Processed: {files_processed}/{TOTAL_FILE_COUNT}")
 
+    # Check if all directories are done
+    if current_dir_count <= TOTAL_DIR_COUNT:
+        
+        # Check if all files are done
+        if current_file_count <= current_dir_max_files:
+            
+            # Calculate time taken for the last file
+            if last_update_time:
+                file_process_times += time.time() - last_update_time
 
     # Folder Progress  
     main_progress_label = ttk.Label(window, text=f"Progress in <{ROOT_DIRECTORY}>: 0/{TOTAL_DIR_COUNT} directories", font=('Helvetica', 10))
