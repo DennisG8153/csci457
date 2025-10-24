@@ -1,0 +1,205 @@
+import tkinter as tk
+from tkinter import ttk
+from tkinter import messagebox
+import time
+import os
+import FeatureExtractor #Logic for extracting features
+
+# NOTE: Set the desired directory to extract from
+ROOT_DIRECTORY = r'..\Datasets\amd_data'
+
+# Trackers for progress bars
+TOTAL_DIR_COUNT = 0
+TOTAL_FILE_COUNT = 0
+current_dir_count = 0 
+current_file_count = 0
+current_dir_max_files = 0
+files_processed = 0 
+
+# Sum to track total time spent processing files
+START_TIME = 0
+proc_times_running_total = 0
+last_update_time = 0 
+
+# UI 
+window = None
+WINDOW_DIMENSIONS = '450x280'
+main_progress_bar = None
+sub_progress_bar = None
+
+TITLE_LABEL = 'Feature Extraction'
+TASK_LABEL = 'Extracting Features from APK Files'
+main_progress_label = None
+cwd_label = None # current working directory
+current_file_label = None 
+timer_files_label = None
+etr_label = None # estimated time remaining
+
+# Loop Vars
+current_dir_path = ""
+FILE_LIST = []
+
+def preprocess_dir(path):
+        
+    # Pre-scans the directory to calculate totals and makes a file list
+    # Returns: (Total Directories, Total Files, File List)
+        
+    dir_count = 0
+    file_count = 0
+    file_list = []
+
+    # Scan directories
+    for dirpath, dirnames, filenames in os.walk(path):
+        dir_count += len(dirnames) # Count subdirectories
+        # Only count apk files
+        valid_filenames = [f for f in filenames if f.lower().endswith('.apk')]
+        file_count += len(valid_filenames)
+        if valid_filenames: #or not dirnames: # Add the entry if it contains apk files. NOTE: For some reason it was suggest that we also add if the folder is empty. This shouldn't be necessary
+            file_list.append((dirpath, valid_filenames))
+
+    # The total number of steps in the first bar is the number of directories
+    total_dirs = len(file_list) 
+    total_files = file_count
+    
+    if total_dirs == 0:
+        # Check if root path has files but no subdirs, still treat as one step
+        if not total_files:
+            # Handle case where directory is empty
+            print(f"Directory {path} is empty. Task completed.")
+            return total_dirs, total_files, file_list
+        
+    return total_dirs, total_files, file_list
+
+def calculate_etr():
+
+    # Calculates and updates the Estimated Time Remaining
+    # Returns None
+
+    global etr_label
+
+    # Check if no files processed
+    if not files_processed:
+        etr_label.config(text="Approximate Time Remaining: Calculating...")
+        return
+        
+    average_time_per_file = proc_times_running_total / files_processed
+    files_remaining = TOTAL_FILE_COUNT - files_processed
+    time_remaining_seconds = files_remaining * average_time_per_file
+    
+    etr_hours = int(time_remaining_seconds // 60)
+    etr_minutes = int((time_remaining_seconds // 60) % 60)
+    etr_seconds = int(time_remaining_seconds % 60)
+    
+    etr_label.config(text=f"Approximate Time Remaining: {etr_hours:02d}h {etr_minutes:02d}m {etr_seconds:02d}s")
+
+def update_gui(): 
+    # Updates GUI
+    # Returns None
+
+    global window, main_progress_bar, sub_progress_bar
+    global main_progress_label, current_file_label, timer_files_label, cwd_label, etr_label
+
+    # Update Timer and Total Files Processed
+    elapsed_time = time.time() - START_TIME
+    hours = int(elapsed_time // 360)
+    minutes = int((elapsed_time // 60) % 60)
+    seconds = int(elapsed_time % 60)
+    timer_files_label.config(text=f"Time: {hours:02d}:{minutes:02d}:{seconds:02d} | Files Processed: {files_processed}/{TOTAL_FILE_COUNT}")
+
+
+    # Folder Progress  
+    main_progress_label = ttk.Label(window, text=f"Progress in <{ROOT_DIRECTORY}>: 0/{TOTAL_DIR_COUNT} directories", font=('Helvetica', 10))
+    main_progress_label.pack(pady=(10, 2))
+    
+    main_progress_bar = ttk.Progressbar(window, orient="horizontal", length=400, mode="determinate")
+    main_progress_bar.pack(pady=5)
+    main_progress_bar['maximum'] = TOTAL_DIR_COUNT
+    main_progress_bar['value'] = 0
+
+    # Current Folder Progress 
+    cwd_label = ttk.Label(window, text="Current Folder: ---", font=('Helvetica', 10))
+    cwd_label.pack(pady=(5, 2)) 
+    
+    sub_progress_bar = ttk.Progressbar(window, orient="horizontal", length=400, mode="determinate")
+    sub_progress_bar.pack(pady=5)
+    sub_progress_bar['maximum'] = 1 
+    sub_progress_bar['value'] = 0
+
+    # Current File Label 
+    current_file_label = ttk.Label(window, text="Current File: ---", font=('Helvetica', 10, 'italic'))
+    current_file_label.pack(pady=(5, 2))
+
+    # Estimated Time Remaining Label
+    calculate_etr()
+
+def create_window():
+    
+    # Initializes window, calls update_gui
+    # Returns None
+
+    global window, main_progress_bar, sub_progress_bar
+    global main_task_label, main_progress_label, current_file_label, timer_files_label, cwd_label, etr_label
+
+    window = tk.Tk()
+    window.title(TITLE_LABEL)
+    window.geometry(WINDOW_DIMENSIONS) 
+    
+    # Center window on screen
+    x = (window.winfo_screenwidth() / 2) - (450 / 2)
+    y = (window.winfo_screenheight() / 2) - (50 / 2)
+    window.geometry(f"+{int(x)}+{int(y)}")
+    
+    # Title Label 
+    main_task_label = ttk.Label(window, text=TASK_LABEL, font=('Helvetica', 14, 'bold'))
+    main_task_label.pack(pady=(15, 5))
+
+    # Folder Progress
+    # Folder Progress Label
+    root_folder_name = os.path.basename(ROOT_DIRECTORY)
+    main_progress_label = ttk.Label(window, text=f"Progress in <{root_folder_name}>: 0/{TOTAL_DIR_COUNT} directories", font=('Helvetica', 10))
+    main_progress_label.pack(pady=(10, 2))
+    
+    # Folder Progress Bar
+    main_progress_bar = ttk.Progressbar(window, orient="horizontal", length=400, mode="determinate")
+    main_progress_bar.pack(pady=5)
+    main_progress_bar['maximum'] = 1
+    main_progress_bar['value'] = 0
+
+    # Files in Folder Progress
+    # Current Folder Label (Current working directory)
+    cwd_label = ttk.Label(window, text="Current Folder: ---", font=('Helvetica', 10))
+    cwd_label.pack(pady=(5, 2)) 
+    
+    # Files in Folder Progress Bar 
+    sub_progress_bar = ttk.Progressbar(window, orient="horizontal", length=400, mode="determinate")
+    sub_progress_bar.pack(pady=5)
+    sub_progress_bar['maximum'] = 1 
+    sub_progress_bar['value'] = 0
+
+    # Current File Label 
+    current_file_label = ttk.Label(window, text="Current File: ---", font=('Helvetica', 10, 'italic'))
+    current_file_label.pack(pady=(5, 2))
+    
+    # Timer/Files in Folder Label 
+    timer_files_label = ttk.Label(window, text="Time: --:--:-- | Files Processed: -/-", font=('Helvetica', 10, 'italic'))
+    timer_files_label.pack(pady=10)
+
+    # Estimated Time Remaining Label 
+    etr_label = ttk.Label(window, text="Approximate Time Remaining: ---", font=('Helvetica', 10, 'bold'))
+    etr_label.pack(pady=5)
+
+def extract(): #TODO
+    print('extraction')
+
+if __name__ == '__main__':
+    total_dir_count, total_file_count, file_list = preprocess_dir(ROOT_DIRECTORY)
+    if total_file_count:
+        create_window()
+
+        # Must be in this order, 
+        # after() sets the next action of the window, 
+        # mainloop() starts the window and then the action is taken
+        window.after(1, extract())
+        window.mainloop()
+    else:
+        print('Extraction Canceled: Directory contains no files')
