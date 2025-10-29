@@ -151,7 +151,7 @@ def update_gui():
     timer_files_label.pack(pady=10)
 
     # Estimated Time Remaining Label 
-    etr_label = ttk.Label(window, text="Approximate Time Remaining: Calculating...", font=('Helvetica', 10, 'bold'))
+    etr_label = ttk.Label(window, text="Approximate Time Remaining: ---", font=('Helvetica', 10, 'bold'))
     etr_label.pack(pady=5)
 
 if __name__ == "__main__":

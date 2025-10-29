@@ -8,6 +8,7 @@ import FeatureExtractor #Logic for extracting features
 # --- Configuration ---
 # NOTE: Set the absolute path to your desired root directory here.
 DEFAULT_ROOT_DIRECTORY = r'..\Datasets\amd_data'
+DEFAULT_ROOT_DIRECTORY_NAME = 
 UPDATE_INTERVAL_MS = 50 # GUI update rate (Simulated processing time per file)
 
 # --- State Variables ---
@@ -118,7 +119,6 @@ def calculate_etc():
     
     return time_remaining_seconds # Return raw seconds for use in update_gui
 
-
 def update_gui():
     """Recursively drives the processing task and updates the progress bars."""
     global current_dir_count, current_file_count, current_dir_max_files, total_files_processed
@@ -201,9 +201,7 @@ def update_gui():
         seconds = int(elapsed_time % 60)
         
         # Live Time Elapsed and Total Files Processed
-        timer_label.config(
-            text=f"Time Elapsed: {minutes:02d}m {seconds:02d}s | Total Files Processed: {total_files_processed}"
-        )
+        timer_label.config(text=f"Time Elapsed: {minutes:02d}m {seconds:02d}s | Total Files Processed: {total_files_processed}")
         
         # Approximate Time Remaining
         calculate_etc() # No longer need to capture return value, calculation updates the label directly
@@ -236,7 +234,6 @@ def update_gui():
         
         print("Task completed!")
         # Window remains open until closed by user (no root_window.destroy)
-
 
 def setup_progress_ui(root_window):
     """Configures the labels, bars, and layout for the progress window."""
@@ -292,7 +289,6 @@ def setup_progress_ui(root_window):
     etc_label = ttk.Label(root_window, text="Approximate Time Remaining: Calculating...", font=('Helvetica', 10, 'bold'))
     # FIX: Assign etc_label
     etc_label.pack(pady=5)
-
 
 def start_extraction_workflow():
     """Initializes the workflow, prepares data, and starts the GUI update loop."""
