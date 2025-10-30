@@ -1,0 +1,5 @@
+{
+  "d833ac0373fd4afae115b3046b45e0b8d9e77ab8e210f6415c132fbdba2d012c": {
+    "summary": "Fallback analysis: Permissions include android.permission.INTERNET, android.permission.ACCESS_NETWORK_STATE. Suspicious URLs found: https://git-wip-us.apache.org, http://server, http://www.w3.org, http://cordova.io, http://jsperf.com, http://www.apache.org, https://issues.apache.org, http://www.zeitconnect.com, http://cdv_exec, http://schemas.android.com, http://cordova.apache.org. This is a basic description due to LLM failure."
+  }
+}
