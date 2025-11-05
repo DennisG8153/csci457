@@ -1,0 +1,16 @@
+--- Extracted Features from 0e7f6a9ecd058447a0b04668a597c229.apk ---
+
+Feature 1: Permission: android.permission.SEND_SMS
+Feature 2: Permission: com.android.vending.BILLING
+Feature 3: Permission: android.permission.READ_CONTACTS
+Feature 4: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 5: Permission: com.android.vending.CHECK_LICENSE
+Feature 6: Permission: android.permission.INTERNET
+Feature 7: Permission: com.ea.games.nfs13_na.permission.C2D_MESSAGE
+Feature 8: Permission: android.permission.READ_PHONE_STATE
+Feature 9: Permission: android.permission.ACCESS_WIFI_STATE
+Feature 10: Permission: android.permission.START_BACKGROUND_SERVICE
+Feature 11: Permission: android.permission.CHANGE_NETWORK_STATE
+Feature 12: Permission: com.google.android.c2dm.permission.RECEIVE
+Feature 13: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 14: Permission: android.permission.WAKE_LOCK

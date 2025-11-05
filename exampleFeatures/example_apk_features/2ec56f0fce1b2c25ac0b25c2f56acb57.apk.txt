@@ -1,0 +1,5 @@
+--- Extracted Features from 2ec56f0fce1b2c25ac0b25c2f56acb57.apk ---
+
+Feature 1: Permission: android.permission.SEND_SMS
+Feature 2: Permission: archos.permission.FULLSCREEN.FULL
+Feature 3: Permission: android.permission.INTERNET

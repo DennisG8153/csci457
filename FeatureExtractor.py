@@ -1,11 +1,12 @@
-# This module handles the core logic for extracting features 
-# from APK files and aggregating unique features across the workflow.
-# Renaming module reference to FeatureExtracter.
+# FeatureExtractor.py
+# Multiple feature extraction functions, meant to be used with ExtractWithProgress.py
+# Extracts and writes features from one apk to a file
+# Updates a unique features file
 
 import os
-from androguard.core.apk import APK # Library needed for APK analysis
-# Using dict (or OrderedDict if on Python < 3.7) to retain insertion order
-from typing import Dict, List 
+from androguard.core.apk import APK # APK analysis
+from typing import Dict, List # dict to retain insertion order
+# from collections import defaultdict # may use default dict
 
 # --- Output Directory Configuration ---
 # These directories will be created relative to the execution location of the calling script (progress_popup.py)
@@ -79,7 +80,6 @@ def extract_features_and_write(apk_path: str, base_output_path: str) -> List[str
         print(f"Error writing features for {apk_path}: {e}")
         return []
 
-
 def update_unique_features(features: List[str], base_output_path: str):
     """
     Aggregates new features into the global UNIQUE_FEATURES dictionary and 
@@ -115,13 +115,7 @@ def update_unique_features(features: List[str], base_output_path: str):
         print(f"Error writing unique features file: {e}")
 
 
-def get_unique_features_count():
-    """
-    Returns the current number of unique features tracked.
-    """
-    return len(UNIQUE_FEATURES)
-
-
+'''
 if __name__ == "__main__":
     # Get the directory where this script is located for output files
     base_path = os.path.dirname(os.path.abspath(__file__))
@@ -154,3 +148,4 @@ if __name__ == "__main__":
             print(f"Check the '{UNIQUE_FEATURES_OUTPUT_DIR}' folder for the aggregated file.")
         else:
             print("\nTest 1 Failed: Extraction returned no features.")
+            '''

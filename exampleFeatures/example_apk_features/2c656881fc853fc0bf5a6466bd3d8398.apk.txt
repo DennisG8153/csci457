@@ -1,0 +1,14 @@
+--- Extracted Features from 2c656881fc853fc0bf5a6466bd3d8398.apk ---
+
+Feature 1: Permission: android.permission.SYSTEM_ALERT_WINDOW
+Feature 2: Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Feature 3: Permission: android.permission.MOUNT_UNMOUNT_FILESYSTEMS
+Feature 4: Permission: android.permission.INTERNET
+Feature 5: Permission: android.permission.READ_PHONE_STATE
+Feature 6: Permission: com.android.launcher.permission.INSTALL_SHORTCUT
+Feature 7: Permission: android.permission.ACCESS_WIFI_STATE
+Feature 8: Permission: android.permission.READ_LOGS
+Feature 9: Permission: android.permission.ACCESS_COARSE_LOCATION
+Feature 10: Permission: android.permission.GET_TASKS
+Feature 11: Permission: android.permission.ACCESS_NETWORK_STATE
+Feature 12: Permission: android.permission.WAKE_LOCK

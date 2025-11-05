@@ -1,0 +1,8 @@
+--- Extracted Features from 2babaa0c89cccafece585b372714311e.apk ---
+
+Feature 1: Permission: android.permission.SEND_SMS
+Feature 2: Permission: android.permission.RECEIVE_SMS
+Feature 3: Permission: android.permission.INTERNET
+Feature 4: Permission: android.permission.READ_PHONE_STATE
+Feature 5: Permission: android.permission.ACCESS_FINE_LOCATION
+Feature 6: Permission: android.permission.ACCESS_NETWORK_STATE
