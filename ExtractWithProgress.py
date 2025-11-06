@@ -5,10 +5,24 @@ import time
 import os
 import FeatureExtractor 
 
-# NOTE: Set the desired directory to extract from
-ROOT_DIRECTORY = r'..\Datasets\amd_data'
-ROOT_DIRECTORY_NAME = {os.path.basename(ROOT_DIRECTORY)} # Just for main_progress_label in the UI
+# TODO: add a way to pick up from were we previously left of with each features file, currently unique_features does this, but not each individual file
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# TODO: really forgot to write what I needed to do... Well just fix everything
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+# NOTE: Set the desired directory to extract from. 
 OUT_DIRECTORY = r'..\extracted_features'
+OUT_DIRECTORY_UNIQUE = os.path.join(OUT_DIRECTORY, 'unique_features')
+#CRITICAL NOTE: REMEMBER TO SWAP BETWEEN MALICIOUS AND BENIGN DATA SETS
+#'''
+ROOT_DIRECTORY = r'..\Datasets\Malicious'
+OUT_DIRECTORY_FEATURES = os.path.join(OUT_DIRECTORY, 'malicious_apk_features')
+'''
+#ROOT_DIRECTORY = r'..\Datasets\Benign'
+OUT_DIRECTORY_FEATURES = os.path.join(OUT_DIRECTORY, 'benign_apk_features')
+'''
+ROOT_DIRECTORY_NAME = {os.path.basename(ROOT_DIRECTORY)} # Just for main_progress_label in the UI
 
 # Trackers for progress bars
 TOTAL_DIR_COUNT = 0
@@ -44,9 +58,10 @@ timer_files_label = None
 etr_label = None # estimated time remaining
 
 def preprocess_dir():
-        
-    # Pre-scans the directory to calculate totals and makes a file list
-    # Returns: None
+    '''        
+    Pre-scans the directory to calculate totals and makes a file list   
+    Returns: None
+    '''
 
     global TOTAL_DIR_COUNT, TOTAL_FILE_COUNT, DIR_FILE_LIST
 
@@ -195,23 +210,17 @@ def extract_with_progress():
     # Gets file to extract
     current_file_name = current_dir_file_list[current_dir_file_count]
     current_file_path = os.path.join(current_dir_path, current_file_name)
-    current_dir_total_file_count
 
     # update GUI here so it shows the current file being worked on
     update_gui()
 
     # Extraction and Writing to files
-    extracted_features = FeatureExtractor.extract_features_and_write(
-        apk_path=current_file_path,
-        base_output_path=os.path.dirname(os.path.abspath(__file__))
-    )
+    extracted_features = FeatureExtractor.extract_features(current_file_path)
     
-    # Update unique features tracking
+    # Update unique features tracking TODO
     if extracted_features:
-        FeatureExtractor.update_unique_features(
-            features=extracted_features, 
-            base_output_path=os.path.dirname(os.path.abspath(__file__))
-        )
+        FeatureExtractor.write_features(extracted_features, current_file_path, OUT_DIRECTORY_FEATURES)
+        FeatureExtractor.update_unique_features(extracted_features, OUT_DIRECTORY_UNIQUE)
 
     # File extracted, update elapsed time
     elapsed_time = time.time() - START_TIME
@@ -222,7 +231,6 @@ def extract_with_progress():
 
     # Next iteration, next file in the directory
     WINDOW.after(1, extract_with_progress)
-
 
 def extraction_setup():
     # Set up initial values for recursive loop extract_with_progress
@@ -238,10 +246,13 @@ def extraction_setup():
     current_dir_path, current_dir_file_list = DIR_FILE_LIST[total_dirs_processed]
     current_dir_total_file_count = len(current_dir_file_list)
 
+    # Reload unique_features.txt TODO: validate it is working
+    FeatureExtractor.reload_unique_features(OUT_DIRECTORY_UNIQUE)
+
     update_gui()
     WINDOW.after(1, extract_with_progress())
 
-if __name__ == '__main__':
+if __name__ == '__main__': # TODO: SOMETHING NEEDS TO BE CHANGED HERE
     if os.path.isdir(ROOT_DIRECTORY):
         preprocess_dir()
         if TOTAL_FILE_COUNT:

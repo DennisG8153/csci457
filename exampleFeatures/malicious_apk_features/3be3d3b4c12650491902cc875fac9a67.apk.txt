@@ -1,0 +1,4 @@
+Permission: android.permission.INTERNET
+Permission: android.permission.VIBRATE
+Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Permission: android.permission.WAKE_LOCK

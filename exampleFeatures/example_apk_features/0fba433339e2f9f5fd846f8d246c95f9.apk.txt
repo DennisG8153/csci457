@@ -1,6 +1,0 @@
---- Extracted Features from 0fba433339e2f9f5fd846f8d246c95f9.apk ---
-
-Feature 1: Permission: android.permission.WRITE_EXTERNAL_STORAGE
-Feature 2: Permission: android.permission.ACCESS_WIFI_STATE
-Feature 3: Permission: android.permission.CHANGE_WIFI_STATE
-Feature 4: Permission: android.permission.WAKE_LOCK

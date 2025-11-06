@@ -1,0 +1,10 @@
+Permission: android.permission.READ_PHONE_STATE
+Permission: android.permission.WRITE_SETTINGS
+Permission: android.permission.RECEIVE_SMS
+Permission: android.permission.VIBRATE
+Permission: android.permission.DEVICE_POWER
+Permission: android.permission.WAKE_LOCK
+Permission: android.permission.INTERNET
+Permission: android.permission.ACCESS_NETWORK_STATE
+Permission: android.permission.WRITE_EXTERNAL_STORAGE
+Permission: android.permission.SEND_SMS

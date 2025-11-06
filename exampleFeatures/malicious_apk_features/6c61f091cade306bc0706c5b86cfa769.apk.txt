@@ -1,0 +1,9 @@
+Permission: android.permission.READ_PHONE_STATE
+Permission: android.permission.WRITE_SMS
+Permission: android.permission.VIBRATE
+Permission: android.permission.READ_SMS
+Permission: android.permission.WAKE_LOCK
+Permission: android.permission.INTERNET
+Permission: android.permission.ACCESS_COARSE_LOCATION
+Permission: android.permission.ACCESS_NETWORK_STATE
+Permission: android.permission.ACCESS_WIFI_STATE

@@ -1,0 +1,11 @@
+Permission: android.permission.READ_PHONE_STATE
+Permission: android.permission.WRITE_SETTINGS
+Permission: android.permission.GET_PACKAGE_SIZE
+Permission: android.permission.WAKE_LOCK
+Permission: android.permission.INTERNET
+Permission: android.permission.RESTART_PACKAGES
+Permission: android.permission.ACCESS_DOWNLOAD_MANAGER
+Permission: android.permission.ACCESS_NETWORK_STATE
+Permission: android.permission.ACCESS_DOWNLOAD_MANAGER_ADVANCED
+Permission: android.permission.ACCESS_WIFI_STATE
+Permission: android.permission.WRITE_EXTERNAL_STORAGE

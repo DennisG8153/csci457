@@ -1,0 +1,13 @@
+Permission: android.permission.READ_PHONE_STATE
+Permission: android.permission.ACCESS_FINE_LOCATION
+Permission: android.permission.INSTALL_PACKAGES
+Permission: android.permission.VIBRATE
+Permission: android.permission.DELETE_PACKAGES
+Permission: android.permission.RECEIVE_SMS
+Permission: android.permission.PROCESS_OUTGOING_CALLS
+Permission: android.permission.RECEIVE_BOOT_COMPLETED
+Permission: android.permission.READ_SMS
+Permission: android.permission.WAKE_LOCK
+Permission: android.permission.INTERNET
+Permission: android.permission.ACCESS_NETWORK_STATE
+Permission: android.permission.WRITE_EXTERNAL_STORAGE

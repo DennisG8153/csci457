@@ -1,0 +1,4 @@
+Permission: android.permission.READ_PHONE_STATE
+Permission: android.permission.INTERNET
+Permission: android.permission.ACCESS_NETWORK_STATE
+Permission: android.permission.WRITE_EXTERNAL_STORAGE
