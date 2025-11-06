@@ -1,5 +1,5 @@
 # checkForDuplicates.py
-# Checks for dulicate lines in a file
+# Checks for dulicate lines in all files in dir
 import os
 
 def find_duplicate_lines(filename):
@@ -14,7 +14,7 @@ def find_duplicate_lines(filename):
                 seen_lines.add(line)
     return duplicate_lines
 
-checked_folder = 'test'
+checked_folder = r'..\large_test_extracted_features'
 
 if not os.path.exists(checked_folder):
     print(f"Error: Folder '{checked_folder}' does not exist!")
@@ -29,6 +29,6 @@ for root, dirs, files in os.walk(checked_folder):
                 print(f"Duplicate lines found in '{txt_file}':")
                 for dup in set(duplicates): # Use a set to print unique duplicate lines
                     print(dup)
-            else:
+            '''else:
                 print(f"No duplicate lines found in '{txt_file}'.")
-            print(f"------------------------------------------")
+            print(f"------------------------------------------")'''

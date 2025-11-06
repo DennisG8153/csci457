@@ -58,9 +58,10 @@ timer_files_label = None
 etr_label = None # estimated time remaining
 
 def preprocess_dir():
-        
-    # Pre-scans the directory to calculate totals and makes a file list
-    # Returns: None
+    '''        
+    Pre-scans the directory to calculate totals and makes a file list   
+    Returns: None
+    '''
 
     global TOTAL_DIR_COUNT, TOTAL_FILE_COUNT, DIR_FILE_LIST
 
@@ -209,22 +210,17 @@ def extract_with_progress():
     # Gets file to extract
     current_file_name = current_dir_file_list[current_dir_file_count]
     current_file_path = os.path.join(current_dir_path, current_file_name)
-    # current_dir_total_file_count # TODO: make sure this is safe to remove, should be
 
     # update GUI here so it shows the current file being worked on
     update_gui()
 
     # Extraction and Writing to files
-    # TODO make sure this is working properly
     extracted_features = FeatureExtractor.extract_features(current_file_path)
-    FeatureExtractor.write_features(extracted_features, current_file_path, OUT_DIRECTORY_FEATURES)
     
     # Update unique features tracking TODO
     if extracted_features:
-        FeatureExtractor.update_unique_features(
-            extracted_features, 
-            output_path=os.path.dirname(os.path.abspath(__file__))
-        )
+        FeatureExtractor.write_features(extracted_features, current_file_path, OUT_DIRECTORY_FEATURES)
+        FeatureExtractor.update_unique_features(extracted_features, OUT_DIRECTORY_UNIQUE)
 
     # File extracted, update elapsed time
     elapsed_time = time.time() - START_TIME
@@ -238,7 +234,6 @@ def extract_with_progress():
 
 def extraction_setup():
     # Set up initial values for recursive loop extract_with_progress
-    # TODO: RELOAD UNIQUE FEATURES
 
     global START_TIME
     global total_dirs_processed, current_dir_file_count, current_dir_total_file_count
@@ -250,6 +245,9 @@ def extraction_setup():
     # Set initial directory for extraction and first file name
     current_dir_path, current_dir_file_list = DIR_FILE_LIST[total_dirs_processed]
     current_dir_total_file_count = len(current_dir_file_list)
+
+    # Reload unique_features.txt TODO: validate it is working
+    FeatureExtractor.reload_unique_features(OUT_DIRECTORY_UNIQUE)
 
     update_gui()
     WINDOW.after(1, extract_with_progress())

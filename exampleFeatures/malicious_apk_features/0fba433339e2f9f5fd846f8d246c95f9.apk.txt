@@ -1,0 +1,4 @@
+Permission: android.permission.CHANGE_WIFI_STATE
+Permission: android.permission.WAKE_LOCK
+Permission: android.permission.ACCESS_WIFI_STATE
+Permission: android.permission.WRITE_EXTERNAL_STORAGE

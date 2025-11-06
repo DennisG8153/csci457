@@ -1,0 +1,13 @@
+Permission: android.permission.READ_PHONE_STATE
+Permission: android.permission.ACCESS_FINE_LOCATION
+Permission: android.permission.RECEIVE_SMS
+Permission: android.permission.KILL_BACKGROUND_PROCESSES
+Permission: android.permission.GET_ACCOUNTS
+Permission: android.permission.SYSTEM_ALERT_WINDOW
+Permission: android.permission. ACCESS_WIFI_STATE
+Permission: android.permission.INTERNET
+Permission: android.permission.GET_TASKS
+Permission: android.permission.RECORD_AUDIO
+Permission: android.permission.ACCESS_NETWORK_STATE
+Permission: android.permission.ACCESS_WIFI_STATE
+Permission: android.permission.SEND_SMS

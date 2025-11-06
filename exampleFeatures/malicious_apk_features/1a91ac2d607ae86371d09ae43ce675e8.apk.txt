@@ -1,0 +1,8 @@
+Permission: android.permission.READ_PHONE_STATE
+Permission: android.permission.RECEIVE_SMS
+Permission: android.permission.CAMERA
+Permission: android.permission.INTERNET
+Permission: android.permission.ACCESS_NETWORK_STATE
+Permission: android.permission.SEND_SMS
+Used Features: android.software.live_wallpaper
+Used Features: android.hardware.camera

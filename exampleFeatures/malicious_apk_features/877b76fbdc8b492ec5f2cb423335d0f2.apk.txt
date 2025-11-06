@@ -1,0 +1,8 @@
+Permission: android.permission.READ_PHONE_STATE
+Permission: android.permission.RECEIVE_SMS
+Permission: android.permission.DELETE_PACKAGES
+Permission: android.permission.INSTALL_PACKAGES
+Permission: android.permission.PROCESS_OUTGOING_CALLS
+Permission: android.permission.RECEIVE_BOOT_COMPLETED
+Permission: android.permission.READ_SMS
+Permission: android.permission.INTERNET

@@ -1,0 +1,9 @@
+Permission: android.permission.READ_PHONE_STATE
+Permission: android.permission.ACCESS_FINE_LOCATION
+Permission: android.permission.RECEIVE_SMS
+Permission: android.permission.VIBRATE
+Permission: android.permission.INTERNET
+Permission: android.permission.ACCESS_COARSE_LOCATION
+Permission: android.permission.ACCESS_NETWORK_STATE
+Permission: com.android.vending.BILLING
+Permission: android.permission.SEND_SMS

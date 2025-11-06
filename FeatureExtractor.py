@@ -1,22 +1,23 @@
 # FeatureExtractor.py
-# Two feature extraction functions, meant to be used with ExtractWithProgress.py
+# Some feature extraction functions, meant to be used with ExtractWithProgress.py
 # Run Directly to extract from a single file to a test directory
-# Extracts and writes features from one apk to a file
+# Extracts features from an apk 
+# Writes features to a file
 # Updates a unique features file
+# Reload features from a file into the unique_features dictionary
 
 import os
-from androguard.core.apk import APK # APK analysis
+#from androguard.misc import AnalyzeAPK # APK analysis
+from androguard.core.apk import APK # Simpler but faster analysis, doesn't give us everything
 from typing import Dict, List # dict to retain insertion order
 # from collections import defaultdict # TODO: may use default dict
 
-# NOTE: Default directories output will be sent to. NO LONGER USED TODO: REMOVE 
-#APK_FEATURES_OUTPUT_DIR = "malicious_apk_features"
-#APK_FEATURES_OUTPUT_DIR = "benign_apk_features"
-#UNIQUE_FEATURES_OUTPUT_DIR = "unique_features"
 UNIQUE_FEATURES_FILENAME = "unique_features.txt"
 
-# NOTE: Directory Path to test extracting a single file
+# NOTE: Directory Path to test extracting a single file, change to extract from a different file
 DEFAULT_TEST_APK_PATH = r"..\Datasets\Malicious\amd_data\DroidKungFu\variety2\0c3df9c1d759a53eb16024b931a3213a.apk"
+#DEFAULT_TEST_APK_PATH = r"..\Datasets\Malicious\amd_data\DroidKungFu\variety2\01c3cc236c3587d20584ed84751c655c.apk"
+#DEFAULT_TEST_APK_PATH = r"..\Datasets\Malicious\amd_data\Finspy\variety1\4eea2753d42fef7dc74ea1c8350c659e.apk"
 DEFAULT_TEST_OUTPUT_DIR_FEATURES = r"..\test_extracted_features\malicious_features"
 DEFAULT_TEST_OUTPUT_DIR_UNIQUE = r"..\test_extracted_features\unique_features"
 
@@ -30,13 +31,13 @@ def extract_features(apk_path: str) -> List[str]: # TODO: consider changing to a
     Extracts features from an apk file and returns them as a List
 
     Extracted Features:
-        Permissions - Permission requests to parts of device data
         TODO: API Calls - Calls to external APIs
-        TODO: Used Features - Requests for usage to device Hardware and Software functionality
+        Permissions - Permission requests to parts of device data
+        Used Features - Requests for usage to device Hardware and Software functionality
         TODO: Used Intents - Accesses to intents sent/recieved by the application to/from the system, or other applications
-        TODO: URL - Connections to websites
         TODO: External Libraries - Use of external libraries within the application
-    
+        NOTE: URL - Omitting URL because, of it's high cardinality, it won't be useful to analyze in one piece
+
     Args:
         apk_path (str): The path to the APK file.
         
@@ -49,12 +50,19 @@ def extract_features(apk_path: str) -> List[str]: # TODO: consider changing to a
     try:
         # Load the APK file using androguard's APK class
         a = APK(apk_path)
+        #a, d, dx = AnalyzeAPK(apk_path)
         
-        # Get permissions (the feature we are extracting now)
+        # Extract Features
+
         permissions = a.get_permissions()
+        hardware_software = a.get_features()
+        # Used Intents TODO
         
-        # Format the permissions to include a prefix for clarity and consistency
-        extracted_features = [f"Permission: {p}" for p in permissions]
+        # Put features in extracted_features with labels TODO: Might not need labels
+        for p in permissions:
+            extracted_features.append(f"Permission: {p}")
+        for hs in hardware_software:
+            extracted_features.append(f"Used Features: {hs}")
         
     except FileNotFoundError:
         print(f"Error: APK file not found at path: {apk_path}")
@@ -119,7 +127,6 @@ def update_unique_features(features: List[str], output_dir: str):
     except Exception as e:
         print(f"Error appending to unique features file: {e}")
     
-
 def reload_unique_features(output_dir: str):
     """
         Reloads unique features from a text file into UNIQUE_FEATURES dictionary.   
@@ -145,18 +152,18 @@ def reload_unique_features(output_dir: str):
     else:
         print('INFO: unique_features.txt has not been created yet. No features loaded.')      
     
-
-def display_unique():
+def display_list(list): # TODO: should work with dicts and lists when implicitly defined but this is bad practice
     """
-        Displays current unique features in memory
-    """
-    global unique_features
+        Displays a list in a cleaner format
 
-    for i in unique_features:
+        Args:
+            list: Right now this is a list but should work with any iterable object
+    """
+
+    for i in list:
         print(i)
     print()
        
-
 if __name__ == "__main__":
     
     # Ensure the test path is defined before running
@@ -172,6 +179,4 @@ if __name__ == "__main__":
             update_unique_features(extracted_features, DEFAULT_TEST_OUTPUT_DIR_UNIQUE)
         else:
             print("Extraction returned no features.")
-    #for i in unique_features:
-    #    print(i)
 
