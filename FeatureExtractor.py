@@ -1,5 +1,6 @@
 # FeatureExtractor.py
-# Multiple feature extraction functions, meant to be used with ExtractWithProgress.py
+# Two feature extraction functions, meant to be used with ExtractWithProgress.py
+# Run Directly to extract from a single file to a test directory
 # Extracts and writes features from one apk to a file
 # Updates a unique features file
 
@@ -10,37 +11,42 @@ from typing import Dict, List # dict to retain insertion order
 
 # --- Output Directory Configuration ---
 # These directories will be created relative to the execution location of the calling script (progress_popup.py)
-APK_FEATURES_OUTPUT_DIR = "apk_features"
+APK_FEATURES_OUTPUT_DIR = "malicious_apk_features"
+#APK_FEATURES_OUTPUT_DIR = "benign_apk_features"
 UNIQUE_FEATURES_OUTPUT_DIR = "unique_features"
 UNIQUE_FEATURES_FILENAME = "unique_features.txt"
 
-# --- Testing Configuration (Only used when running this file directly) ---
-# NOTE: User must change this path to a valid APK file for testing.
-DEFAULT_TEST_APK_PATH = r".\testData\0a34d14be275ef9fc3227716a5c3b85b.apk"
+# NOTE: Directory Path to test extracting a single file
+DEFAULT_TEST_APK_PATH = r"..\Datasets\Malicious\amd_data\DroidKungFu\variety2\0a34d14be275ef9fc3227716a5c3b85b.apk"
+DEFAULT_TEST_OUTPUT_DIR = r"..\test_extracted_features"
 
-# --- Unique Feature Tracking State ---
-# This dictionary will store every unique feature encountered across all APKs,
-# using the feature name as the key. Standard dicts retain insertion order 
-# in Python 3.7+, which fulfills the requirement.
-# Value is a simple placeholder (e.g., True) or a count if needed later.
+# Dictionary to store all unique features found across every apk
+# Retains insertion order
+# Key: Feature name
+# Value: Boolean (feature was found)
 UNIQUE_FEATURES: Dict[str, bool] = {}
 
-
-def extract_features_and_write(apk_path: str, base_output_path: str) -> List[str]:
+def extract_features_and_write(apk_path: str, output_dir: str) -> List[str]:
     """
-    Extracts features (permissions only for now) from an APK file and writes them 
-    to a file in the 'apk_features' subdirectory.
+    Extracts features and writes them to a file that shares a name with the apk with '.txt' appended
+    Extracted Features:
+        Permissions - Permission requests to parts of device data
+        TODO: API Calls - Calls to external APIs
+        TODO: Used Features - Requests for usage to device Hardware and Software functionality
+        TODO: Used Intents - Accesses to intents sent/recieved by the application to/from the system, or other applications
+        TODO: URL - Connections to websites
+        TODO: External Libraries - Use of external libraries within the application
     
     Args:
-        apk_path (str): The full path to the APK file.
-        base_output_path (str): The root directory where the output folders should be created.
+        apk_path (str): The path to the APK file.
+        output_dir (str): The directory where the output folders will be created.
         
     Returns:
-        List[str]: A list of the extracted features (permissions) for the current APK.
+        List[str]: A list of the extracted features the APK.
     """
     
-    # 1. Define Output Path
-    output_dir = os.path.join(base_output_path, APK_FEATURES_OUTPUT_DIR)
+    # Define Output Path
+    output_dir = os.path.join(output_dir, APK_FEATURES_OUTPUT_DIR)
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
         
@@ -49,7 +55,7 @@ def extract_features_and_write(apk_path: str, base_output_path: str) -> List[str
     
     extracted_features: List[str] = []
     
-    # 2. Real Feature Extraction: Extract Permissions using androguard
+    # Extract Features
     try:
         # Load the APK file using androguard's APK class
         a = APK(apk_path)
@@ -80,7 +86,7 @@ def extract_features_and_write(apk_path: str, base_output_path: str) -> List[str
         print(f"Error writing features for {apk_path}: {e}")
         return []
 
-def update_unique_features(features: List[str], base_output_path: str):
+def update_unique_features(features: List[str], output_path: str):
     """
     Aggregates new features into the global UNIQUE_FEATURES dictionary and 
     writes the complete list of unique features to 'unique_features.txt'.
@@ -99,53 +105,38 @@ def update_unique_features(features: List[str], base_output_path: str):
             UNIQUE_FEATURES[feature] = True
             
     # 2. Write Complete Unique List to File
-    output_dir = os.path.join(base_output_path, UNIQUE_FEATURES_OUTPUT_DIR)
+    output_dir = os.path.join(output_path, UNIQUE_FEATURES_OUTPUT_DIR)
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     
     output_filepath = os.path.join(output_dir, UNIQUE_FEATURES_FILENAME)
     
     try:
-        with open(output_filepath, 'w') as f:
-            f.write("--- Unique Features Across All Processed APKs (Ordered by First Appearance) ---\n\n")
+        with open(output_filepath, 'a') as f:
+            
             for feature in UNIQUE_FEATURES.keys():
                 f.write(f"{feature}\n")
                 
     except Exception as e:
         print(f"Error writing unique features file: {e}")
 
+def reset_unique_features(file_path: str):
+    return
 
-'''
+
 if __name__ == "__main__":
-    # Get the directory where this script is located for output files
-    base_path = os.path.dirname(os.path.abspath(__file__))
-
-    print("--- Running Feature Extraction Test ---")
-    print(f"Base Output Path: {base_path}")
-    print(f"Attempting to analyze file: {DEFAULT_TEST_APK_PATH}")
     
     # Ensure the test path is defined before running
     if not os.path.exists(DEFAULT_TEST_APK_PATH):
-        print(f"\nERROR: File not found at specified path: {DEFAULT_TEST_APK_PATH}")
+        print(f"ERROR: File not found at specified path: {DEFAULT_TEST_APK_PATH}")
         
     elif not DEFAULT_TEST_APK_PATH.lower().endswith(".apk"):
-        print(f"\nERROR: Test file must have a '.apk' extension. Found: {os.path.basename(DEFAULT_TEST_APK_PATH)}")
+        print(f"ERROR: Test file must have a '.apk' extension. Path: {os.path.basename(DEFAULT_TEST_APK_PATH)}")
         
     else:
-        # Test 1: Extract and Write features for a single APK
-        extracted_features = extract_features_and_write(DEFAULT_TEST_APK_PATH, base_path)
-        
+        extracted_features = extract_features_and_write(DEFAULT_TEST_APK_PATH, DEFAULT_TEST_OUTPUT_DIR)
         if extracted_features:
-            print("\nTest 1 Successful!")
-            print(f"Extracted {len(extracted_features)} features.")
-            print(f"Check the '{APK_FEATURES_OUTPUT_DIR}' folder for the output file.")
-
-            # Test 2: Update Unique Features with the extracted list
-            update_unique_features(extracted_features, base_path)
-            
-            print("Unique features tracking updated.")
-            print(f"Total unique features after test: {get_unique_features_count()}")
-            print(f"Check the '{UNIQUE_FEATURES_OUTPUT_DIR}' folder for the aggregated file.")
+            update_unique_features(extracted_features, DEFAULT_TEST_OUTPUT_DIR)
         else:
-            print("\nTest 1 Failed: Extraction returned no features.")
-            '''
+            print("Extraction returned no features.")
+

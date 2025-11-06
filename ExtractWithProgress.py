@@ -5,8 +5,13 @@ import time
 import os
 import FeatureExtractor 
 
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# TODO
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 # NOTE: Set the desired directory to extract from
-ROOT_DIRECTORY = r'..\Datasets\amd_data'
+ROOT_DIRECTORY = r'..\Datasets\Malicious'
+#ROOT_DIRECTORY = r'..\Datasets\Benign'
 ROOT_DIRECTORY_NAME = {os.path.basename(ROOT_DIRECTORY)} # Just for main_progress_label in the UI
 OUT_DIRECTORY = r'..\extracted_features'
 
@@ -201,16 +206,17 @@ def extract_with_progress():
     update_gui()
 
     # Extraction and Writing to files
+    # TODO make sure this is working properly
     extracted_features = FeatureExtractor.extract_features_and_write(
-        apk_path=current_file_path,
-        base_output_path=os.path.dirname(os.path.abspath(__file__))
+        current_file_path,
+        os.path.dirname(os.path.abspath(__file__))
     )
     
     # Update unique features tracking
     if extracted_features:
         FeatureExtractor.update_unique_features(
-            features=extracted_features, 
-            base_output_path=os.path.dirname(os.path.abspath(__file__))
+            extracted_features, 
+            output_path=os.path.dirname(os.path.abspath(__file__))
         )
 
     # File extracted, update elapsed time
