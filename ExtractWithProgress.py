@@ -12,7 +12,8 @@ import FeatureExtractor
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 # NOTE: Set the desired directory to extract from. 
-OUT_DIRECTORY = r'..\extracted_features'
+#OUT_DIRECTORY = r'..\extracted_features'
+OUT_DIRECTORY = r'..\test_extracted_features'
 OUT_DIRECTORY_UNIQUE = os.path.join(OUT_DIRECTORY, 'unique_features')
 #CRITICAL NOTE: REMEMBER TO SWAP BETWEEN MALICIOUS AND BENIGN DATA SETS
 #'''
