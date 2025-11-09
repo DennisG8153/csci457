@@ -37,12 +37,12 @@ from typing import Dict, List # dict to retain insertion order
 # API CALLS   
 #               POTENTIAL CARDINALITY ISSUE
 #               LARGE DATA SET
-#               large dataset tokenization to improve
+#               tokenization to improve
 #
 # EXTERNAL LIBRARIES:
 #               POTENTIALLY MASSIVE DATA SET, 
 #               HIGH CARDINALITY PROBABLE, 
-#               BETTER TO TARGET OBFUSCATION, 
+#               BETTER TO TARGET OBFUSCATION WITH TOKENIZATION, 
 #               DESPERATELY NEED TOKENIZATION TO BE USEFUL
 #
 # URLS: 
@@ -50,13 +50,15 @@ from typing import Dict, List # dict to retain insertion order
 #               ESSENTIALLY USELESS WITHOUT TOKENIZATION
 '''
 
-#Type of feature to be extracted
+# Type of feature to be extracted
+# TODO consider switching to an enum class, need to import enum for that
 FEATURE_TYPES = ["permissions", "used_hsware", "intents", "api_calls", "libraries", "urls"]
+ACTIVITY_TYPES = ["activity", "service", "reciever"]
 
 # NOTE: Directory Path to test extracting a single file, change to extract from a different file
-DEFAULT_TEST_APK_PATH = r"..\Datasets\Malicious\amd_data\DroidKungFu\variety2\0c3df9c1d759a53eb16024b931a3213a.apk"
+#DEFAULT_TEST_APK_PATH = r"..\Datasets\Malicious\amd_data\DroidKungFu\variety2\0c3df9c1d759a53eb16024b931a3213a.apk"
 #DEFAULT_TEST_APK_PATH = r"..\Datasets\Malicious\amd_data\DroidKungFu\variety2\01c3cc236c3587d20584ed84751c655c.apk"
-#DEFAULT_TEST_APK_PATH = r"..\Datasets\Malicious\amd_data\Finspy\variety1\4eea2753d42fef7dc74ea1c8350c659e.apk"
+DEFAULT_TEST_APK_PATH = r"..\Datasets\Malicious\amd_data\Finspy\variety1\4eea2753d42fef7dc74ea1c8350c659e.apk"
 DEFAULT_TEST_OUTPUT_DIR_FEATURES = r"..\test_extracted_features\malicious_features"
 DEFAULT_TEST_OUTPUT_DIR_UNIQUE = r"..\test_extracted_features\unique_features"
 
@@ -71,7 +73,6 @@ unique_features: Dict[str, Dict[str, bool]] = {FEATURE_TYPES[0] : {}, # permissi
                                                FEATURE_TYPES[4] : {}, # libraries
                                                FEATURE_TYPES[5] : {}} # urls
 
-
 def extract_features(apk_path: str) -> Dict[str, List[str]]: # TODO: consider changing to a dict[dict[]] to prevent issues with duplicates
     """
     Extracts features from an apk file and returns them as a List 
@@ -80,7 +81,7 @@ def extract_features(apk_path: str) -> Dict[str, List[str]]: # TODO: consider ch
         TODO: API Calls - Calls to external APIs
         Permissions - Permission requests to parts of device data
         Used Features - Requests for usage to device Hardware and Software functionality
-        TODO: Used Intents - Accesses to intents sent/recieved by the application to/from the system, or other applications
+        Used Intents - Accesses to intents sent/recieved by the application to/from the system, or other applications
         TODO: External Libraries - Use of external libraries within the application
         NOTE: URL - URLS visited by the application, Not currently useful because of it's high cardinality, can post process
 
@@ -101,22 +102,56 @@ def extract_features(apk_path: str) -> Dict[str, List[str]]: # TODO: consider ch
 
     try:
         # Load the APK file using androguard's APK class
-        #a = APK(apk_path) # Less compute intensive, data available
+        #a = APK(apk_path) # Less compute intensive, but less data available
         a, d, dx = AnalyzeAPK(apk_path) 
         
-        # Extract Features
+        # ---Extract Features---
 
+        # Permissions and used hardware/software are easy
         permissions = a.get_permissions()
         hardware_software = a.get_features()
-        # Used Intents TODO
-        
-        # Put features in extracted_features with labels TODO: Might not need labels
+
+        # Intents need to be extracted from the string lists made by a.get_activities(), a.get_services() and a.get_recievers()
+        # a.get_intent_filters(itemtype, item) gets a dictionary of components for each item in each List
+        # itemtypes: activity, service, reciever 
+        # each component then has 3 main intent types (i.e. action, category, data)
+        # TODO: Make another enum for itemtypes for best coding practice
+        activities = a.get_activities()
+        services = a.get_services()
+        recievers = a.get_receivers()
+        intents: Dict[str, bool] = {} #creating a dict to add to, intents may overlap
+        for activity in activities: 
+            act = a.get_intent_filters("activity", activity)
+            for categories in act:
+                for intent in act[categories]:
+                    if type(intent) == str:
+                        intents[intent] = True
+        for service in services: 
+            serv = a.get_intent_filters("service", service)
+            for categories in serv:
+                for intent in serv[categories]:
+                    if type(intent) == str:
+                        intents[intent] = True
+        for reciever in recievers: 
+            rec = a.get_intent_filters("reciever", reciever)
+            for categories in rec:
+                for intent in rec[categories]:
+                    if type(intent) == str:
+                        intents[intent] = True
+    
+
+
+        # Put features in extracted_features with labels (labels are helpful)
         for p in permissions:
             if len(p): # Check for empty strings
                 extracted_features["permissions"].append(f"Permission: {p}")
         for hs in hardware_software:
             if len(hs):
                 extracted_features["used_hsware"].append(f"Used Hardware/Software: {hs}")
+        # intents is a dictionary and the items are stored in the keys
+        for intent in intents.keys():
+            if len(intent):
+                extracted_features["intents"].append(f"Intent: {intent}")
         
     except FileNotFoundError:
         print(f"Error: APK file not found at path: {apk_path}")
