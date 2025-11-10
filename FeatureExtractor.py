@@ -1,5 +1,5 @@
 # FeatureExtractor.py
-# Some feature extraction functions, meant to be used with ExtractWith#---TODO--- Many of these features need mProgress.py
+# Some feature extraction functions, meant to be used with ExtractWithProgress.py
 # Run Directly to extract from a single file to a test directory
 # Extracts features from an apk 
 # Writes features to a file
@@ -82,7 +82,7 @@ def extract_features(apk_path: str) -> Dict[str, List[str]]: # TODO: consider ch
         Permissions - Permission requests to parts of device data
         Used Features - Requests for usage to device Hardware and Software functionality
         Used Intents - Accesses to intents sent/recieved by the application to/from the system, or other applications
-        TODO: External Libraries - Use of external libraries within the application
+        External Libraries - Use of external libraries within the application
         NOTE: URL - URLS visited by the application, Not currently useful because of it's high cardinality, can post process
 
     Args:
@@ -108,6 +108,7 @@ def extract_features(apk_path: str) -> Dict[str, List[str]]: # TODO: consider ch
         # ---Extract Features---
 
         # Permissions and used hardware/software are easy
+        # NOTE: No need to use Dict[] because extracted features handles duplicates
         permissions = a.get_permissions()
         hardware_software = a.get_features()
 
@@ -119,40 +120,79 @@ def extract_features(apk_path: str) -> Dict[str, List[str]]: # TODO: consider ch
         activities = a.get_activities()
         services = a.get_services()
         recievers = a.get_receivers()
-        intents: Dict[str, bool] = {} #creating a dict to add to, intents may overlap
+        intents = [] # NOTE: Using a List, overlaps will be removed by the extracted_features Dict
         for activity in activities: 
             act = a.get_intent_filters("activity", activity)
             for categories in act:
                 for intent in act[categories]:
-                    if type(intent) == str:
-                        intents[intent] = True
+                    if type(intent) == str: # NOTE: No need to check for empty strings, checked when adding to extracted_features
+                        intents.append(intent)
         for service in services: 
             serv = a.get_intent_filters("service", service)
             for categories in serv:
                 for intent in serv[categories]:
                     if type(intent) == str:
-                        intents[intent] = True
+                        intents.append(intent)
         for reciever in recievers: 
             rec = a.get_intent_filters("reciever", reciever)
             for categories in rec:
                 for intent in rec[categories]:
                     if type(intent) == str:
-                        intents[intent] = True
+                        intents.append(intent)
     
+        # Classes (APIs and External Libraries) are extracted with the dx.get_methods() and the method.get_xref_to() commands
+        # Checking method calls is the most effective way to assure all imported classes are found
+        # APIs start with android or java typically, everything else is considered an external library
+        apis = []
+        libraries = []
+        methods = dx.get_methods()
+        for method in methods:
+            for _, call, _ in method.get_xref_to():
+                classname = call.class_name[1:-1].replace("/", ".")   # Remove leading 'L' and trailing ';' Replace '/' with '.'
+                methodname = call.name
+                fullname = classname + "." + methodname
+                if fullname.startswith("android") or fullname.startswith("java"):
+                    apis.append(fullname)
+                else:
+                    libraries.append(fullname)
 
+        # URLS are in the d object, which is an array of strings(?)
+        # TODO: There is a lot of cleaning to be done on these strings 
+        # and because we need tokenization to make them useful we will extract the raw strings 
+        # and maybe we will post process them later
+        # from how the raw dex data looked, most of the text was useless, 
+        # needed to use regex to extract it properly, this might not be every relevat thing
+        urls = []
+        for dex in d:
+            for string in dex.get_strings():
+                string = string.strip()
+                if string.startswith("https://") or string.startswith("http://"):
+                    urls.append(string.strip())
 
         # Put features in extracted_features with labels (labels are helpful)
         for p in permissions:
             if len(p): # Check for empty strings
-                extracted_features["permissions"].append(f"Permission: {p}")
+                extracted_features[FEATURE_TYPES[0]].append(f"Permission: {p}")
         for hs in hardware_software:
             if len(hs):
-                extracted_features["used_hsware"].append(f"Used Hardware/Software: {hs}")
-        # intents is a dictionary and the items are stored in the keys
-        for intent in intents.keys():
+                extracted_features[FEATURE_TYPES[1]].append(f"Used Hardware/Software: {hs}")
+        # intents is a List[str], no longer a dictionary
+        for intent in intents:
             if len(intent):
-                extracted_features["intents"].append(f"Intent: {intent}")
-        
+                extracted_features[FEATURE_TYPES[2]].append(f"Intent: {intent}")
+        # apis
+        for api in apis:
+            if len(api):
+                extracted_features[FEATURE_TYPES[3]].append(f"API: {api}")
+        # libraries or class calls, need to settle on a name
+        for library in libraries:
+            if len(library):
+                extracted_features[FEATURE_TYPES[4]].append(f"Library: {library}")
+        # urls
+        for url in urls:
+            if len(url):
+                extracted_features[FEATURE_TYPES[5]].append(f"URL: {url}")
+
     except FileNotFoundError:
         print(f"Error: APK file not found at path: {apk_path}")
         return []
