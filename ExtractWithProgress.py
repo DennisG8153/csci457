@@ -114,7 +114,7 @@ def update_gui():
     seconds = int(elapsed_time % 60)
 
     main_progress_label.config(text=f"Progress in <{ROOT_DIRECTORY_NAME}>: {total_dirs_processed} / {TOTAL_DIR_COUNT} Folders")
-    main_progress_bar['value'] = total_dirs_processed
+    main_progress_bar['value'] = total_files_processed
 
     cwd_label.config(text=f"Current Folder: {current_dir_path}")
     sub_progress_bar['maximum'] = current_dir_total_file_count
@@ -156,7 +156,7 @@ def create_window():
     # Folder Progress Bar
     main_progress_bar = ttk.Progressbar(WINDOW, orient="horizontal", length=400, mode="determinate")
     main_progress_bar.pack(pady=5)
-    main_progress_bar['maximum'] = TOTAL_DIR_COUNT
+    main_progress_bar['maximum'] = TOTAL_FILE_COUNT
     main_progress_bar['value'] = 0
 
     # Files in Folder Progress
