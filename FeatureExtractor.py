@@ -7,6 +7,8 @@
 # Reload features from a file into the unique_features dictionary
 
 import os
+import time
+from datetime import datetime
 from androguard.misc import AnalyzeAPK # APK analysis
 #from androguard.core.apk import APK # Simpler but faster analysis, doesn't give us everything
 from typing import Dict, List # dict to retain insertion order
@@ -78,12 +80,12 @@ def extract_features(apk_path: str) -> Dict[str, List[str]]: # TODO: consider ch
     Extracts features from an apk file and returns them as a List 
 
     Extracted Features:
-        TODO: API Calls - Calls to external APIs
+        API Calls - Calls to external APIs
         Permissions - Permission requests to parts of device data
         Used Features - Requests for usage to device Hardware and Software functionality
         Used Intents - Accesses to intents sent/recieved by the application to/from the system, or other applications
         External Libraries - Use of external libraries within the application
-        NOTE: URL - URLS visited by the application, Not currently useful because of it's high cardinality, can post process
+        URL - URLS visited by the application, Not currently useful because of it's high cardinality, can post process
 
     Args:
         apk_path (str): The path to the APK file.
@@ -229,6 +231,17 @@ def write_features(extracted_features: Dict[str, List[str]], apk_path: str, outp
     except Exception as e:
         print(f"Error writing features for {apk_path}: {e}")
 
+    #quick fix to track which files have been processed
+    try:
+        upper, _ = os.path.split(output_dir)
+        log_path = os.path.join(upper, "apk_log.txt")
+        with open(log_path, "a") as f:
+            f.write(f"{os.path.basename(apk_path)}\n")
+    except Exception as e:
+        print(f"Error writing to log {apk_path}: {e}")
+            
+
+
 def update_unique_features(features: Dict[str, List[str]], output_dir: str):
     """
     Aggregates new features into the global UNIQUE_FEATURES dictionary and 
@@ -261,7 +274,7 @@ def update_unique_features(features: Dict[str, List[str]], output_dir: str):
 
 def reload_unique_features(output_dir: str):
     """
-        Reloads unique features from a texts files into the correct UNIQUE_FEATURES dictionary.   
+        Reloads unique features from text files into the correct UNIQUE_FEATURES dictionary.   
         Looks for subfolder and files: "\\unique_features" 
             "unique_permissions.txt", 
             "unique_hsware.txt", 
@@ -288,6 +301,31 @@ def reload_unique_features(output_dir: str):
                 print(f"Error reading unique_features: {e}")
         else:
             print(f'INFO: {file_name} has not been created yet or was empty\n')
+
+def reload_processed_apks(output_dir: str) -> Dict[str, bool]:
+    """
+        Reloads unique apk files that were previously processed from a log file into the PREVIOUSLY_PROCESSED_APKS dictionary
+        looks for apk_log.txt
+        
+        Args:
+            output_dir (str): Location where to find the apk_log.txt file
+        Returns:
+            A dictionary of all apk file names present in the log file
+    """
+    previously_processed_apks = {}
+    file_name = "apk_log.txt" # Make file name
+    file_path = os.path.join(output_dir, file_name) # Join Path and file name
+    if os.path.exists(file_path) and os.path.getsize(file_path): # Check if the file is there and that it's not empty
+        try:
+            with open(file_path, 'r') as f: # try opening
+                for line in f: 
+                    if line.strip: # Ignore Empty Lines (just to be safe) 
+                        previously_processed_apks[line.strip()] = True # add empty lines to dictionary of correct type
+        except Exception as e:
+            print(f"Error reading log file: {e}")
+    else:
+        print(f'INFO: {file_name} has not been created yet or was empty\n')
+    return previously_processed_apks
     
 def display_list(list): # TODO: should work with dicts and lists when implicitly defined but this is bad practice I think
     """

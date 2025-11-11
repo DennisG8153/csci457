@@ -3,6 +3,7 @@ from tkinter import ttk
 #from tkinter import messagebox
 import time
 import os
+import gc
 import FeatureExtractor 
 
 # TODO: add a way to pick up from were we previously left of with each features file, currently unique_features does this, but not each individual file
@@ -66,14 +67,20 @@ def preprocess_dir():
     total_dirs = 0
     total_files = 0
     dir_file_list = []
+    previously_processed_apks = FeatureExtractor.reload_processed_apks(OUT_DIRECTORY)
 
     # Scan directories
     for dirpath, _, filenames in os.walk(ROOT_DIRECTORY):
+        # NOTE: DREBINS FILES DO NOT END WITH APK
         # Only count apk files
-        valid_filenames = [f for f in filenames if f.lower().endswith('.apk')]
-        total_files += len(valid_filenames)
-        if valid_filenames: # Add the entry if it contains apk files
-            dir_file_list.append((dirpath, valid_filenames))   
+        #valid_filenames = [f for f in filenames if f.lower().endswith('.apk')]
+        unprocessed_apks = []
+        for filename in filenames:
+            if filename.strip() not in previously_processed_apks:
+                unprocessed_apks.append(filename.strip())
+        total_files += len(unprocessed_apks)
+        if unprocessed_apks: # Add the entry if it contains apk files
+            dir_file_list.append((dirpath, unprocessed_apks))   
     total_dirs = len(dir_file_list)  # The total number of steps in the first bar is the number of directories WITH files to process
         
     TOTAL_DIR_COUNT = total_dirs
@@ -91,7 +98,7 @@ def calculate_etr():
     files_remaining = TOTAL_FILE_COUNT - total_files_processed
     time_remaining_seconds = files_remaining * average_time_per_file
     
-    etr_hours = int(time_remaining_seconds // 360)
+    etr_hours = int(time_remaining_seconds // 3600)
     etr_minutes = int((time_remaining_seconds // 60) % 60)
     etr_seconds = int(time_remaining_seconds % 60)
     
@@ -102,7 +109,7 @@ def update_gui():
     global main_progress_label, current_file_label, timer_files_label, cwd_label
     global total_files_processed, current_dir_path, total_dirs_processed, current_dir_file_count, current_dir_total_file_count, elapsed_time
 
-    hours = int(elapsed_time // 360)
+    hours = int(elapsed_time // 3600)
     minutes = int((elapsed_time // 60) % 60)
     seconds = int(elapsed_time % 60)
 
@@ -132,7 +139,7 @@ def create_window():
     WINDOW.title(TITLE_LABEL)
     WINDOW.geometry(WINDOW_DIMENSIONS) 
     
-    # Center window on screen
+    # Center window on screen, sort of
     x = (WINDOW.winfo_screenwidth() / 2) - (450 / 2)
     y = (WINDOW.winfo_screenheight() / 2) - (50 / 2)
     WINDOW.geometry(f"+{int(x)}+{int(y)}")
@@ -179,8 +186,6 @@ def extract_with_progress():
     
     global total_files_processed, total_dirs_processed, current_dir_file_count, current_dir_total_file_count, elapsed_time
     global current_dir_file_list, current_dir_path, current_file_path, current_file_name
-    
-    #print('extraction_with_progress')
 
     # Check if we are done with files in the current folder
     if current_dir_file_count >= current_dir_total_file_count:
@@ -226,6 +231,8 @@ def extract_with_progress():
     current_dir_file_count += 1
     total_files_processed += 1
 
+    gc.collect # Don't know if there is a build up of data but will try this
+    
     # Next iteration, next file in the directory
     WINDOW.after(1, extract_with_progress)
 
@@ -243,13 +250,13 @@ def extraction_setup():
     current_dir_path, current_dir_file_list = DIR_FILE_LIST[total_dirs_processed]
     current_dir_total_file_count = len(current_dir_file_list)
 
-    # Reload unique_features.txt TODO: validate it is working
+    # Reload unique_features.txt 
     FeatureExtractor.reload_unique_features(OUT_DIRECTORY_UNIQUE)
 
     update_gui()
     WINDOW.after(1, extract_with_progress())
 
-if __name__ == '__main__': # TODO: SOMETHING NEEDS TO BE CHANGED HERE
+if __name__ == '__main__': 
     if os.path.isdir(ROOT_DIRECTORY):
         preprocess_dir()
         if TOTAL_FILE_COUNT:
