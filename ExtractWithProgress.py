@@ -113,15 +113,15 @@ def update_gui():
     minutes = int((elapsed_time // 60) % 60)
     seconds = int(elapsed_time % 60)
 
-    main_progress_label.config(text=f"Progress in <{ROOT_DIRECTORY_NAME}>: {total_dirs_processed} / {TOTAL_DIR_COUNT} Folders")
+    main_progress_label.config(text=f"Progress in <{ROOT_DIRECTORY_NAME}>: {total_dirs_processed} / {TOTAL_DIR_COUNT} Folders | {total_files_processed}/{TOTAL_FILE_COUNT} Files")
     main_progress_bar['value'] = total_files_processed
 
     cwd_label.config(text=f"Current Folder: {current_dir_path}")
     sub_progress_bar['maximum'] = current_dir_total_file_count
     sub_progress_bar['value'] = current_dir_file_count
 
-    current_file_label.config(text=f"Current File: {current_file_name} ({current_dir_file_count}/{current_dir_total_file_count} files)")
-    timer_files_label.config(text=f"Time: {hours:02d}:{minutes:02d}:{seconds:02d} | Files Processed: {total_files_processed}/{TOTAL_FILE_COUNT}")
+    current_file_label.config(text=f"Current File: {current_file_name}")
+    timer_files_label.config(text=f"Time: {hours:02d}:{minutes:02d}:{seconds:02d} | Files in Directory: {current_dir_file_count}/{current_dir_total_file_count}")
     calculate_etr()
 
     #print('GUI')
