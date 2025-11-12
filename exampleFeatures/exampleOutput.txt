@@ -1,0 +1,15 @@
+This is what the output should like. No names needed anymore, each row represents the features within each file. 
+It could be a CSV but spaces will also work. Of course each line should have the same number of values.
+The first row will be all ones followed by all zeros because it was the first file read.
+We may want to order alphabetically but it shouldn't matter
+Example output below:
+
+
+1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 1 1 0 1 0 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+1 1 1 0 0 0 0 0 0 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0
+0 0 1 0 1 1 1 0 0 1 0 1 0 1 0 1 1 1 1 0 0 0 0 0 0
+0 1 0 1 0 0 0 0 0 0 1 0 0 1 0 1 0 1 0 1 1 1 1 1 0
+0 0 1 0 1 0 1 1 1 1 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1
+
+etc...

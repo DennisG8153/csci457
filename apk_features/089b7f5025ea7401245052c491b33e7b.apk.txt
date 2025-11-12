@@ -1,3 +1,0 @@
---- Extracted Features from 089b7f5025ea7401245052c491b33e7b.apk ---
-
-Feature 1: Permission: android.permission.RECEIVE_BOOT_COMPLETED

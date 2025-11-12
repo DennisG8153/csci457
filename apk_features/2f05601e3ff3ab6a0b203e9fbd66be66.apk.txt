@@ -1,3 +1,0 @@
---- Extracted Features from 2f05601e3ff3ab6a0b203e9fbd66be66.apk ---
-
-Feature 1: Permission: android.permission.WAKE_LOCK

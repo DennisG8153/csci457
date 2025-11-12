@@ -1,0 +1,7 @@
+Intent: android.intent.action.SEARCH
+Intent: android.intent.action.MAIN
+Intent: android.intent.category.LAUNCHER
+Intent: android.net.vpn.SETTINGS
+Intent: com.android.settings.SHORTCUT
+Intent: android.intent.category.DEFAULT
+Intent: myvpn.toggleVpnConnectionAction

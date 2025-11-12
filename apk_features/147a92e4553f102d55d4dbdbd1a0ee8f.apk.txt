@@ -1,4 +1,0 @@
---- Extracted Features from 147a92e4553f102d55d4dbdbd1a0ee8f.apk ---
-
-Feature 1: Permission: android.permission.RECEIVE_BOOT_COMPLETED
-Feature 2: Permission: android.permission.WAKE_LOCK

@@ -1,4 +1,0 @@
---- Extracted Features from 5826c420fc5446123487fbd5b9d8cad5.apk ---
-
-Feature 1: Permission: android.permission.WAKE_LOCK
-Feature 2: Permission: android.permission.INTERNET

@@ -1,5 +1,0 @@
---- Extracted Features from bcc0e1b7434460e11c6ad8ef6b4901b1.apk ---
-
-Feature 1: Permission: android.permission.SEND_SMS
-Feature 2: Permission: android.permission.VIBRATE
-Feature 3: Permission: android.permission.INTERNET

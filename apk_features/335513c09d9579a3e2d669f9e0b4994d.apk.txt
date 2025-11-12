@@ -1,3 +1,0 @@
---- Extracted Features from 335513c09d9579a3e2d669f9e0b4994d.apk ---
-
-Feature 1: Permission: android.permission.INTERNET

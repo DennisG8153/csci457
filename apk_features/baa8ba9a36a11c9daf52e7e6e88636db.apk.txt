@@ -1,4 +1,0 @@
---- Extracted Features from baa8ba9a36a11c9daf52e7e6e88636db.apk ---
-
-Feature 1: Permission: android.permission.BLUETOOTH
-Feature 2: Permission: android.permission.INTERNET

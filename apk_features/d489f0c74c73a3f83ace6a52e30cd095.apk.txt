@@ -1,8 +1,0 @@
---- Extracted Features from d489f0c74c73a3f83ace6a52e30cd095.apk ---
-
-Feature 1: Permission: android.permission.SEND_SMS
-Feature 2: Permission: android.permission.WRITE_EXTERNAL_STORAGE
-Feature 3: Permission: android.permission.INTERNET
-Feature 4: Permission: android.permission.READ_PHONE_STATE
-Feature 5: Permission: android.permission.ACCESS_COARSE_LOCATION
-Feature 6: Permission: android.permission.ACCESS_NETWORK_STATE

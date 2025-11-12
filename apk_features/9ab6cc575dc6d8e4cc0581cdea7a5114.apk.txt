@@ -1,9 +1,0 @@
---- Extracted Features from 9ab6cc575dc6d8e4cc0581cdea7a5114.apk ---
-
-Feature 1: Permission: android.permission.SEND_SMS
-Feature 2: Permission: android.permission.GET_ACCOUNTS
-Feature 3: Permission: com.android.vending.BILLING
-Feature 4: Permission: android.permission.WRITE_EXTERNAL_STORAGE
-Feature 5: Permission: android.permission.INTERNET
-Feature 6: Permission: android.permission.READ_PHONE_STATE
-Feature 7: Permission: android.permission.ACCESS_NETWORK_STATE

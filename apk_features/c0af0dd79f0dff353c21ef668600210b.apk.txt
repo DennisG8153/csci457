@@ -1,9 +1,0 @@
---- Extracted Features from c0af0dd79f0dff353c21ef668600210b.apk ---
-
-Feature 1: Permission: android.permission.SEND_SMS
-Feature 2: Permission: com.android.vending.BILLING
-Feature 3: Permission: android.permission.WRITE_EXTERNAL_STORAGE
-Feature 4: Permission: android.permission.INTERNET
-Feature 5: Permission: android.permission.READ_PHONE_STATE
-Feature 6: Permission: android.permission.ACCESS_WIFI_STATE
-Feature 7: Permission: android.permission.ACCESS_NETWORK_STATE

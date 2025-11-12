@@ -1,5 +1,0 @@
---- Extracted Features from b64be1677d5cdf756d01166c01577d99.apk ---
-
-Feature 1: Permission: android.permission.SEND_SMS
-Feature 2: Permission: android.permission.INTERNET
-Feature 3: Permission: android.permission.WAKE_LOCK

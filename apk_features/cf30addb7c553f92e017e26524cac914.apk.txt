@@ -1,9 +1,0 @@
---- Extracted Features from cf30addb7c553f92e017e26524cac914.apk ---
-
-Feature 1: Permission: android.permission.CALL_PHONE
-Feature 2: Permission: android.permission.WRITE_EXTERNAL_STORAGE
-Feature 3: Permission: android.permission.INTERNET
-Feature 4: Permission: android.permission.CAMERA
-Feature 5: Permission: android.permission.KILL_BACKGROUND_PROCESSES
-Feature 6: Permission: android.permission.DOWNLOAD_WITHOUT_NOTIFICATION
-Feature 7: Permission: android.permission.ACCESS_NETWORK_STATE
