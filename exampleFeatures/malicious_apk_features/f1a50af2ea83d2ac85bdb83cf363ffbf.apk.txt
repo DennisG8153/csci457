@@ -1,3 +1,0 @@
-Permission: android.permission.INTERNET
-Permission: android.permission.RECEIVE_SMS
-Permission: android.permission.SEND_SMS
