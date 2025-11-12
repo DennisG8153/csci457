@@ -1,7 +1,0 @@
-Permission: android.permission.READ_PHONE_STATE
-Permission: android.permission.RECEIVE_SMS
-Permission: android.permission.READ_CONTACTS
-Permission: android.permission.RECEIVE_BOOT_COMPLETED
-Permission: android.permission.INTERNET
-Permission: android.permission.ACCESS_NETWORK_STATE
-Permission: android.permission.SEND_SMS
