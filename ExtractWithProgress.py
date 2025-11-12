@@ -67,13 +67,13 @@ def preprocess_dir():
     total_dirs = 0
     total_files = 0
     dir_file_list = []
-    previously_processed_apks = FeatureExtractor.reload_processed_apks(OUT_DIRECTORY)
+    #previously_processed_apks = FeatureExtractor.reload_processed_apks(OUT_DIRECTORY)
 
     # Scan directories
     for dirpath, _, filenames in os.walk(ROOT_DIRECTORY):
         # NOTE: DREBINS FILES DO NOT END WITH APK
-        # Only count apk files
         #valid_filenames = [f for f in filenames if f.lower().endswith('.apk')]
+        previously_processed_apks = FeatureExtractor.reload_processed_apks(OUT_DIRECTORY)
         unprocessed_apks = []
         for filename in filenames:
             if filename.strip() not in previously_processed_apks:
@@ -192,7 +192,6 @@ def extract_with_progress():
 
         # Increment total_dirs_count
         total_dirs_processed += 1
-        update_gui()
 
         # if done with every dir don't do anything else
         if total_dirs_processed >= TOTAL_DIR_COUNT:
@@ -205,21 +204,22 @@ def extract_with_progress():
         current_dir_path, current_dir_file_list = DIR_FILE_LIST[total_dirs_processed]
         current_dir_total_file_count = len(current_dir_file_list)
 
+        update_gui()
+        WINDOW.update()
         # Restart loop for next directory
-        WINDOW.after(1, extract_with_progress)
+        WINDOW.after(0, extract_with_progress)
         return
 
     # Gets file to extract
     current_file_name = current_dir_file_list[current_dir_file_count]
     current_file_path = os.path.join(current_dir_path, current_file_name)
 
-    # update GUI here so it shows the current file being worked on
-    update_gui()
+
 
     # Extraction and Writing to files
     extracted_features = FeatureExtractor.extract_features(current_file_path)
     
-    # Update unique features tracking TODO
+    # Update unique features tracking 
     if extracted_features:
         FeatureExtractor.write_features(extracted_features, current_file_path, OUT_DIRECTORY_FEATURES)
         FeatureExtractor.update_unique_features(extracted_features, OUT_DIRECTORY_UNIQUE)
@@ -231,10 +231,13 @@ def extract_with_progress():
     current_dir_file_count += 1
     total_files_processed += 1
 
-    gc.collect # Don't know if there is a build up of data but will try this
-    
+    gc.collect # Invoke trash collector Don't know if there is a build up of data but will try this
+
+    # NOTE: Updating gui can only occur during the next .after() call, 
+    update_gui()
+    WINDOW.update()
     # Next iteration, next file in the directory
-    WINDOW.after(1, extract_with_progress)
+    WINDOW.after(0, extract_with_progress)
 
 def extraction_setup():
     # Set up initial values for recursive loop extract_with_progress
@@ -243,9 +246,6 @@ def extraction_setup():
     global total_dirs_processed, current_dir_file_count, current_dir_total_file_count
     global current_dir_file_list, current_dir_path, current_file_name
 
-    # START_TIME set right before extraction begins  
-    START_TIME = time.time() 
-
     # Set initial directory for extraction and first file name
     current_dir_path, current_dir_file_list = DIR_FILE_LIST[total_dirs_processed]
     current_dir_total_file_count = len(current_dir_file_list)
@@ -253,19 +253,22 @@ def extraction_setup():
     # Reload unique_features.txt 
     FeatureExtractor.reload_unique_features(OUT_DIRECTORY_UNIQUE)
 
+
     update_gui()
-    WINDOW.after(1, extract_with_progress())
+    WINDOW.update() # Opens window immediately
+    # START_TIME set right before extraction begins  
+    START_TIME = time.time() 
+    WINDOW.after(0, extract_with_progress())
 
 if __name__ == '__main__': 
     if os.path.isdir(ROOT_DIRECTORY):
         preprocess_dir()
         if TOTAL_FILE_COUNT:
             create_window()
-
             # Must be in this order, 
             # after() sets the next action of the window, 
             # mainloop() starts the window and then the action is taken
-            WINDOW.after(1, extraction_setup())
+            WINDOW.after(0, extraction_setup())
             WINDOW.mainloop()
 
         else:
