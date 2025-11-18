@@ -1,0 +1,35 @@
+Downloading one file:
+az -n 1 -d 2015-12-11: -s :3000000  -m play.google.com,appchina
+This means: download 1 apk with the dexdate starting from the 2015-12-11 (inclusive), size up to 3000000 bytes (inclusive) and present on either play.google.com or appchina
+
+---DEFINETLY download smaller files---
+az -n 1000 -s 0:100000 -vt 0:0 -o .\benign_AndroZoo1 -t 10
+
+downloads 1000 random apks, size range between 0 and 100KB, virus rating of 0, downloads to subfolder "benign_AndroZoo1", uses 10 process threads
+
+Need API Key from AndroZoo
+Need latest.csv from AndroZoo
+latest.csv needs to be cleaned (converted to utf-8 encoding? Not sure exactly)
+
+Put key and csv path in .az file in 3 possible locations: the cli folder, the local folder to call az from, the user folder for calling az globally
+key={key}
+input_file={latest.csv Path}
+
+Need Python 3.8
+Need Environment Variables Set (python location and scripts folder)
+
+Need to allow scripts to be used
+Get-ExecutionPolicy (shows the setting for scripts)
+Set-ExecutionPolicy RemoteSigned (*safer* way to run scripts that are signed)
+
+Create virtual env for running specific python version
+py -3.8 -m venv .venv
+.venv\Scripts\Activate
+
+pip azoo:
+py -3.8 -m pip install azoo
+
+Use az command from within virtual env
+
+TODO: pyenv-win allows for better version control, may allow for easier usage
+

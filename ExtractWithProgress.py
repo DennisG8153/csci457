@@ -9,17 +9,18 @@ import FeatureExtractor
 # TODO: add a way to pick up from were we previously left of with each features file, currently unique_features does this, but not each individual file
 
 # NOTE: Set the desired directory to extract from. 
+# TODO: Convert to if statement
 OUT_DIRECTORY = r'..\extracted_features'
 #OUT_DIRECTORY = r'..\test_extracted_features'
 OUT_DIRECTORY_UNIQUE = os.path.join(OUT_DIRECTORY, 'unique_features')
 #CRITICAL NOTE: REMEMBER TO SWAP BETWEEN MALICIOUS AND BENIGN DATA SETS
-#'''
+'''
 ROOT_DIRECTORY = r'..\Datasets\Malicious'
 OUT_DIRECTORY_FEATURES = os.path.join(OUT_DIRECTORY, 'malicious_features')
 '''
-#ROOT_DIRECTORY = r'..\Datasets\Benign'
+ROOT_DIRECTORY = r'..\Datasets\Benign'
 OUT_DIRECTORY_FEATURES = os.path.join(OUT_DIRECTORY, 'benign_features')
-'''
+#'''
 ROOT_DIRECTORY_NAME = {os.path.basename(ROOT_DIRECTORY)} # Just for main_progress_label in the UI
 
 # Trackers for progress bars
