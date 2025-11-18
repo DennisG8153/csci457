@@ -3,9 +3,9 @@ az -n 1 -d 2015-12-11: -s :3000000  -m play.google.com,appchina
 This means: download 1 apk with the dexdate starting from the 2015-12-11 (inclusive), size up to 3000000 bytes (inclusive) and present on either play.google.com or appchina
 
 ---DEFINETLY download smaller files---
-az -n 1000 -s 0:100000 -vt 0:0 -o .\benign_AndroZoo1 -t 10
+az -n 1000 -s 0:100000 -vt 0:0 -o .\benign_AndroZoo1 -t 8
 
-downloads 1000 random apks, size range between 0 and 100KB, virus rating of 0, downloads to subfolder "benign_AndroZoo1", uses 10 process threads
+downloads 1000 random apks, size range between 0 and 100KB, virus rating of 0, downloads to subfolder "benign_AndroZoo1", uses 8 process threads
 
 Need API Key from AndroZoo
 Need latest.csv from AndroZoo
