@@ -156,7 +156,25 @@ if __name__ == "__main__":
             "[FATAL] No samples were loaded. Check that exampleFeatures/"
             "malicious_features and exampleFeatures/benign_features contain .txt files."
         )
+    # --------------------------------------------------------------------------------------------------------
+    # ADD: manual control for loading pre-saved vectors
 
+    USE_SAVED_VECTORS_FOR_TRAINING = False  # set to true to load from files instead of recomputing
+
+    if USE_SAVED_VECTORS_FOR_TRAINING:
+        # load vectors previously saved
+        X = np.load(os.path.join(REPO_ROOT, "X_vectors.npy"))
+        y = np.load(os.path.join(REPO_ROOT, "y_labels.npy"))
+        names = np.load(os.path.join(REPO_ROOT, "sample_names.npy"))
+    else:
+        # save computed vectors for future use
+        np.save(os.path.join(REPO_ROOT, "X_vectors.npy"), X)
+        np.save(os.path.join(REPO_ROOT, "y_labels.npy"), y)
+        np.save(os.path.join(REPO_ROOT, "sample_names.npy"), np.array(names))
+
+    # END ADD block
+    # --------------------------------------------------------------------------------------------------------
+    
     # 3) Expand dims for CNN (N, F, 1)
     X = np.expand_dims(X, -1)
 
