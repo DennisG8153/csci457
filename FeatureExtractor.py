@@ -79,12 +79,12 @@ def extract_features(apk_path: str) -> Dict[str, Dict[str, bool]]: # TODO: consi
     Extracts features from an apk file and returns them as a List 
 
     Extracted Features:
-        API Calls - Calls to external APIs
+        API Calls - Calls to internal APIs (Android and Java Libraries)
         Permissions - Permission requests to parts of device data
-        Used Features - Requests for usage to device Hardware and Software functionality
-        Used Intents - Accesses to intents sent/recieved by the application to/from the system, or other applications
-        External Libraries - Use of external libraries within the application
-        URL - URLS visited by the application, Not currently useful because of it's high cardinality, can post process
+        Used Hardware/Software - Requests for usage to device Hardware and Software functionality 
+        Used Intents - Accesses to intents sent/recieved by the application to/from the system, or other applications 
+        External Libraries - Use of external libraries within the application NOTE: Highest actual cardinality, need to post process
+        URL - URLS visited by the application, Cardinality is relatively low
 
     Args:
         apk_path (str): The path to the APK file.

@@ -7,12 +7,12 @@ from tensorflow.keras import models, layers  # type: ignore
 
 # FeatureExtractor.FEATURE_TYPES
 FEATURE_TYPES: List[str] = [
-    "permissions",
-    "used_hsware",
-    "intents",
-    "api_calls",
-    "libraries",
-    "urls",
+    "permissions", # low cardinality, likely no sparcity issue
+    "used_hsware", # Used hardware/software, very low cardinality, likely no sparcity issue, NOTE: might be too small to be useful
+    "intents", # low cardinality, likely no sparcity issue
+    "api_calls", # Medium cardinality and potentially large sparcity issue
+    "libraries", # NOTE: EXTREMELY HIGH cardinality and potentially massive sparcity issue
+    "urls", # Cardinality turned out fairly low, potential for sparcity issue
 ]
 
 # Base where example feature files
