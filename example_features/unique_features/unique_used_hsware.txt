@@ -1,5 +1,0 @@
-Used Hardware/Software: android.hardware.location
-Used Hardware/Software: android.hardware.location.network
-Used Hardware/Software: android.hardware.location.gps
-Used Hardware/Software: android.hardware.sensor.compass
-Used Hardware/Software: android.hardware.sensor.accelerometer

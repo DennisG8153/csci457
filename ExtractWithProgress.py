@@ -9,11 +9,13 @@ import FeatureExtractor
 # TODO: add a way to pick up from were we previously left of with each features file, currently unique_features does this, but not each individual file
 
 # NOTE: Set the desired directory to extract from. 
-# TODO: Convert to if statement
-OUT_DIRECTORY = r'..\extracted_features'
+# TODO: Convert to if statement, need to prevent overwrites
+
+OUT_DIRECTORY = r'..\full_test_extracted_features' # TODO: Currently if run again will extract to test folder
 #OUT_DIRECTORY = r'..\test_extracted_features'
 OUT_DIRECTORY_UNIQUE = os.path.join(OUT_DIRECTORY, 'unique_features')
 #CRITICAL NOTE: REMEMBER TO SWAP BETWEEN MALICIOUS AND BENIGN DATA SETS
+
 '''
 ROOT_DIRECTORY = r'..\Datasets\Malicious'
 OUT_DIRECTORY_FEATURES = os.path.join(OUT_DIRECTORY, 'malicious_features')

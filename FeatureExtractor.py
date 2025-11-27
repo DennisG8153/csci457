@@ -7,12 +7,10 @@
 # Reload features from a file into the unique_features dictionary
 
 import os
-import time
-from datetime import datetime
 from androguard.misc import AnalyzeAPK # APK analysis
 #from androguard.core.apk import APK # Simpler but faster analysis, doesn't give us everything
-from typing import Dict, List # dict to retain insertion order
-# from collections import defaultdict # TODO: may use default dict
+from typing import Dict #, List # Dict to retain insertion order, List currently not used
+from collections import defaultdict # Used to set the default of value of the dictionary to be 1
 
 '''
 #------------------------------------------------------------------------------------------------------------
@@ -27,14 +25,10 @@ from typing import Dict, List # dict to retain insertion order
 #               good size dataset
 #
 # USED HARDWARE/SOFTWARE (aka USED FEATURES): 
-#               used hardware and software
-#               easy to extract
-#               small dataset
+#               Very Low Cardinality, maybe too low
 #
 # USED INTENTS: 
-#               POTENTIAL CARDINALITY ISSUE,
-#               but dataset won't be too large 
-#               tokenization to improve
+#               Low Cardinality
 #
 # API CALLS   
 #               POTENTIAL CARDINALITY ISSUE
@@ -42,19 +36,19 @@ from typing import Dict, List # dict to retain insertion order
 #               tokenization to improve
 #
 # EXTERNAL LIBRARIES:
-#               POTENTIALLY MASSIVE DATA SET, 
-#               HIGH CARDINALITY PROBABLE, 
+#               MASSIVE DATA SET, 
+#               HIGH CARDINALITY, 
 #               BETTER TO TARGET OBFUSCATION WITH TOKENIZATION, 
-#               DESPERATELY NEED TOKENIZATION TO BE USEFUL
+#               DESPERATELY NEED TOKENIZATION OR REDUCED CARDINALITY TO BE USEFUL
 #
 # URLS: 
-#               MASSIVE CARDINALITY, 
-#               ESSENTIALLY USELESS WITHOUT TOKENIZATION
+#               Surprisingly low cardinality 
 '''
 
 # Type of feature to be extracted
 # TODO consider switching to an enum class, need to import enum for that
 FEATURE_TYPES = ["permissions", "used_hsware", "intents", "api_calls", "libraries", "urls"]
+FEATURE_TAGS = ["Permission", "Used Hardware/Software", "Intent", "API", "Library", "URL"] # Tags that are written into the feature files
 
 # NOTE: Directory Path to test extracting a single file, change to extract from a different file
 #DEFAULT_TEST_APK_PATH = r"..\Datasets\Malicious\amd_data\DroidKungFu\variety2\0c3df9c1d759a53eb16024b931a3213a.apk"
@@ -65,16 +59,15 @@ DEFAULT_TEST_OUTPUT_DIR_UNIQUE = r"..\test_extracted_features\unique_features"
 
 # Dictionary to store all unique features found across every apk
 # Retains insertion order
-# TODO: May switch to bool to count
 # Capturing features seperately to put in separate files
-unique_features: Dict[str, Dict[str, bool]] = {FEATURE_TYPES[0] : {}, # permissions
-                                               FEATURE_TYPES[1] : {}, # used_hsware
-                                               FEATURE_TYPES[2] : {}, # intents
-                                               FEATURE_TYPES[3] : {}, # api_calls
-                                               FEATURE_TYPES[4] : {}, # libraries
-                                               FEATURE_TYPES[5] : {}} # urls
+unique_features: Dict[str, Dict[str, int]] = {FEATURE_TYPES[0] : defaultdict(int), # permissions
+                                              FEATURE_TYPES[1] : defaultdict(int), # used_hsware
+                                              FEATURE_TYPES[2] : defaultdict(int), # intents
+                                              FEATURE_TYPES[3] : defaultdict(int), # api_calls
+                                              FEATURE_TYPES[4] : defaultdict(int), # libraries
+                                              FEATURE_TYPES[5] : defaultdict(int)} # urls
 
-def extract_features(apk_path: str) -> Dict[str, Dict[str, bool]]: # TODO: consider changing to a dict[dict[]] to prevent issues with duplicates
+def extract_features(apk_path: str) -> Dict[str, Dict[str, int]]: 
     """
     Extracts features from an apk file and returns them as a List 
 
@@ -94,12 +87,12 @@ def extract_features(apk_path: str) -> Dict[str, Dict[str, bool]]: # TODO: consi
     """
 
     # Extract Features
-    extracted_features: Dict[str, Dict[str, bool]] = {FEATURE_TYPES[0] : {}, # permissions
-                                                    FEATURE_TYPES[1] : {}, # used_hsware
-                                                    FEATURE_TYPES[2] : {}, # intents
-                                                    FEATURE_TYPES[3] : {}, # apis
-                                                    FEATURE_TYPES[4] : {}, # libraries
-                                                    FEATURE_TYPES[5] : {}} # urls 
+    extracted_features: Dict[str, Dict[str, int]] = {FEATURE_TYPES[0] : defaultdict(int), # permissions
+                                                     FEATURE_TYPES[1] : defaultdict(int), # used_hsware
+                                                     FEATURE_TYPES[2] : defaultdict(int), # intents
+                                                     FEATURE_TYPES[3] : defaultdict(int), # apis
+                                                     FEATURE_TYPES[4] : defaultdict(int), # libraries
+                                                     FEATURE_TYPES[5] : defaultdict(int)} # urls 
 
     try:
         # Load the APK file using androguard's APK class
@@ -164,7 +157,6 @@ def extract_features(apk_path: str) -> Dict[str, Dict[str, bool]]: # TODO: consi
         # from how the raw dex data looked, most of the text was useless, 
         # needed to use regex to extract it properly, this might not be every relevant thing
         # there are sometimes http:// strings that are not followed by anything
-        # Lots TODO TODO TODO
         urls = []
         for dex in d:
             for string in dex.get_strings():
@@ -175,26 +167,26 @@ def extract_features(apk_path: str) -> Dict[str, Dict[str, bool]]: # TODO: consi
         # Put features in extracted_features with labels (labels are helpful)
         for p in permissions:
             if len(p): # Check for empty strings
-                extracted_features[FEATURE_TYPES[0]][f"Permission: {p}"] = True
+                extracted_features[FEATURE_TYPES[0]][f"{FEATURE_TAGS[0]}: {p}"] = 1 
         for hs in hardware_software:
             if len(hs):
-                extracted_features[FEATURE_TYPES[1]][f"Used Hardware/Software: {hs}"] = True
+                extracted_features[FEATURE_TYPES[1]][f"{FEATURE_TAGS[1]}: {hs}"] = 1
         # intents is a List[str], no longer a dictionary
         for intent in intents:
             if len(intent):
-                extracted_features[FEATURE_TYPES[2]][f"Intent: {intent}"] = True
+                extracted_features[FEATURE_TYPES[2]][f"{FEATURE_TAGS[2]}: {intent}"] = 1
         # apis
         for api in apis:
             if len(api):
-                extracted_features[FEATURE_TYPES[3]][f"API: {api}"] = True
+                extracted_features[FEATURE_TYPES[3]][f"{FEATURE_TAGS[3]}: {api}"] = 1
         # libraries or class calls, need to settle on a name
         for library in libraries:
             if len(library):
-                extracted_features[FEATURE_TYPES[4]][f"Library: {library}"] = True
+                extracted_features[FEATURE_TYPES[4]][f"{FEATURE_TAGS[4]}: {library}"] = 1
         # urls
         for url in urls:
             if len(url):
-                extracted_features[FEATURE_TYPES[5]][f"URL: {url}"] = True
+                extracted_features[FEATURE_TYPES[5]][f"{FEATURE_TAGS[5]}: {url}"] = 1
 
     except FileNotFoundError:
         print(f"Error: APK file not found at path: {apk_path}")
@@ -205,7 +197,7 @@ def extract_features(apk_path: str) -> Dict[str, Dict[str, bool]]: # TODO: consi
     
     return extracted_features
     
-def write_features(extracted_features: Dict[str, Dict[str, bool]], apk_path: str, output_dir: str):
+def write_features(extracted_features: Dict[str, Dict[str, int]], apk_path: str, output_dir: str):
     """
     Writes a list of features to a file that shares a name with the apk with '.txt' appended.
     
@@ -241,9 +233,7 @@ def write_features(extracted_features: Dict[str, Dict[str, bool]], apk_path: str
     except Exception as e:
         print(f"Error writing to log {apk_path}: {e}")
             
-
-
-def update_unique_features(features: Dict[str, List[str]], output_dir: str):
+def update_unique_features(features: Dict[str, Dict[str, int]], output_dir: str): #TODO: Update to accept features as int instead of bool
     """
     Aggregates new features into the global UNIQUE_FEATURES dictionary and 
     writes the complete list of unique features to 'unique_features.txt'.
@@ -268,15 +258,16 @@ def update_unique_features(features: Dict[str, List[str]], output_dir: str):
             with open(os.path.join(output_dir, file_name), 'a') as f:
                 for feature in features[feature_type]:
                     if feature not in unique_features[feature_type]: # if statement prevents features from being written multiple times
-                        (unique_features[feature_type])[feature] = True # add feature to feature_type that it belongs to, in the dictionary of feature types
+                        # TODO: have each feature store a count during main extraction, figure out how to store count after extraction is complete
+                        (unique_features[feature_type])[feature] = 1 # add feature to feature_type that it belongs to, in the dictionary of feature types
                         f.write(f"{feature}\n") # append the appropriate feature to the file
     except Exception as e:
         print(f"Error appending to unique features file: {e}")
 
-def reload_unique_features(output_dir: str):
+def reload_unique_features(in_dir: str):
     """
         Reloads unique features from text files into the correct UNIQUE_FEATURES dictionary.   
-        Looks for subfolder and files: "\\unique_features" 
+        Looks for the following files in the folder "\\unique_features": 
             "unique_permissions.txt", 
             "unique_hsware.txt", 
             "unique_intents.txt", 
@@ -287,23 +278,22 @@ def reload_unique_features(output_dir: str):
         Args:
             output_dir (str): Location where to find the existing unique_*.txt files exist
     """
-    global unique_features #NOTE: this remains initialized when another class calls it
+    global unique_features #NOTE: this remains initialized when another class calls it, technically exists in the other script
 
     for feature_type in FEATURE_TYPES: 
         file_name = "unique_" + feature_type + ".txt" # Make file name
-        file_path = os.path.join(output_dir, file_name) # Join Path and file name
+        file_path = os.path.join(in_dir, file_name) # Join Path and file name
         if os.path.exists(file_path) and os.path.getsize(file_path): # Check if the file is there and that it's not empty
             try:
                 with open(file_path, 'r') as f: # try opening
                     for line in f: 
                         if line.strip: # Ignore Empty Lines (just to be safe) TODO: Check if there are issues or problems within the unique features file, Throw Error or correct them
-                            (unique_features[feature_type])[line.strip()] = True # add empty lines to dictionary of correct type
+                            (unique_features[feature_type])[line.strip()] = 0 # add features to dictionary of correct type
             except Exception as e:
                 print(f"Error reading unique_features: {e}")
         else:
             print(f'INFO: {file_name} has not been created yet or was empty\n')
 
-# TODO: This isn't in perfect working order right now, not gonna use it for now
 def reload_processed_apks(output_dir: str) -> Dict[str, bool]:
     """
         Reloads unique apk files that were previously processed from a log file into the PREVIOUSLY_PROCESSED_APKS dictionary
@@ -314,6 +304,7 @@ def reload_processed_apks(output_dir: str) -> Dict[str, bool]:
         Returns:
             A dictionary of all apk file names present in the log file
     """
+
     previously_processed_apks = {}
     file_name = "apk_log.txt" # Make file name
     file_path = os.path.join(output_dir, file_name) # Join Path and file name
