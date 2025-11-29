@@ -6,8 +6,8 @@
 
 
 import os
-from typing import Dict, List
-# from collections import defaultdict # TODO: may use default dict
+# from typing import Dict, List # NOTE: Dict and defaultdict are not needed because they are included in FeatureExtractor and no dictionaries are directly made
+# from collections import defaultdict 
 import FeatureExtractor # imported for reload_unique_features(in_dir: str)
 
 ROOT_DIRECTORY = r'..\extracted_features'

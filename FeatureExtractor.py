@@ -5,6 +5,7 @@
 # Writes features to a file
 # Updates a unique features file
 # Reload features from a file into the unique_features dictionary
+# TODO: change functions that use global unique_feature list to pass it out as an object
 
 import os
 from androguard.misc import AnalyzeAPK # APK analysis
@@ -144,7 +145,7 @@ def extract_features(apk_path: str) -> Dict[str, Dict[str, int]]:
             for _, call, _ in method.get_xref_to():
                 classname = call.class_name[1:-1].replace("/", ".")   # Remove leading 'L' and trailing ';' Replace '/' with '.'
                 methodname = call.name
-                fullname = classname + "." + methodname
+                fullname = f"{classname}.{methodname}"
                 if fullname.startswith("android") or fullname.startswith("java"):
                     apis.append(fullname)
                 else:
@@ -254,7 +255,7 @@ def update_unique_features(features: Dict[str, Dict[str, int]], output_dir: str)
 
     try:
         for feature_type in features: # traverse 
-            file_name = "unique_" + feature_type + ".txt" # Makes the file name for each feature
+            file_name = f"unique_{feature_type}.txt" # Makes the file name for each feature
             with open(os.path.join(output_dir, file_name), 'a') as f:
                 for feature in features[feature_type]:
                     if feature not in unique_features[feature_type]: # if statement prevents features from being written multiple times
@@ -264,7 +265,8 @@ def update_unique_features(features: Dict[str, Dict[str, int]], output_dir: str)
     except Exception as e:
         print(f"Error appending to unique features file: {e}")
 
-def reload_unique_features(in_dir: str):
+# TODO: change functions that use global unique_feature list to pass it out as a variable
+def reload_unique_features(in_dir: str) -> Dict[str, Dict[str, int]]:
     """
         Reloads unique features from text files into the correct UNIQUE_FEATURES dictionary.   
         Looks for the following files in the folder "\\unique_features": 
@@ -281,7 +283,7 @@ def reload_unique_features(in_dir: str):
     global unique_features #NOTE: this remains initialized when another class calls it, technically exists in the other script
 
     for feature_type in FEATURE_TYPES: 
-        file_name = "unique_" + feature_type + ".txt" # Make file name
+        file_name = f"unique_{feature_type}.txt" # Make file name
         file_path = os.path.join(in_dir, file_name) # Join Path and file name
         if os.path.exists(file_path) and os.path.getsize(file_path): # Check if the file is there and that it's not empty
             try:
@@ -293,6 +295,7 @@ def reload_unique_features(in_dir: str):
                 print(f"Error reading unique_features: {e}")
         else:
             print(f'INFO: {file_name} has not been created yet or was empty\n')
+    return unique_features
 
 def reload_processed_apks(output_dir: str) -> Dict[str, bool]:
     """
