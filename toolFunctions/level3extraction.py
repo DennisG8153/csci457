@@ -2,41 +2,51 @@
 import sys
 import os
 
+# -------------------------
+# Library: Level 4 (full package name)
+# -------------------------
+def extract_library_superclass(line):
+    if not line.startswith("Library: "):
+        return None
+    full = line[9:].strip()
+    return full  # full package name for max detection capability
+
+# -------------------------
+# API: Level 4 (full name)
+# -------------------------
 def extract_api_superclass(line):
     if not line.startswith("API: "):
         return None
     full = line[5:].strip()
     if "(" in full:
         full = full.split("(")[0]
-    parts = full.split(".")
-    if len(parts) >= 3:
-        return ".".join(parts[:3])
-    elif len(parts) == 2:
-        return ".".join(parts)
-    return parts[0]
+    return full  # keep full qualified API name for max detection capability
 
+# -------------------------
+# Intent: Level 3 (action/category + sensitive flags)
+# -------------------------
+SENSITIVE_INTENTS = {
+    "android.intent.action.BOOT_COMPLETED": "BOOT_EVENT",
+    "android.intent.action.SMS_RECEIVED": "SMS_EVENT",
+    "android.intent.action.PACKAGE_ADDED": "PACKAGE_EVENT",
+    "android.intent.action.PACKAGE_REMOVED": "PACKAGE_EVENT",
+}
 
 def extract_intent_superclass(line):
     if not line.startswith("Intent: "):
         return None
     raw = line[8:].strip()
-    lr = raw.lower()
-
+    if raw in SENSITIVE_INTENTS:
+        return SENSITIVE_INTENTS[raw]
     if raw.startswith("android.intent.action."):
         return "ACTION"
     if raw.startswith("android.intent.category."):
         return "CATEGORY"
-    if "boot" in lr:
-        return "BOOT_EVENT"
-    if "sms" in lr:
-        return "SMS_EVENT"
-    if "phone" in lr or "call" in lr:
-        return "PHONE_EVENT"
-    if "service" in lr:
-        return "SERVICE"
     return "OTHER_INTENT"
 
-
+# -------------------------
+# Permissions: Level 1 risk-based
+# -------------------------
 def extract_permission_superclass(line):
     if not line.startswith("Permission: "):
         return None
@@ -60,6 +70,10 @@ def extract_permission_superclass(line):
         return "SYSTEM_PRIVILEGE"
     return "OTHER_PERMISSION"
 
+# -------------------------
+# URLs: Level 1 risk-based
+# -------------------------
+AD_KEYWORDS = ["adwo", "vpon", "mydas", "mopub", "startapp", "ju6666", "guohead"]
 
 def extract_url_superclass(line):
     if not line.startswith("URL: "):
@@ -72,19 +86,17 @@ def extract_url_superclass(line):
         return "PRIVATE_IP"
     if "google" in url:
         return "GOOGLE"
-
-    ad_kws = ["adwo", "vpon", "mydas", "mopub", "startapp", "ju6666", "guohead"]
-    if any(k in url for k in ad_kws):
+    if any(k in url for k in AD_KEYWORDS):
         return "AD_NETWORK"
-
     if ".cn" in url:
         return "CHINA_NET"
     if ".mp4" in url or ".zip" in url:
         return "MEDIA_FILE"
-
     return "OTHER_URL"
 
-
+# -------------------------
+# Hardware: Raw + functional
+# -------------------------
 def extract_hw_superclass(line):
     if not line.startswith("Used Hardware/Software: "):
         return None
@@ -96,7 +108,7 @@ def extract_hw_superclass(line):
         return "SENSORS"
     if "camera" in hw:
         return "CAMERA"
-    if "microphone" in hw:
+    if "microphone" in hw or "audio" in hw:
         return "AUDIO"
     if "bluetooth" in hw:
         return "BLUETOOTH"
@@ -108,9 +120,11 @@ def extract_hw_superclass(line):
         return "INPUT"
     if "screen" in hw or "display" in hw:
         return "DISPLAY"
-    return "OTHER_HW"
+    return hw.upper()  # raw hardware/software name for max detection capability
 
-
+# -------------------------
+# File processing
+# -------------------------
 def process_file(input_path, output_path):
     unique = set()
 
@@ -121,6 +135,7 @@ def process_file(input_path, output_path):
                 continue
 
             for extractor in (
+                extract_library_superclass,   # <-- added
                 extract_api_superclass,
                 extract_intent_superclass,
                 extract_permission_superclass,
@@ -136,16 +151,18 @@ def process_file(input_path, output_path):
         for s in sorted(unique):
             out.write(s + "\n")
 
-
+# -------------------------
+# Main
+# -------------------------
 def main(argv):
-    # default expected filenames
     files = [
-        "unique_api_calls.txt",
-        "unique_intents.txt",
-        "unique_permissions.txt",
-        "unique_urls.txt",
-        "unique_used_hsware.txt"
-    ]
+    "unique_libraries.txt",      # <-- added
+    "unique_api_calls.txt",
+    "unique_intents.txt",
+    "unique_permissions.txt",
+    "unique_urls.txt",
+    "unique_used_hsware.txt"
+]
 
     for path in files:
         if os.path.exists(path):
