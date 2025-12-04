@@ -1,4 +1,5 @@
 import os
+import psutil
 from typing import Dict, List, Tuple
 
 import numpy as np
@@ -17,14 +18,14 @@ import FeatureExtractor # Can use reload_unique_features, unique_features dictio
     "urls"
 ]'''
 
-#ROOT_DIRECTORY = r"..\extracted_features"
-ROOT_DIRECTORY = (r".\exampleFeatures")
+ROOT_DIRECTORY = r"..\extracted_features"
+#ROOT_DIRECTORY = (r".\exampleFeatures") # TODO: Maybe make test mode?
 IN_DIRECTORY_BENIGN = os.path.join(ROOT_DIRECTORY, r'benign_features')
 IN_DIRECTORY_MALICIOUS = os.path.join(ROOT_DIRECTORY, r'malicious_features')
-#IN_DIRECTORY_UNIQUE = os.path.join(ROOT_DIRECTORY, r'reduced_unique_features')
-IN_DIRECTORY_UNIQUE = os.path.join(ROOT_DIRECTORY, r'unique_features')
+IN_DIRECTORY_UNIQUE = os.path.join(ROOT_DIRECTORY, r'reduced_unique_features')
+#IN_DIRECTORY_UNIQUE = os.path.join(ROOT_DIRECTORY, r'unique_features')
 
-OUT_DIRECTORY = r"..\vectors"
+OUT_DIRECTORY = r".\vectors"
 VECTORS_FILENAME = r"vectors.npy"
 LABELS_FILENAME = r"labels.npy"
 NAMES_FILENAME = r"names.npy"
@@ -39,11 +40,10 @@ TEST_NAMES_FILENAME = r"names.txt"
 # Tests Loading Vectors from file instead of building and saving
 TEST_LOAD = False
 # Prints Vectors to file so they can be compared
-PRINT = False
+PRINT = True
 
 # NOTE: Shouldn't use reload_unique_features() from FeatureExtractor because it is easier if the dictionary combines every feature type into one
-def load_unique_feature_index(unique_dir: str) -> Dict[str, int]:
-    
+def load_unique_feature_index(unique_dir: str) -> Dict[str, int]:    
     unique_feature_index: Dict[str : int] = {}
     index = 0 # NOTE: switched list to a counter instead to avoid traversing the dictionary twice
 
@@ -55,7 +55,7 @@ def load_unique_feature_index(unique_dir: str) -> Dict[str, int]:
             print(f"[WARN] Unique feature file missing, skipping: {fpath}")
             continue
 
-        with open(fpath, "r", encoding="utf-8") as file: # open the file
+        with open(fpath, "r") as file: # open the file
             for line in file:
                 feature = line.strip()
                 if feature and feature not in unique_feature_index: # add the feature to the dictionary if it is not already in there and it is not empty
@@ -74,10 +74,14 @@ def build_vector_dataset(malicious_dir: str, benign_dir: str, feature_index: Dic
 
     assert feature_index is not None, "feature_index must be provided"
 
+    #process = psutil.Process(os.getpid())
+    
     input_size = len(feature_index)
     vectors: List[np.ndarray] = []
     labels: List[int] = []
     names: List[str] = []
+
+    count = 0
 
     for label, feature_dir in [(1, malicious_dir), (0, benign_dir)]:
         if not os.path.isdir(feature_dir):
@@ -89,26 +93,31 @@ def build_vector_dataset(malicious_dir: str, benign_dir: str, feature_index: Dic
                 continue
 
             file_path = os.path.join(feature_dir, filename)
+            #print(f"Memory Used: {process.memory_info().rss / 1024 ** 2:.2f} MB")
+            print(count)
+            count += 1
             vector = feature_file_to_vector(file_path, feature_index, input_size)
             vectors.append(vector)
             labels.append(label)
             names.append(filename)
 
-    vector_arr = np.array(vectors, dtype=np.float32)
-    label_arr = np.array(labels, dtype=np.int8)
+    vector_arr = np.array(vectors, dtype=np.bool)
+    label_arr = np.array(labels, dtype=np.bool)
 
     print(f"[INFO] Loaded Vector dataset: {vector_arr.shape[0]} samples, {vector_arr.shape[1]} features")
     return vector_arr, label_arr, names
 
 def feature_file_to_vector(feature_file_path: str, feature_index: Dict[str, int], dimension: int) -> np.ndarray:
-    vector = np.zeros(dimension, dtype=np.float32)
+    
+    vector = np.zeros(dimension, dtype=np.int8)
 
     try:
-        with open(feature_file_path, "r", encoding="utf-8") as file:
+        with open(feature_file_path, "r") as file:
             for line in file:
                 feature = line.strip()
                 if feature in feature_index:
-                    vector[feature_index[feature]] = 1.0
+                    vector[feature_index[feature]] = 1#.0
+        file.close()
     except Exception as e:
         print(f"[ERROR] Failed to read features from {feature_file_path}: {e}")
 
@@ -127,7 +136,7 @@ def load_vector_dataset(in_dir: str) -> Tuple[np.ndarray, np.ndarray, List[str]]
     '''
     NOTE: NAME CHANGE: THIS READS FROM AN EXISTING .npy FILE, DOES NOT BUILD DATASET
     '''
-    vectors = any #np.ndarray()
+    vectors = any #np.ndarray() # TODO: maybe throw an exception, don't like returning empty objects
     labels = any #np.ndarray()
     names = List[str]
 
@@ -176,41 +185,10 @@ def print_vectors_to_file(out_dir: str, vectors: np.ndarray, labels: np.ndarray,
     except Exception as e:
         print(f"Error writing to {TEST_NAMES_FILENAME} : {e}")
 
-# TODO: Not training here, remove later
-'''
-# Optional: Simple CNN model 
-
-def build_cnn(input_size: int) -> models.Model:
-    """
-    Very simple 1D CNN for binary classification over feature vectors.
-    """
-    model = models.Sequential(
-        [
-            layers.Input(shape=(input_size, 1)),
-            layers.Conv1D(64, 3, activation="relu"),
-            layers.MaxPooling1D(2),
-            layers.Conv1D(128, 3, activation="relu"),
-            layers.MaxPooling1D(2),
-            layers.Flatten(),
-            layers.Dense(128, activation="relu"),
-            layers.Dropout(0.4),
-            layers.Dense(1, activation="sigmoid"),
-        ]
-    )
-    model.compile(
-        optimizer="adam",
-        loss="binary_crossentropy",
-        metrics=["accuracy"],
-    )
-    return model
-'''
-
 # Main script 
 if __name__ == "__main__":
-    if TEST_LOAD:
-        vectors, labels, names = load_vector_dataset(OUT_DIRECTORY)
 
-    else:
+    if not TEST_LOAD:
         # 1) Build global feature index from ALL six unique_*.txt files
         feature_index = load_unique_feature_index(IN_DIRECTORY_UNIQUE)
         if not feature_index:
@@ -231,8 +209,10 @@ if __name__ == "__main__":
                 "[FATAL] No samples were loaded. Check that exampleFeatures/"
                 "malicious_features and exampleFeatures/benign_features contain .txt files."
             )
-
+        
         save_vector_dataset(OUT_DIRECTORY, vectors, labels, names)
+    else:
+        vectors, labels, names = load_vector_dataset(OUT_DIRECTORY)
 
     # Vector tests
     if PRINT:
@@ -289,3 +269,32 @@ if __name__ == "__main__":
     np.save(os.path.join(REPO_ROOT, "feature_index.npy"), feat_list)
     print("[INFO] Saved model and feature index.")
     '''
+
+    # TODO: Not training here, remove later
+'''
+# Optional: Simple CNN model 
+
+def build_cnn(input_size: int) -> models.Model:
+    """
+    Very simple 1D CNN for binary classification over feature vectors.
+    """
+    model = models.Sequential(
+        [
+            layers.Input(shape=(input_size, 1)),
+            layers.Conv1D(64, 3, activation="relu"),
+            layers.MaxPooling1D(2),
+            layers.Conv1D(128, 3, activation="relu"),
+            layers.MaxPooling1D(2),
+            layers.Flatten(),
+            layers.Dense(128, activation="relu"),
+            layers.Dropout(0.4),
+            layers.Dense(1, activation="sigmoid"),
+        ]
+    )
+    model.compile(
+        optimizer="adam",
+        loss="binary_crossentropy",
+        metrics=["accuracy"],
+    )
+    return model
+'''

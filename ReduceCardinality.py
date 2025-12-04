@@ -14,9 +14,12 @@ ROOT_DIRECTORY = r'..\extracted_features'
 IN_DIRECTORY_UNIQUE = r'unique_features'
 IN_DIRECTORY_BENIGN = r'benign_features'
 IN_DIRECTORY_MALICIOUS = r'malicious_features'
-OUT_DIRECTORY_UNIQUE = r'reduced_unique_features'
+OUT_DIRECTORY_UNIQUE = r'reduced_unique_features1'
 
 total_files = 0 # Count of total files in benign_features and malicious_features
+
+# TODO: Can cause problems with a small dataset, but likely will never be a problem
+BOUNDARY_OFFSET = 5
 
 def count_total_features(root_path: str):
     """
@@ -93,14 +96,14 @@ def write_reduced_unique_features(root_path: str):
         if not os.path.exists(out_path):
             os.makedirs(out_path)
         
-        # Walks the dictionary and writes a feature to the coresponding file if: 1 < feature count < number of apk files
+        # Walks the dictionary and writes a feature to the coresponding file if: BOUNDARY_OFFSET < feature count < number of apk files - BOUNDARY_OFFSET
         if len(FeatureExtractor.unique_features):
             for feature_type in FeatureExtractor.unique_features: # NOTE: features in all files already contain feature tags, tags are added when they are extracted
                 file_path = os.path.join(out_path, "unique_" + feature_type + ".txt")
                 try:
                     with open(file_path, 'w') as file:
                         for feature in FeatureExtractor.unique_features[feature_type]:
-                            if 1 < FeatureExtractor.unique_features[feature_type][feature] and FeatureExtractor.unique_features[feature_type][feature] < total_files:
+                            if BOUNDARY_OFFSET < FeatureExtractor.unique_features[feature_type][feature] and FeatureExtractor.unique_features[feature_type][feature] < total_files - BOUNDARY_OFFSET:
                                 file.write(f"{feature.strip()}\n")
                 except Exception as e:
                     print(f"Error opening {file_path}\nException: {e}")
