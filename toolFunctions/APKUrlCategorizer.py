@@ -1,4 +1,4 @@
-# Reads unique_urls.txt, outputs ALL categories found + raw uncategorized URLs
+# Counts category matches across all URLs + lists raw uncategorized URLs
 
 categories = {
     'api_calls': ['api', 'restserver', 'oauth', 'sdk', 'svc', 'service'],
@@ -55,30 +55,33 @@ def main():
     with open(input_file, 'r', encoding='utf-8', errors='ignore') as f:
         all_urls = [line.strip() for line in f if line.strip()]
     
-    # Find all categories that appear
-    found_categories = set()
+    # Count categories and collect uncategorized
+    category_counts = {cat: 0 for cat in categories.keys()}
     uncategorized_urls = []
     
     for url in all_urls:
         cats = find_categories(url)
-        if cats:
-            found_categories.update(cats)
-        else:
+        if not cats:
             uncategorized_urls.append(url)
+        else:
+            for cat in cats:
+                category_counts[cat] += 1
     
-    # Write results: categories first, then uncategorized URLs
+    # Write results
     with open(output_file, 'w', encoding='utf-8') as f:
-        # Write found categories
-        sorted_cats = sorted(list(found_categories))
-        f.write("# FOUND CATEGORIES\n")
-        for cat in sorted_cats:
-            f.write(cat + "\n")
-        f.write("\n# UNCATEGORIZED RAW URLs\n")
+        # Uncategorized URLs first
         for url in uncategorized_urls:
             f.write(url + "\n")
+        f.write("\n")
+        
+        # Category counts (sorted by name)
+        sorted_cats = sorted(category_counts.keys())
+        for cat in sorted_cats:
+            count = category_counts[cat]
+            f.write(f"{cat}: {count}\n")
     
-    print(f"Found {len(sorted_cats)} categories")
-    print(f"Uncategorized URLs: {len(uncategorized_urls)}")
+    print(f"Total URLs: {len(all_urls)}")
+    print(f"Uncategorized: {len(uncategorized_urls)}")
     print(f"Saved to {output_file}")
 
 if __name__ == "__main__":
