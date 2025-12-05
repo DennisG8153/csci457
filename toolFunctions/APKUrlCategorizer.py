@@ -1,9 +1,5 @@
-# Simple URL category finder
-# Reads URLs from file, finds matching categories, outputs unique categories to unique_categories.txt
+# Reads unique_urls.txt, outputs ALL categories found + raw uncategorized URLs
 
-import re
-
-# Categories and their keywords
 categories = {
     'api_calls': ['api', 'restserver', 'oauth', 'sdk', 'svc', 'service'],
     'ad_requests': ['ad', 'ads', 'getad', 'showad', 'click', 'impression', 'banner', 'interstitial'],
@@ -35,50 +31,55 @@ categories = {
 }
 
 def find_categories(url):
-    # Lowercase URL
     url_lower = url.lower()
-    
-    # Split URL into parts (domain, path, query)
     main = url_lower.split('://', 1)[-1] if '://' in url_lower else url_lower
     parts = main.replace('?', '/').replace('&', '/').replace('=', '/').split('/')
     parts = [p for p in parts if p and len(p) > 1]
     
     matches = []
-    
-    # Check each category
     for cat_name, keywords in categories.items():
         for keyword in keywords:
-            # Check if keyword appears in any part
             for part in parts:
                 if keyword in part:
                     matches.append(cat_name)
                     break
             if cat_name in matches:
                 break
-    
-    return list(set(matches)) or ['uncategorized']
+    return matches
 
 def main():
     input_file = "unique_urls.txt"
-    output_file = "unique_categories.txt"
+    output_file = "results.txt"
     
-    # Read input file
+    # Read all URLs
     with open(input_file, 'r', encoding='utf-8', errors='ignore') as f:
-        lines = [line.strip() for line in f if line.strip()]
+        all_urls = [line.strip() for line in f if line.strip()]
     
-    # Find all categories
-    all_cats = set()
-    for line in lines:
-        cats = find_categories(line)
-        all_cats.update(cats)
+    # Find all categories that appear
+    found_categories = set()
+    uncategorized_urls = []
     
-    # Sort and save unique categories
-    unique_cats = sorted(list(all_cats))
-    with open(output_file, 'w') as f:
-        f.write('\n'.join(unique_cats))
+    for url in all_urls:
+        cats = find_categories(url)
+        if cats:
+            found_categories.update(cats)
+        else:
+            uncategorized_urls.append(url)
     
-    print(f"Found {len(unique_cats)} unique categories")
-    print("Wrote to", output_file)
+    # Write results: categories first, then uncategorized URLs
+    with open(output_file, 'w', encoding='utf-8') as f:
+        # Write found categories
+        sorted_cats = sorted(list(found_categories))
+        f.write("# FOUND CATEGORIES\n")
+        for cat in sorted_cats:
+            f.write(cat + "\n")
+        f.write("\n# UNCATEGORIZED RAW URLs\n")
+        for url in uncategorized_urls:
+            f.write(url + "\n")
+    
+    print(f"Found {len(sorted_cats)} categories")
+    print(f"Uncategorized URLs: {len(uncategorized_urls)}")
+    print(f"Saved to {output_file}")
 
 if __name__ == "__main__":
     main()
