@@ -1,30 +1,26 @@
 #!/usr/bin/env python3
 import sys
 import os
+from typing import Dict
 
-# -------------------------
+#NOTE: Not reducing intents, permissions, Hardware/Software
 # Library: Level 4 (full package name)
-# -------------------------
 def extract_library_superclass(line):
     if not line.startswith("Library: "):
         return None
     full = line[9:].strip()
-    return full  # full package name for max detection capability
+    return full  
 
-# -------------------------
 # API: Level 4 (full name)
-# -------------------------
 def extract_api_superclass(line):
     if not line.startswith("API: "):
         return None
     full = line[5:].strip()
     if "(" in full:
         full = full.split("(")[0]
-    return full  # keep full qualified API name for max detection capability
+    return full  
 
-# -------------------------
 # Intent: Level 3 (action/category + sensitive flags)
-# -------------------------
 SENSITIVE_INTENTS = {
     "android.intent.action.BOOT_COMPLETED": "BOOT_EVENT",
     "android.intent.action.SMS_RECEIVED": "SMS_EVENT",
@@ -44,9 +40,7 @@ def extract_intent_superclass(line):
         return "CATEGORY"
     return "OTHER_INTENT"
 
-# -------------------------
 # Permissions: Level 1 risk-based
-# -------------------------
 def extract_permission_superclass(line):
     if not line.startswith("Permission: "):
         return None
@@ -70,9 +64,7 @@ def extract_permission_superclass(line):
         return "SYSTEM_PRIVILEGE"
     return "OTHER_PERMISSION"
 
-# -------------------------
 # URLs: Level 1 risk-based
-# -------------------------
 AD_KEYWORDS = ["adwo", "vpon", "mydas", "mopub", "startapp", "ju6666", "guohead"]
 
 def extract_url_superclass(line):
@@ -94,9 +86,7 @@ def extract_url_superclass(line):
         return "MEDIA_FILE"
     return "OTHER_URL"
 
-# -------------------------
 # Hardware: Raw + functional
-# -------------------------
 def extract_hw_superclass(line):
     if not line.startswith("Used Hardware/Software: "):
         return None
@@ -120,11 +110,9 @@ def extract_hw_superclass(line):
         return "INPUT"
     if "screen" in hw or "display" in hw:
         return "DISPLAY"
-    return hw.upper()  # raw hardware/software name for max detection capability
+    return hw.upper()  
 
-# -------------------------
 # File processing
-# -------------------------
 def process_file(input_path, output_path):
     unique = set()
 
@@ -135,12 +123,12 @@ def process_file(input_path, output_path):
                 continue
 
             for extractor in (
-                extract_library_superclass,   # <-- added
+                extract_library_superclass,   
                 extract_api_superclass,
-                extract_intent_superclass,
-                extract_permission_superclass,
+                #extract_intent_superclass,
+                #extract_permission_superclass,
                 extract_url_superclass,
-                extract_hw_superclass
+                #extract_hw_superclass
             ):
                 key = extractor(line)
                 if key:
@@ -151,26 +139,25 @@ def process_file(input_path, output_path):
         for s in sorted(unique):
             out.write(s + "\n")
 
-# -------------------------
+
 # Main
-# -------------------------
 def main(argv):
     files = [
-    "unique_libraries.txt",      # <-- added
+    "unique_libraries.txt",      
     "unique_api_calls.txt",
-    "unique_intents.txt",
-    "unique_permissions.txt",
+    #"unique_intents.txt",
+    #"unique_permissions.txt",
     "unique_urls.txt",
-    "unique_used_hsware.txt"
+    #"unique_used_hsware.txt"
 ]
 
     for path in files:
         if os.path.exists(path):
             out = path.replace(".txt", "_superclasses.txt")
             process_file(path, out)
-            print(f"✔ Generated {out}")
+            print(f"Generated {out}")
         else:
-            print(f"✖ Missing: {path}")
+            print(f"Missing: {path}")
 
     return 0
 

@@ -14,7 +14,7 @@ def find_duplicate_lines(filename):
                 seen_lines.add(line)
     return duplicate_lines
 
-checked_folder = r'..\large_test_extracted_features'
+checked_folder = r'.\extracted_features\malicious_features'
 
 if not os.path.exists(checked_folder):
     print(f"Error: Folder '{checked_folder}' does not exist!")

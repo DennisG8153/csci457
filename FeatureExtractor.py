@@ -10,7 +10,7 @@
 import os
 from androguard.misc import AnalyzeAPK # APK analysis
 #from androguard.core.apk import APK # Simpler but faster analysis, doesn't give us everything
-from typing import Dict #, List # Dict to retain insertion order, List currently not used
+from typing import Dict, List # Dict to retain insertion order, List currently not used
 from collections import defaultdict # Used to set the default of value of the dictionary to be 1
 
 '''
@@ -58,16 +58,36 @@ DEFAULT_TEST_APK_PATH = r"..\Datasets\Malicious\amd_data\Finspy\variety1\4eea275
 DEFAULT_TEST_OUTPUT_DIR_FEATURES = r"..\test_extracted_features\malicious_features"
 DEFAULT_TEST_OUTPUT_DIR_UNIQUE = r"..\test_extracted_features\unique_features"
 
+
+def feature_dictionary(feature_types: List[str] = FEATURE_TYPES) -> Dict[str, Dict[str, int]]:
+    """
+    Returns a dictionary of default dictionaries, each key is one of the referenced strings
+
+    Args:
+        feature_types (List[str]): list of strings that represent each feature type. Defaults to FEATURE_TYPES
+    Returns:
+    feature_dictionary Dict[str, Dict[str, int]]: a dictionary of feature types with empty dictionaries as values
+
+    Dict[str, Dict[str, int]] = {FEATURE_TYPES[0] : defaultdict(int), # permissions
+                                FEATURE_TYPES[1] : defaultdict(int), # used_hsware
+                                FEATURE_TYPES[2] : defaultdict(int), # intents
+                                FEATURE_TYPES[3] : defaultdict(int), # api_calls
+                                FEATURE_TYPES[4] : defaultdict(int), # libraries
+                                FEATURE_TYPES[5] : defaultdict(int)} # urls
+    """
+
+    feature_dictionary
+    for feature_type in feature_types:
+        feature_dictionary = Dict[feature_type : defaultdict(int)]
+    return feature_dictionary
+
 # Dictionary to store all unique features found across every apk
 # Retains insertion order
 # Capturing features seperately to put in separate files
-unique_features: Dict[str, Dict[str, int]] = {FEATURE_TYPES[0] : defaultdict(int), # permissions
-                                              FEATURE_TYPES[1] : defaultdict(int), # used_hsware
-                                              FEATURE_TYPES[2] : defaultdict(int), # intents
-                                              FEATURE_TYPES[3] : defaultdict(int), # api_calls
-                                              FEATURE_TYPES[4] : defaultdict(int), # libraries
-                                              FEATURE_TYPES[5] : defaultdict(int)} # urls
+unique_features = feature_dictionary()
 
+# TODO: Have Extract features categorize and count
+# TODO: Remove Feature tags from Dictionary keys, they mess with future functions (designed differently)
 def extract_features(apk_path: str) -> Dict[str, Dict[str, int]]: 
     """
     Extracts features from an apk file and returns them as a List 
@@ -84,16 +104,11 @@ def extract_features(apk_path: str) -> Dict[str, Dict[str, int]]:
         apk_path (str): The path to the APK file.
         
     Returns:
-        Dict[str, List[str]]: A dictionary of each feature type and a list of extracted features of that type from the APK.
+        Dict[str, Dict[str, int]]: A dictionary of each feature type and a list of extracted features of that type from the APK.
     """
 
     # Extract Features
-    extracted_features: Dict[str, Dict[str, int]] = {FEATURE_TYPES[0] : defaultdict(int), # permissions
-                                                     FEATURE_TYPES[1] : defaultdict(int), # used_hsware
-                                                     FEATURE_TYPES[2] : defaultdict(int), # intents
-                                                     FEATURE_TYPES[3] : defaultdict(int), # apis
-                                                     FEATURE_TYPES[4] : defaultdict(int), # libraries
-                                                     FEATURE_TYPES[5] : defaultdict(int)} # urls 
+    extracted_features = feature_dictionary()
 
     try:
         # Load the APK file using androguard's APK class

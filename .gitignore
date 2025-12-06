@@ -1,0 +1,6 @@
+extracted_features/
+partial_extractions/
+Datasets/
+ZippedDatasets/
+test_extracted_features/
+extracted_features.zip

@@ -1,31 +1,146 @@
-# ReduceCardinality.py
-# Reduces the Cardinality of a Feature Set by counting the amount of times a feature is used in the Feature Set
-# Features are removed if:
-# They only occur once (n <= 1)
-# They are used by every APK in the Data Set (n == len(Data Set))
+"""
+    ReduceCardinality.py
+    Reduces the Cardinality of a Feature Set by: 
+        Categorizing feature types of 
+        Counting the amount of times a feature is used in the Feature Set
+
+    Catagories:
+        -
+        -
+        -
+        
+    Features are removed if: 
+        They only occur once (n <= 1)
+        They are used by every APK in the Data Set (n == len(Data Set))
+
+    TODO: Needs to reduce entire Dataset and remake unique features files from that
+    Catagorize API, Libraries, URLs
+    Add a count to each feature, only groups should have a count larger than one in a feature file
+    Remove features that appear a low amount of times
+"""
 
 
 import os
-# from typing import Dict, List # NOTE: Dict and defaultdict are not needed because they are included in FeatureExtractor and no dictionaries are directly made
-# from collections import defaultdict 
+from typing import Dict, List, Tuple 
+from collections import defaultdict 
 import FeatureExtractor # imported for reload_unique_features(in_dir: str)
 
-ROOT_DIRECTORY = r'..\extracted_features'
-IN_DIRECTORY_UNIQUE = r'unique_features'
-IN_DIRECTORY_BENIGN = r'benign_features'
-IN_DIRECTORY_MALICIOUS = r'malicious_features'
-OUT_DIRECTORY_UNIQUE = r'reduced_unique_features1'
+ROOT_DIRECTORY = r'\extracted_features'
+OUT_DIRECTORY_CATEGORIZED = r"\categorized_extracted_features"
+OUT_DIRECTORY_REDUCED = r'\reduced_extracted_features'
+DIRECTORY_UNIQUE = r'unique_features'
+DIRECTORY_BENIGN = r'benign_features'
+DIRECTORY_MALICIOUS = r'malicious_features'
+
 
 total_files = 0 # Count of total files in benign_features and malicious_features
 
 # TODO: Can cause problems with a small dataset, but likely will never be a problem
-BOUNDARY_OFFSET = 5
+FLOOR_OFFSET = 10
+CEIL_OFFSET = 1
+
+# Single Feature File/Vector
+def read_feature_file(file_path: str) -> Dict[str, Dict[str, int]]:
+    """
+        reads a feature file with no special processing
+    """
+
+def categorize_feature_file(file_path: str) -> Dict[str: Dict[str : int]]:
+    """
+        reads a feature file
+        putting specific features in categories
+        counting categories and singletons 
+        storing relevant variables:
+            total feature files
+            total features
+    """
+
+def write_feature_file(file_path: str):
+    """
+        writes one dictionary of features to a file
+    """
+
+# Unique Features
+def update_unique_features(features: Dict[str : Dict[str : int]]) -> Dict[str : Dict[str : int]]:
+    """
+        updates unique features from a new dictionary
+        this version stores a count of each feature instance
+        Cannot write as we go, because categories will be updated through out the reading process
+    """
+
+def create_unique_features(in_dir: str) -> Dict[str : Dict[str, int]]:
+    """
+        Create unique features from existing feature dataset
+    """
+
+def write_unique_features(out_dir: str):
+    """
+        Writes unique feature file to directory, feature types remain seperate
+    """
+
+# Feature Reduction
+def reduce_unique_features(unique_features: Dict[str : Dict[str : int]]) -> Dict[str : Dict[str : int]]:
+    """
+        Reads unique_features
+        removes features from dictionary if they occur a small number of times, or if they appear in every file in the dataset
+        places removed feature in new dictionary
+        returns the reduced dictionary
+    """
+
+def reduce_feature_dict(unique_features: Dict[str : Dict[str : int]], features: Dict[str : Dict[str : int]]) -> Dict[str : Dict[str : int]]:
+    """
+        Reduces a feature dictionary using the unique_features dictionary,
+        only vectors that exist in the feature dict and the unique_feature dict are retained
+        returns the reduced dictionary
+    """
+
+# Full Process
+def catagorize_feature_dataset(in_dir: str, out_dir: str):
+    """
+        Catagorizes an entire feature dataset and saves the results to another directory
+    """
+    in_benign = os.path.join(in_dir, DIRECTORY_BENIGN)
+    in_malicious = os.path.join(in_dir, DIRECTORY_MALICIOUS)
+    in_unique = os.path.join(in_dir, DIRECTORY_UNIQUE)
+
+    if os.path.exists(in_unique):
+        unique_features = FeatureExtractor.feature_dictionary()
+        out_unique = os.path.join(out_dir, DIRECTORY_UNIQUE)
+    
+        if os.path.exists(in_benign):
+            ""
+        if os.path.exists(in_malicious):
+            ""
+        
+        if not os.exists(out_unique): # make the directory if it doesn't exist
+            os.makedirs(out_unique)
+        if len(unique_features) == len(FeatureExtractor.FEATURE_TAGS): # Confirm unique_features and FEATURE_TAGS are the same length
+            for feature_type, feature_tag in zip(unique_features, FeatureExtractor.FEATURE_TAGS): # Iterate over feature_types and tags
+                out_file = os.path.join(out_unique, f"unique_{feature_type}.txt") # For each type create the file of the same name
+                try:
+                    with open(out_file, "w", encoding="utf-8", errors="ignore") as f: # try to open the file
+                        for feature in unique_features[feature_type]: 
+                            f.write(f"{feature_tag} {unique_features[feature_type][feature]}: {feature.strip()}") # Write each feature tag, count, and feature name
+                except Exception as e:
+                    print(f"Error Writing to file {feature_type}.txt\nException: {e}")
+        else:
+            print(f"Dictionary length mismatch:\nunique_features: {len(unique_features)}\nFEATURE_TAGS: {len(FeatureExtractor.FEATURE_TAGS)}")
+    else:
+        print(f"Unique directory does not exist: {in_unique}\nNo files Processed")
+
+def reduce_feature_dataset(in_dir: str, out_dir: str):
+    """
+        Removes features from the dataset that only appear a small number of times or appear in every feature file
+    """
+
+    #TODO: Store total features from each feature file
+
 
 def count_total_features(root_path: str):
     """
-        Counts the number of times each feature appears in the corpus.
+        Counts the number of times each feature appears in the dataset.
         Assumes all APK features have been extracted.
-        Directly edits the global unique_features variable.
+        Directly edits the global unique_features dictionary.
 
     Args: 
         root_path - Designates the folder to look for features in. Requires the folder to contain three directories: benign_features, malicious_features, unique_features
@@ -96,14 +211,14 @@ def write_reduced_unique_features(root_path: str):
         if not os.path.exists(out_path):
             os.makedirs(out_path)
         
-        # Walks the dictionary and writes a feature to the coresponding file if: BOUNDARY_OFFSET < feature count < number of apk files - BOUNDARY_OFFSET
+        # Walks the dictionary and writes a feature to the coresponding file if: FLOOR_OFFSET < feature count < number of apk files - CEIL_OFFSET
         if len(FeatureExtractor.unique_features):
             for feature_type in FeatureExtractor.unique_features: # NOTE: features in all files already contain feature tags, tags are added when they are extracted
                 file_path = os.path.join(out_path, "unique_" + feature_type + ".txt")
                 try:
                     with open(file_path, 'w') as file:
                         for feature in FeatureExtractor.unique_features[feature_type]:
-                            if BOUNDARY_OFFSET < FeatureExtractor.unique_features[feature_type][feature] and FeatureExtractor.unique_features[feature_type][feature] < total_files - BOUNDARY_OFFSET:
+                            if FLOOR_OFFSET < FeatureExtractor.unique_features[feature_type][feature] and FeatureExtractor.unique_features[feature_type][feature] < total_files - CEIL_OFFSET:
                                 file.write(f"{feature.strip()}\n")
                 except Exception as e:
                     print(f"Error opening {file_path}\nException: {e}")
