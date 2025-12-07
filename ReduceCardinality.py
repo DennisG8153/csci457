@@ -17,6 +17,8 @@
     Catagorize API, Libraries, URLs
     Add a count to each feature, only groups should have a count larger than one in a feature file
     Remove features that appear a low amount of times
+
+    TODO: make a class to store unique_features to avoid passing it constantly
 """
 
 
@@ -39,11 +41,58 @@ total_files = 0 # Count of total files in benign_features and malicious_features
 FLOOR_OFFSET = 10
 CEIL_OFFSET = 1
 
+URL_CATEGORIES = {
+    'known_malware_paths': ['update_soft',           # lebar.gicp.net malware
+                            'droid/app_v',           # hidroid.net APK dropper
+                            'adreq/updateApp',       # winads.cn malware updater
+                            'latest.php',            # C2 endpoint pattern
+                            'order.php',             # C2 endpoint pattern
+                            'hidroid.net/droid',     # Known malware server
+                            'lebar.gicp.net/zj',     # Known C2 path
+                            'winads.cn/adreq]'],     # Known malware adreq
+    'c2_servers': ['lebar.gicp.net', 'master-code.ru', 'go108', 'anzhuo7', '5k3g', 'msreplier', 'hidroid'],
+    'sms_fraud': ['nnetonline', 'sms', 'mms', 'monternet', 'zong'],
+    'dynamic_dns': ['gicp.net', 'no-ip', 'dyndns', 'duckdns'],
+    'vpon_specific': ['vpon.com'],
+    'mydas_specific': ['mydas.mobi'],
+    'wooboo_specific': ['wooboo'],
+    'casee_specific': ['casee'],
+    'webview_endpoints': ['webview', 'bridge', 'mraid', 'raid'],
+    'chinese_domains_expanded': ['baidu', 'qq', 'sina', 'taobao', 'aliexpress', 'tmall', 'jd.com'],
+    'adult': ['porn', 'youporn', 'xxx', 'adult', 'xvideo'],
+    'ad_requests': ['ad', 'ads', 'getad', 'showad', 'click', 'impression', 'banner', 'interstitial'],
+    'score_endpoints': ['score', 'leaderboard', 'rank', 'highscore', 'achievement'],
+    'game_networks': ['gameloft', 'scoreloop', 'herocraft', 'glu', 'outfit7'],
+    'tracking': ['log', 'track', 'event', 'metric'],
+    'file_transfer': ['download', 'upload', 'file', 'apk', 'zip'],
+    'config_endpoints': ['config', 'init', 'check', 'report', 'getinfo'],
+    'static_content': ['static', 'image', 'images', 'img', 'css', 'js', 'resource', 'resources', 'asset', 'assets', 'content', 'lib', 'media', 'schema', 'schemas'],
+    'app_dev': ['appspot', 'herokuapp', 'firebaseio', 'parseapp'],
+    'api_calls': ['api', 'restserver', 'oauth', 'sdk', 'svc', 'service'],
+    'media_files': ['.mp4', '.mp3', '.jpg', '.png', '.gif', '.xml', '.json', '.js', '.css'],
+    'app_markets': ['play.google.com', 'market.android.com', 'amazon.comgpmas', '91.com'],
+    'google_services': ['google', 'gstatic', 'googleapis', 'doubleclick', 'googlesyndication'],
+    'facebook': ['facebook', 'fbcdn', 'graph.facebook'],
+    'twitter': ['twitter', 'twimg', 't.twitter'],
+    'microsoft': ['microsoft', 'azure', 'live', 'outlook', 'skype'],
+    'amazon': ['amazonaws', 'amazon'],
+}
+
 # Single Feature File/Vector
-def read_feature_file(file_path: str) -> Dict[str, Dict[str, int]]:
+def read_feature_file(file_path: str) -> Dict[str: Dict[str: int]]:
     """
         reads a feature file with no special processing
     """
+    features = FeatureExtractor.feature_dictionary()
+
+    with open(file_path, 'r', encoding= "utf-8", errors= "ignore") as features_file: 
+        for feature in features_file: 
+            for feature_type, feature_tag in zip(FeatureExtractor.FEATURE_TYPES, FeatureExtractor.FEATURE_TAGS): # NOTE: zip() returns a tuple containing the elements from each list that have the same indeces 
+                if feature.startswith(feature_tag): # Check each line to see which feature_type it belongs to
+                    feature_count = feature.removeprefix(f"{feature_tag}: ").split(" ") # Removes feature tag, splits feature into list of key and value
+                    features[feature_type][feature_count[0].strip()] = int(feature[1].strip()) # Adds feature key and adds value as integer 
+    return features
+
 
 def categorize_feature_file(file_path: str) -> Dict[str: Dict[str : int]]:
     """
@@ -54,11 +103,69 @@ def categorize_feature_file(file_path: str) -> Dict[str: Dict[str : int]]:
             total feature files
             total features
     """
+    features = FeatureExtractor.feature_dictionary()
 
-def write_feature_file(file_path: str):
+    with open(file_path, 'r', encoding= "utf-8", errors= "ignore") as features_file: 
+        for feature in features_file: 
+            for feature_type, feature_tag in zip(FeatureExtractor.FEATURE_TYPES, FeatureExtractor.FEATURE_TAGS): # NOTE: zip() returns a tuple containing the elements from each list that have the same indeces 
+                if feature.startswith(feature_tag): # Check each line to see which feature_type it belongs to
+                    feature = feature.removeprefix(f"{feature_tag}: ").split(" ")[0] # Removes feature tag and potential value, stores feature
+                    if (feature_type == FeatureExtractor.FEATURE_TYPES[3] or  
+                        feature_type == FeatureExtractor.FEATURE_TYPES[4]): #APIs or Libraries
+                        feature = level3_truncator(feature) #feature becomes the shortened version
+                    elif feature_type == FeatureExtractor.FEATURE_TYPES[5]:#URLs
+                        feature = find_categories(feature) #feature becomes the
+                    features[feature_type][feature.strip()] += 1 # Adds feature key and adds value as integer 
+    return features
+
+def write_feature_file(file_path: str, features: Dict[str : Dict[str : int]]):
     """
         writes one dictionary of features to a file
     """
+
+def categorize_folder(in_dir: str, out_dir: str, unique_features: Dict[str : Dict[str : int]]) -> Dict[str : Dict[str : int]]:
+    """
+        Reduces cardinality of a folder by categorizing feature files in it 
+        Updates unique_features
+        returns updated unique_features
+    """
+    if os.path.exists(in_dir): # Check if dir exists
+        for _, _, filenames in os.walk(in_dir): 
+            for filename in filenames: # For every file in benign
+                in_file_path = os.path.join(in_dir, filename) # set in and out paths
+                out_file_path = os.path.join(out_dir, filename)
+                features = categorize_feature_file(in_file_path) # read the features
+                write_feature_file(out_file_path, features) # write the features to the correct file
+                unique_features = update_unique_features(features) # update unique features
+    else:
+        print(f"Directory does not exist: {in_dir}\nSkipping")
+    return unique_features
+
+def level3_truncator(feature: str) -> str:
+    """
+        Truncates APIs and Libraries to the 3rd period
+    """
+    parts = feature.split(".")
+    if len(parts) > 3:
+        return (".").join(parts[:3]) # NOTE: [:3] get indeces until the third element
+    return feature
+
+def find_categories(url: str) -> List[str]:
+    """
+        Returns the first category the url fits
+    """
+    url_lower = url.lower()
+    main = url_lower.split('://', 1)[-1] if '://' in url_lower else url_lower
+    parts = main.replace('?', '/').replace('&', '/').replace('=', '/').split('/')
+    parts = [p for p in parts if p and len(p) > 1]
+    
+    matches = []
+    for cat_name, keywords in URL_CATEGORIES.items():
+        for keyword in keywords:
+            for part in parts:
+                if keyword in part:
+                    return cat_name
+    return matches
 
 # Unique Features
 def update_unique_features(features: Dict[str : Dict[str : int]]) -> Dict[str : Dict[str : int]]:
@@ -73,10 +180,24 @@ def create_unique_features(in_dir: str) -> Dict[str : Dict[str, int]]:
         Create unique features from existing feature dataset
     """
 
-def write_unique_features(out_dir: str):
+def write_unique_features(out_dir: str, unique_features: Dict[str : Dict[str, int]]):
     """
         Writes unique feature file to directory, feature types remain seperate
     """
+
+    if not os.exists(out_dir): # make the directory if it doesn't exist
+            os.makedirs(out_dir)
+    if len(unique_features) == len(FeatureExtractor.FEATURE_TAGS): # Confirm unique_features and FEATURE_TAGS are the same length
+        for feature_type, feature_tag in zip(unique_features, FeatureExtractor.FEATURE_TAGS): # Iterate over feature_types and tags
+            out_file = os.path.join(out_dir, f"unique_{feature_type}.txt") # For each type create the file of the same name
+            try:
+                with open(out_file, "w", encoding="utf-8", errors="ignore") as f: # try to open the file
+                    for feature in unique_features[feature_type]: 
+                        f.write(f"{feature_tag} {unique_features[feature_type][feature]}: {feature.strip()}") # Write each feature tag, count, and feature name
+            except Exception as e:
+                print(f"Error Writing to file {feature_type}.txt\nException: {e}")
+    else:
+        print(f"Dictionary length mismatch:\nunique_features: {len(unique_features)}\nFEATURE_TAGS: {len(FeatureExtractor.FEATURE_TAGS)}")
 
 # Feature Reduction
 def reduce_unique_features(unique_features: Dict[str : Dict[str : int]]) -> Dict[str : Dict[str : int]]:
@@ -95,7 +216,7 @@ def reduce_feature_dict(unique_features: Dict[str : Dict[str : int]], features: 
     """
 
 # Full Process
-def catagorize_feature_dataset(in_dir: str, out_dir: str):
+def catagorize_dataset(in_dir: str, out_dir: str):
     """
         Catagorizes an entire feature dataset and saves the results to another directory
     """
@@ -103,137 +224,124 @@ def catagorize_feature_dataset(in_dir: str, out_dir: str):
     in_malicious = os.path.join(in_dir, DIRECTORY_MALICIOUS)
     in_unique = os.path.join(in_dir, DIRECTORY_UNIQUE)
 
-    if os.path.exists(in_unique):
-        unique_features = FeatureExtractor.feature_dictionary()
-        out_unique = os.path.join(out_dir, DIRECTORY_UNIQUE)
-    
-        if os.path.exists(in_benign):
-            ""
-        if os.path.exists(in_malicious):
-            ""
-        
-        if not os.exists(out_unique): # make the directory if it doesn't exist
-            os.makedirs(out_unique)
-        if len(unique_features) == len(FeatureExtractor.FEATURE_TAGS): # Confirm unique_features and FEATURE_TAGS are the same length
-            for feature_type, feature_tag in zip(unique_features, FeatureExtractor.FEATURE_TAGS): # Iterate over feature_types and tags
-                out_file = os.path.join(out_unique, f"unique_{feature_type}.txt") # For each type create the file of the same name
-                try:
-                    with open(out_file, "w", encoding="utf-8", errors="ignore") as f: # try to open the file
-                        for feature in unique_features[feature_type]: 
-                            f.write(f"{feature_tag} {unique_features[feature_type][feature]}: {feature.strip()}") # Write each feature tag, count, and feature name
-                except Exception as e:
-                    print(f"Error Writing to file {feature_type}.txt\nException: {e}")
-        else:
-            print(f"Dictionary length mismatch:\nunique_features: {len(unique_features)}\nFEATURE_TAGS: {len(FeatureExtractor.FEATURE_TAGS)}")
+    if os.path.exists(in_unique): # if we have unique (that is crucial)
+        unique_features = FeatureExtractor.feature_dictionary() # Making a feature_dictionary
+        out_benign = os.path.join(out_dir, DIRECTORY_BENIGN) 
+        out_malicious = os.path.join(out_dir, DIRECTORY_MALICIOUS)
+        out_unique = os.path.join(out_dir, DIRECTORY_UNIQUE) 
+
+        unique_features = categorize_folder(in_benign, out_benign, unique_features) #TODO: Make a class for unique features
+        unique_features = categorize_folder(in_malicious, out_malicious, unique_features)
+        write_unique_features(out_unique, unique_features)
     else:
         print(f"Unique directory does not exist: {in_unique}\nNo files Processed")
 
-def reduce_feature_dataset(in_dir: str, out_dir: str):
+def reduce_dataset(in_dir: str, out_dir: str):
     """
         Removes features from the dataset that only appear a small number of times or appear in every feature file
     """
 
     #TODO: Store total features from each feature file
 
+# Depricated
+# def count_total_features(root_path: str):
+#     """
+#         Counts the number of times each feature appears in the dataset.
+#         Assumes all APK features have been extracted.
+#         Directly edits the global unique_features dictionary.
 
-def count_total_features(root_path: str):
-    """
-        Counts the number of times each feature appears in the dataset.
-        Assumes all APK features have been extracted.
-        Directly edits the global unique_features dictionary.
-
-    Args: 
-        root_path - Designates the folder to look for features in. Requires the folder to contain three directories: benign_features, malicious_features, unique_features
-    """
+#     Args: 
+#         root_path - Designates the folder to look for features in. Requires the folder to contain three directories: benign_features, malicious_features, unique_features
+#     """
  
-    global total_files
+#   global total_files
 
     # Create all paths
-    in_unique_path = os.path.join(root_path, IN_DIRECTORY_UNIQUE)
-    in_benign_path = os.path.join(root_path, IN_DIRECTORY_BENIGN)
-    in_malicious_path = os.path.join(root_path, IN_DIRECTORY_MALICIOUS)
+    #in_unique_path = os.path.join(root_path, IN_DIRECTORY_UNIQUE)
+    #in_benign_path = os.path.join(root_path, IN_DIRECTORY_BENIGN)
+    #in_malicious_path = os.path.join(root_path, IN_DIRECTORY_MALICIOUS)
 
     # Check that paths all exist
-    if (os.path.exists(in_unique_path) 
-    and os.path.exists(in_benign_path) 
-    and os.path.exists(in_malicious_path)):
+#     if (os.path.exists(in_unique_path) 
+#     and os.path.exists(in_benign_path) 
+#     and os.path.exists(in_malicious_path)):
         
-        # Reload Unique features into a dictionary, every feature is initialized to 0
-        FeatureExtractor.reload_unique_features(in_unique_path)
+#         # Reload Unique features into a dictionary, every feature is initialized to 0
+#         FeatureExtractor.reload_unique_features(in_unique_path)
 
-        # --- BEGIN COUNTING ---
+#         # --- BEGIN COUNTING ---
 
-        # TODO: Current folder structure requires us to have two loops, inelegant
-        # --- COUNT BENIGN ---
-        for _, _, filenames in os.walk(in_benign_path): # Look for files in benign folder
-            total_files += len(filenames) # add the number of files in the directory to the total_files count
-            for filename in filenames: 
-                file_path = os.path.join(in_benign_path, filename) # Get each file name and create the path to it
-                with open(file_path, 'r') as features_file: 
-                    for feature in features_file: 
-                        for feature_type, feature_tag in zip(FeatureExtractor.FEATURE_TYPES, FeatureExtractor.FEATURE_TAGS): # NOTE: zip() returns a tuple containing the elements from each list that have the same indeces 
-                            if feature.startswith(feature_tag): # Check each line to see which feature_type it belongs to
-                                FeatureExtractor.unique_features[feature_type][feature] += 1 # When the corresponding feature is found add 1 to it's count
+#         # TODO: Current folder structure requires us to have two loops, inelegant
+#         # --- COUNT BENIGN ---
+#         for _, _, filenames in os.walk(in_benign_path): # Look for files in benign folder
+#             total_files += len(filenames) # add the number of files in the directory to the total_files count
+#             for filename in filenames: 
+#                 file_path = os.path.join(in_benign_path, filename) # Get each file name and create the path to it
+#                 with open(file_path, 'r') as features_file: 
+#                     for feature in features_file: 
+#                         for feature_type, feature_tag in zip(FeatureExtractor.FEATURE_TYPES, FeatureExtractor.FEATURE_TAGS): # NOTE: zip() returns a tuple containing the elements from each list that have the same indeces 
+#                             if feature.startswith(feature_tag): # Check each line to see which feature_type it belongs to
+#                                 FeatureExtractor.unique_features[feature_type][feature] += 1 # When the corresponding feature is found add 1 to it's count
 
-        # --- COUNT MALICIOUS ---
-        for _, _, filenames in os.walk(in_malicious_path): # Look for files in malicious folder
-            total_files += len(filenames) # add the number of files in the directory to the total_files count
-            for filename in filenames: 
-                file_path = os.path.join(in_malicious_path, filename) # Get each file name and create the path to it
-                with open(file_path, 'r') as features_file: 
-                    for feature in features_file: 
-                        stripped_feature = feature.strip()
-                        for feature_type, feature_tag in zip(FeatureExtractor.FEATURE_TYPES, FeatureExtractor.FEATURE_TAGS): # NOTE: zip() returns a tuple containing the elements from each list that have the same indeces 
-                            if stripped_feature.startswith(feature_tag): # Check each line to see which feature_type it belongs to
-                                FeatureExtractor.unique_features[feature_type][stripped_feature] += 1 # When the corresponding feature is found add 1 to it's count
+#         # --- COUNT MALICIOUS ---
+#         for _, _, filenames in os.walk(in_malicious_path): # Look for files in malicious folder
+#             total_files += len(filenames) # add the number of files in the directory to the total_files count
+#             for filename in filenames: 
+#                 file_path = os.path.join(in_malicious_path, filename) # Get each file name and create the path to it
+#                 with open(file_path, 'r') as features_file: 
+#                     for feature in features_file: 
+#                         stripped_feature = feature.strip()
+#                         for feature_type, feature_tag in zip(FeatureExtractor.FEATURE_TYPES, FeatureExtractor.FEATURE_TAGS): # NOTE: zip() returns a tuple containing the elements from each list that have the same indeces 
+#                             if stripped_feature.startswith(feature_tag): # Check each line to see which feature_type it belongs to
+#                                 FeatureExtractor.unique_features[feature_type][stripped_feature] += 1 # When the corresponding feature is found add 1 to it's count
 
-        print("Unique features counted successfully")
-    else:
-        print("The following directories do not exist:" + ((f"\n{in_unique_path}") if not os.path.exists(in_unique_path) else "") 
-                                                        + ((f"\n{in_benign_path}") if not os.path.exists(in_benign_path) else "")
-                                                        + ((f"\n{in_malicious_path}") if not os.path.exists(in_malicious_path) else ""))
-        print("No files processed")
+#         print("Unique features counted successfully")
+#     else:
+#         print("The following directories do not exist:" + ((f"\n{in_unique_path}") if not os.path.exists(in_unique_path) else "") 
+#                                                         + ((f"\n{in_benign_path}") if not os.path.exists(in_benign_path) else "")
+#                                                         + ((f"\n{in_malicious_path}") if not os.path.exists(in_malicious_path) else ""))
+#         print("No files processed")
     
-def write_reduced_unique_features(root_path: str):
-    """
-        Writes the features to a new file (reduced_unique_features)
-        Ommits features that only appear once or appear for every apk file
-        unique_features dictionary must be initialized
+# def write_reduced_unique_features(root_path: str):
+#     """
+#         Writes the features to a new file (reduced_unique_features)
+#         Ommits features that only appear once or appear for every apk file
+#         unique_features dictionary must be initialized
 
-    Args: 
-        out_path - Designates the folder to where the feature files are, creates and writes to reduced_unique_features folder
-    """
+#     Args: 
+#         out_path - Designates the folder to where the feature files are, creates and writes to reduced_unique_features folder
+#     """
 
-    # Check if root path exists
-    if os.path.exists(root_path): 
-        # Creates output path and make sure it exists, if it doesn't, create it
-        out_path = os.path.join(root_path, OUT_DIRECTORY_UNIQUE)
-        if not os.path.exists(out_path):
-            os.makedirs(out_path)
+#     # Check if root path exists
+#     if os.path.exists(root_path): 
+#         # Creates output path and make sure it exists, if it doesn't, create it
+#         out_path = os.path.join(root_path, OUT_DIRECTORY_UNIQUE)
+#         if not os.path.exists(out_path):
+#             os.makedirs(out_path)
         
-        # Walks the dictionary and writes a feature to the coresponding file if: FLOOR_OFFSET < feature count < number of apk files - CEIL_OFFSET
-        if len(FeatureExtractor.unique_features):
-            for feature_type in FeatureExtractor.unique_features: # NOTE: features in all files already contain feature tags, tags are added when they are extracted
-                file_path = os.path.join(out_path, "unique_" + feature_type + ".txt")
-                try:
-                    with open(file_path, 'w') as file:
-                        for feature in FeatureExtractor.unique_features[feature_type]:
-                            if FLOOR_OFFSET < FeatureExtractor.unique_features[feature_type][feature] and FeatureExtractor.unique_features[feature_type][feature] < total_files - CEIL_OFFSET:
-                                file.write(f"{feature.strip()}\n")
-                except Exception as e:
-                    print(f"Error opening {file_path}\nException: {e}")
-        else:
-            print("Dictionary Length Mismatch:")
-            print(f"Length of unique_features: {len(FeatureExtractor.unique_features)}")
-            print(f"Length of FEATURE_TYPES: {len(FeatureExtractor.FEATURE_TYPES)}")
-            print(f"Length of FEATURE_TAGS: {len(FeatureExtractor.FEATURE_TAGS)}")
+#         # Walks the dictionary and writes a feature to the coresponding file if: FLOOR_OFFSET < feature count < number of apk files - CEIL_OFFSET
+#         if len(FeatureExtractor.unique_features):
+#             for feature_type in FeatureExtractor.unique_features: # NOTE: features in all files already contain feature tags, tags are added when they are extracted
+#                 file_path = os.path.join(out_path, "unique_" + feature_type + ".txt")
+#                 try:
+#                     with open(file_path, 'w') as file:
+#                         for feature in FeatureExtractor.unique_features[feature_type]:
+#                             if FLOOR_OFFSET < FeatureExtractor.unique_features[feature_type][feature] and FeatureExtractor.unique_features[feature_type][feature] < total_files - CEIL_OFFSET:
+#                                 file.write(f"{feature.strip()}\n")
+#                 except Exception as e:
+#                     print(f"Error opening {file_path}\nException: {e}")
+#         else:
+#             print("Dictionary Length Mismatch:")
+#             print(f"Length of unique_features: {len(FeatureExtractor.unique_features)}")
+#             print(f"Length of FEATURE_TYPES: {len(FeatureExtractor.FEATURE_TYPES)}")
+#             print(f"Length of FEATURE_TAGS: {len(FeatureExtractor.FEATURE_TAGS)}")
         
-        print("Unique features written successfully")
-    else:
-        print(f"Input path does not exist:\n{root_path}\nNo unique features written") 
+#         print("Unique features written successfully")
+#     else:
+#         print(f"Input path does not exist:\n{root_path}\nNo unique features written") 
 
-if __name__ == '__main__':
-    print("Attempting to reduce feature cardinality")
-    FeatureExtractor.reload_unique_features(os.path.join(ROOT_DIRECTORY, IN_DIRECTORY_UNIQUE))
-    count_total_features(ROOT_DIRECTORY)
-    write_reduced_unique_features(ROOT_DIRECTORY)
+# if __name__ == '__main__':
+#     print("Attempting to reduce feature cardinality")
+#     FeatureExtractor.reload_unique_features(os.path.join(ROOT_DIRECTORY, IN_DIRECTORY_UNIQUE))
+#     count_total_features(ROOT_DIRECTORY)
+#     write_reduced_unique_features(ROOT_DIRECTORY)

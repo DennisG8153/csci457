@@ -1,33 +1,40 @@
 # Counts category matches across all URLs + lists raw uncategorized URLs
 
 categories = {
-    'api_calls': ['api', 'restserver', 'oauth', 'sdk', 'svc', 'service'],
-    'ad_requests': ['ad', 'ads', 'getad', 'showad', 'click', 'impression', 'banner', 'interstitial'],
-    'google_services': ['google', 'gstatic', 'googleapis', 'doubleclick', 'googlesyndication'],
-    'facebook': ['facebook', 'fbcdn', 'graph.facebook'],
-    'twitter': ['twitter', 'twimg', 't.twitter'],
-    'game_networks': ['gameloft', 'scoreloop', 'herocraft', 'glu', 'outfit7'],
-    'app_markets': ['play.google.com', 'market.android.com', 'amazon.comgpmas', '91.com'],
+    'known_malware_paths': ['update_soft',           # lebar.gicp.net malware
+                      'droid/app_v',           # hidroid.net APK dropper
+                      'adreq/updateApp',       # winads.cn malware updater
+                      'latest.php',            # C2 endpoint pattern
+                      'order.php',             # C2 endpoint pattern
+                      'hidroid.net/droid',     # Known malware server
+                      'lebar.gicp.net/zj',     # Known C2 path
+                      'winads.cn/adreq]'],     # Known malware adreq
     'c2_servers': ['lebar.gicp.net', 'master-code.ru', 'go108', 'anzhuo7', '5k3g', 'msreplier', 'hidroid'],
     'sms_fraud': ['nnetonline', 'sms', 'mms', 'monternet', 'zong'],
-    'adult': ['porn', 'youporn', 'xxx', 'adult', 'xvideo'],
-    'file_transfer': ['download', 'upload', 'file', 'apk', 'zip'],
-    'tracking': ['log', 'track', 'event', 'metric'],
-    'config_endpoints': ['config', 'init', 'check', 'report', 'getinfo'],
-    'static_content': ['static', 'image', 'images', 'img', 'css', 'js', 'resource', 'resources', 'asset', 'assets', 'content', 'lib', 'media', 'schema', 'schemas'],
-    'malware_paths': ['update', 'install', 'flash', 'droidapp', 'latest.php', 'order.php'],
     'dynamic_dns': ['gicp.net', 'no-ip', 'dyndns', 'duckdns'],
-    'chinese_domains_expanded': ['baidu', 'qq', 'sina', 'taobao', 'aliexpress', 'tmall', 'jd.com'],
-    'app_dev': ['appspot', 'herokuapp', 'firebaseio', 'parseapp'],
-    'webview_endpoints': ['webview', 'bridge', 'mraid', 'raid'],
-    'score_endpoints': ['score', 'leaderboard', 'rank', 'highscore', 'achievement'],
-    'media_files': ['.mp4', '.mp3', '.jpg', '.png', '.gif', '.xml', '.json', '.js', '.css'],
     'vpon_specific': ['vpon.com'],
     'mydas_specific': ['mydas.mobi'],
     'wooboo_specific': ['wooboo'],
     'casee_specific': ['casee'],
+    'webview_endpoints': ['webview', 'bridge', 'mraid', 'raid'],
+    'chinese_domains_expanded': ['baidu', 'qq', 'sina', 'taobao', 'aliexpress', 'tmall', 'jd.com'],
+    'adult': ['porn', 'youporn', 'xxx', 'adult', 'xvideo'],
+    'ad_requests': ['ad', 'ads', 'getad', 'showad', 'click', 'impression', 'banner', 'interstitial'],
+    'score_endpoints': ['score', 'leaderboard', 'rank', 'highscore', 'achievement'],
+    'game_networks': ['gameloft', 'scoreloop', 'herocraft', 'glu', 'outfit7'],
+    'tracking': ['log', 'track', 'event', 'metric'],
+    'file_transfer': ['download', 'upload', 'file', 'apk', 'zip'],
+    'config_endpoints': ['config', 'init', 'check', 'report', 'getinfo'],
+    'static_content': ['static', 'image', 'images', 'img', 'css', 'js', 'resource', 'resources', 'asset', 'assets', 'content', 'lib', 'media', 'schema', 'schemas'],
+    'app_dev': ['appspot', 'herokuapp', 'firebaseio', 'parseapp'],
+    'api_calls': ['api', 'restserver', 'oauth', 'sdk', 'svc', 'service'],
+    'media_files': ['.mp4', '.mp3', '.jpg', '.png', '.gif', '.xml', '.json', '.js', '.css'],
+    'app_markets': ['play.google.com', 'market.android.com', 'amazon.comgpmas', '91.com'],
+    'google_services': ['google', 'gstatic', 'googleapis', 'doubleclick', 'googlesyndication'],
+    'facebook': ['facebook', 'fbcdn', 'graph.facebook'],
+    'twitter': ['twitter', 'twimg', 't.twitter'],
     'microsoft': ['microsoft', 'azure', 'live', 'outlook', 'skype'],
-    'amazon': ['amazonaws', 'amazon']
+    'amazon': ['amazonaws', 'amazon'], 
 }
 
 def find_categories(url):
