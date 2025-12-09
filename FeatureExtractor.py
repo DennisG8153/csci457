@@ -76,10 +76,10 @@ def feature_dictionary(feature_types: List[str] = FEATURE_TYPES) -> Dict[str, Di
                                 FEATURE_TYPES[5] : defaultdict(int)} # urls
     """
 
-    feature_dictionary
+    feature_dict = {}
     for feature_type in feature_types:
-        feature_dictionary = Dict[feature_type : defaultdict(int)]
-    return feature_dictionary
+        feature_dict[feature_type] = defaultdict(int)
+    return feature_dict
 
 # Dictionary to store all unique features found across every apk
 # Retains insertion order

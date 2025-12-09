@@ -225,7 +225,7 @@ def extract_with_progress():
     # Update unique features tracking 
     if extracted_features:
         FeatureExtractor.write_features(extracted_features, current_file_path, OUT_DIRECTORY_FEATURES)
-        FeatureExtractor.write_unique_features(extracted_features, OUT_DIRECTORY_UNIQUE)
+        FeatureExtractor.update_unique_features(extracted_features, OUT_DIRECTORY_UNIQUE)
 
     # File extracted, update elapsed time
     elapsed_time = time.time() - START_TIME
