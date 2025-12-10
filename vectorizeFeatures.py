@@ -17,11 +17,11 @@ import FeatureExtractor # Can use reload_unique_features, unique_features dictio
     "urls"
 ]'''
 
-ROOT_DIRECTORY = r"..\extracted_features"
+ROOT_DIRECTORY = r"..\reduced_extracted_features"
 #ROOT_DIRECTORY = (r".\exampleFeatures") # TODO: Maybe make test mode?
 IN_DIRECTORY_BENIGN = os.path.join(ROOT_DIRECTORY, r'benign_features')
 IN_DIRECTORY_MALICIOUS = os.path.join(ROOT_DIRECTORY, r'malicious_features')
-IN_DIRECTORY_UNIQUE = os.path.join(ROOT_DIRECTORY, r'reduced_unique_features')
+IN_DIRECTORY_UNIQUE = os.path.join(ROOT_DIRECTORY, r'unique_features')
 #IN_DIRECTORY_UNIQUE = os.path.join(ROOT_DIRECTORY, r'unique_features')
 
 OUT_DIRECTORY = r".\vectors"
