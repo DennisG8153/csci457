@@ -1,6 +1,5 @@
 import os
 import psutil
-from typing import Dict, List, Tuple
 
 import numpy as np
 # TODO: Remove, not using these libraries because we are not training here
@@ -9,7 +8,7 @@ import numpy as np
 import FeatureExtractor # Can use reload_unique_features, unique_features dictionary, and constants like FEATURE_TYPES
 
 # NOTE: FEATURE_TYPES does not need to be created because it exists in FeatureExtractor.FEATURE_TYPES
-'''FEATURE_TYPES: List[str] = [
+'''FEATURE_TYPES: list[str] = [
     "permissions", 
     "used_hsware", 
     "intents", 
@@ -43,8 +42,8 @@ TEST_LOAD = False
 PRINT = True
 
 # NOTE: Shouldn't use reload_unique_features() from FeatureExtractor because it is easier if the dictionary combines every feature type into one
-def load_unique_feature_index(unique_dir: str) -> Dict[str, int]:    
-    unique_feature_index: Dict[str : int] = {}
+def load_unique_feature_index(unique_dir: str) -> dict[str, int]:    
+    unique_feature_index: dict[str : int] = {}
     index = 0 # NOTE: switched list to a counter instead to avoid traversing the dictionary twice
 
     for feature_type in FeatureExtractor.FEATURE_TYPES: # for each file
@@ -67,7 +66,7 @@ def load_unique_feature_index(unique_dir: str) -> Dict[str, int]:
     #return feat_list, feat_index # TODO: feat_list isn't needed, remove
 
 # Build dataset from malicious/benign feature dirs
-def build_vector_dataset(malicious_dir: str, benign_dir: str, feature_index: Dict[str, int]) -> Tuple[np.ndarray, np.ndarray, List[str]]:
+def build_vector_dataset(malicious_dir: str, benign_dir: str, feature_index: dict[str, int]) -> tuple[np.ndarray, np.ndarray, list[str]]:
     '''
     NOTE: NAME CHANGE: was load_vector_dataset, load_vector_dataset now loads from existing file
     '''
@@ -77,9 +76,9 @@ def build_vector_dataset(malicious_dir: str, benign_dir: str, feature_index: Dic
     #process = psutil.Process(os.getpid())
     
     input_size = len(feature_index)
-    vectors: List[np.ndarray] = []
-    labels: List[int] = []
-    names: List[str] = []
+    vectors: list[np.ndarray] = []
+    labels: list[int] = []
+    names: list[str] = []
 
     count = 0
 
@@ -107,7 +106,7 @@ def build_vector_dataset(malicious_dir: str, benign_dir: str, feature_index: Dic
     print(f"[INFO] Loaded Vector dataset: {vector_arr.shape[0]} samples, {vector_arr.shape[1]} features")
     return vector_arr, label_arr, names
 
-def feature_file_to_vector(feature_file_path: str, feature_index: Dict[str, int], dimension: int) -> np.ndarray:
+def feature_file_to_vector(feature_file_path: str, feature_index: dict[str, int], dimension: int) -> np.ndarray:
     
     vector = np.zeros(dimension, dtype=np.int8)
 
@@ -124,7 +123,7 @@ def feature_file_to_vector(feature_file_path: str, feature_index: Dict[str, int]
     return vector
 
 # save computed vectors for future use
-def save_vector_dataset(out_dir: str, vectors: np.ndarray, labels: np.ndarray, names: List[str]):
+def save_vector_dataset(out_dir: str, vectors: np.ndarray, labels: np.ndarray, names: list[str]):
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
 
@@ -132,13 +131,13 @@ def save_vector_dataset(out_dir: str, vectors: np.ndarray, labels: np.ndarray, n
     np.save(os.path.join(out_dir, LABELS_FILENAME), labels)
     np.save(os.path.join(out_dir, NAMES_FILENAME), np.array(names))
 
-def load_vector_dataset(in_dir: str) -> Tuple[np.ndarray, np.ndarray, List[str]]:
+def load_vector_dataset(in_dir: str) -> tuple[np.ndarray, np.ndarray, list[str]]:
     '''
     NOTE: NAME CHANGE: THIS READS FROM AN EXISTING .npy FILE, DOES NOT BUILD DATASET
     '''
     vectors = any #np.ndarray() # TODO: maybe throw an exception, don't like returning empty objects
     labels = any #np.ndarray()
-    names = List[str]
+    names = list[str]
 
     if os.path.exists(in_dir):
         vectors = np.load(os.path.join(in_dir, VECTORS_FILENAME))
@@ -150,11 +149,11 @@ def load_vector_dataset(in_dir: str) -> Tuple[np.ndarray, np.ndarray, List[str]]
     return vectors, labels, names
 
 # Simple print function
-def print_dict(dictionary = Dict[any, any]):
+def print_dict(dictionary = dict[any, any]):
     for key in dictionary:
         print(f"{key} : {dictionary[key]}")
 
-def print_vectors_to_file(out_dir: str, vectors: np.ndarray, labels: np.ndarray, names: List[str]):
+def print_vectors_to_file(out_dir: str, vectors: np.ndarray, labels: np.ndarray, names: list[str]):
     if not os.path.isdir(out_dir):
         os.makedirs(out_dir)
 

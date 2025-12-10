@@ -10,7 +10,7 @@
 import os
 from androguard.misc import AnalyzeAPK # APK analysis
 #from androguard.core.apk import APK # Simpler but faster analysis, doesn't give us everything
-from typing import Dict, List # Dict to retain insertion order, List currently not used
+#from typing import Dict, List # dict to retain insertion order, NOTE: Dict has been replaced with dict, typing not needed (after 3.9)
 from collections import defaultdict # Used to set the default of value of the dictionary to be 1
 
 '''
@@ -59,16 +59,16 @@ DEFAULT_TEST_OUTPUT_DIR_FEATURES = r"..\test_extracted_features\malicious_featur
 DEFAULT_TEST_OUTPUT_DIR_UNIQUE = r"..\test_extracted_features\unique_features"
 
 
-def feature_dictionary(feature_types: List[str] = FEATURE_TYPES) -> Dict[str, Dict[str, int]]:
+def feature_dictionary(feature_types: list[str] = FEATURE_TYPES) -> dict[str, dict[str, int]]:
     """
     Returns a dictionary of default dictionaries, each key is one of the referenced strings
 
     Args:
-        feature_types (List[str]): list of strings that represent each feature type. Defaults to FEATURE_TYPES
+        feature_types (list[str]): list of strings that represent each feature type. Defaults to FEATURE_TYPES
     Returns:
-    feature_dictionary Dict[str, Dict[str, int]]: a dictionary of feature types with empty dictionaries as values
+    feature_dictionary dict[str, dict[str, int]]: a dictionary of feature types with empty dictionaries as values
 
-    Dict[str, Dict[str, int]] = {FEATURE_TYPES[0] : defaultdict(int), # permissions
+    dict[str, dict[str, int]] = {FEATURE_TYPES[0] : defaultdict(int), # permissions
                                 FEATURE_TYPES[1] : defaultdict(int), # used_hsware
                                 FEATURE_TYPES[2] : defaultdict(int), # intents
                                 FEATURE_TYPES[3] : defaultdict(int), # api_calls
@@ -81,16 +81,16 @@ def feature_dictionary(feature_types: List[str] = FEATURE_TYPES) -> Dict[str, Di
         feature_dict[feature_type] = defaultdict(int)
     return feature_dict
 
-# Dictionary to store all unique features found across every apk
+# dictionary to store all unique features found across every apk
 # Retains insertion order
 # Capturing features seperately to put in separate files
 unique_features = feature_dictionary()
 
 # TODO: Have Extract features categorize and count
-# TODO: Remove Feature tags from Dictionary keys, they mess with future functions (designed differently)
-def extract_features(apk_path: str) -> Dict[str, Dict[str, int]]: 
+# TODO: Remove Feature tags from dictionary keys, they mess with future functions (designed differently)
+def extract_features(apk_path: str) -> dict[str, dict[str, int]]: 
     """
-    Extracts features from an apk file and returns them as a List 
+    Extracts features from an apk file and returns them as a list 
 
     Extracted Features:
         API Calls - Calls to internal APIs (Android and Java Libraries)
@@ -104,7 +104,7 @@ def extract_features(apk_path: str) -> Dict[str, Dict[str, int]]:
         apk_path (str): The path to the APK file.
         
     Returns:
-        Dict[str, Dict[str, int]]: A dictionary of each feature type and a list of extracted features of that type from the APK.
+        dict[str, dict[str, int]]: A dictionary of each feature type and a list of extracted features of that type from the APK.
     """
 
     # Extract Features
@@ -118,19 +118,19 @@ def extract_features(apk_path: str) -> Dict[str, Dict[str, int]]:
         # ---Extract Features---
 
         # Permissions and used hardware/software are easy
-        # NOTE: No need to use Dict[] because extracted features handles duplicates
+        # NOTE: No need to use dict[] because extracted features handles duplicates
         permissions = a.get_permissions()
         hardware_software = a.get_features()
 
         # Intents need to be extracted from the string lists made by a.get_activities(), a.get_services() and a.get_recievers()
-        # a.get_intent_filters(itemtype, item) gets a dictionary of components for each item in each List
+        # a.get_intent_filters(itemtype, item) gets a dictionary of components for each item in each list
         # itemtypes: activity, service, reciever 
         # each component then has 3 main intent types (i.e. action, category, data)
         # TODO: Make another enum for itemtypes for best coding practice
         activities = a.get_activities()
         services = a.get_services()
         recievers = a.get_receivers()
-        intents = [] # NOTE: Using a List, overlaps will be removed by the extracted_features Dict
+        intents = [] # NOTE: Using a list, overlaps will be removed by the extracted_features dict
         for activity in activities: 
             act = a.get_intent_filters("activity", activity)
             for categories in act:
@@ -187,7 +187,7 @@ def extract_features(apk_path: str) -> Dict[str, Dict[str, int]]:
         for hs in hardware_software:
             if len(hs):
                 extracted_features[FEATURE_TYPES[1]][f"{FEATURE_TAGS[1]}: {hs}"] = 1
-        # intents is a List[str], no longer a dictionary
+        # intents is a list[str], no longer a dictionary
         for intent in intents:
             if len(intent):
                 extracted_features[FEATURE_TYPES[2]][f"{FEATURE_TAGS[2]}: {intent}"] = 1
@@ -213,12 +213,12 @@ def extract_features(apk_path: str) -> Dict[str, Dict[str, int]]:
     
     return extracted_features
     
-def write_features(extracted_features: Dict[str, Dict[str, int]], apk_path: str, output_dir: str):
+def write_features(extracted_features: dict[str, dict[str, int]], apk_path: str, output_dir: str):
     """
     Writes a list of features to a file that shares a name with the apk with '.txt' appended.
     
     Args:
-        extracted_features (List[str]): The path to the APK file.
+        extracted_features (list[str]): The path to the APK file.
         apk_path (str): The path to the referenced directory. Created file uses the apk's name.
         output_dir (str): The directory where the output folders will be created.
     """
@@ -249,14 +249,14 @@ def write_features(extracted_features: Dict[str, Dict[str, int]], apk_path: str,
     except Exception as e:
         print(f"Error writing to log {apk_path}: {e}")
             
-def update_unique_features(features: Dict[str, Dict[str, int]], output_dir: str): #TODO: Update to accept features as int instead of bool
+def update_unique_features(features: dict[str, dict[str, int]], output_dir: str): #TODO: Update to accept features as int instead of bool
     """
     Aggregates new features into the global UNIQUE_FEATURES dictionary and 
     writes the complete list of unique features to 'unique_features.txt'.
     Relies on reload_unique_features to not overwrite existing file
     
     Args:
-        features (List[str]): A list of features extracted from a single APK.
+        features (list[str]): A list of features extracted from a single APK.
         base_output_path (str): The root directory where the output folders should be created.
     """
     global unique_features
@@ -281,7 +281,7 @@ def update_unique_features(features: Dict[str, Dict[str, int]], output_dir: str)
         print(f"Error appending to unique features file: {e}")
 
 # TODO: change functions that use global unique_feature list to pass it out as a variable
-def reload_unique_features(in_dir: str) -> Dict[str, Dict[str, int]]:
+def reload_unique_features(in_dir: str) -> dict[str, dict[str, int]]:
     """
         Reloads unique features from text files into the correct UNIQUE_FEATURES dictionary.   
         Looks for the following files in the folder "\\unique_features": 
@@ -312,7 +312,7 @@ def reload_unique_features(in_dir: str) -> Dict[str, Dict[str, int]]:
             print(f'INFO: {file_name} has not been created yet or was empty\n')
     return unique_features
 
-def reload_processed_apks(output_dir: str) -> Dict[str, bool]:
+def reload_processed_apks(output_dir: str) -> dict[str, bool]:
     """
         Reloads unique apk files that were previously processed from a log file into the PREVIOUSLY_PROCESSED_APKS dictionary
         looks for apk_log.txt
