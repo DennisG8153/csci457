@@ -100,8 +100,8 @@ def build_vector_dataset(malicious_dir: str, benign_dir: str, feature_index: dic
             labels.append(label)
             names.append(filename)
 
-    vector_arr = np.array(vectors, dtype=np.bool)
-    label_arr = np.array(labels, dtype=np.bool)
+    vector_arr = np.array(vectors, dtype=np.float32)
+    label_arr = np.array(labels, dtype=np.float32)
 
     print(f"[INFO] Loaded Vector dataset: {vector_arr.shape[0]} samples, {vector_arr.shape[1]} features")
     return vector_arr, label_arr, names
