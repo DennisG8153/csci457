@@ -26,7 +26,7 @@ import os
 from collections import defaultdict 
 import FeatureExtractor 
 
-ROOT_DIRECTORY = r'..\extracted_features'
+ROOT_DIRECTORY = r'..\rextracted_features'
 OUT_DIRECTORY_CATEGORIZED = r"..\categorized_extracted_features"
 OUT_DIRECTORY_REDUCED = r'..\reduced_extracted_features'
 DIRECTORY_UNIQUE = r'unique_features'
