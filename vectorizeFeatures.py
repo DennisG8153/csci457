@@ -1,8 +1,8 @@
 import os
 import csv
 import numpy as np
-import psutil
 
+# TODO: need a function that makes new vectors according to the unique features from a previous set
 
 # TODO: Remove, not using these libraries because we are not training here
 #from sklearn.model_selection import train_test_split 
@@ -39,8 +39,8 @@ LOAD = False # Loads Vectors from file instead of building and saving
 PRINT = True # Prints Vectors to file so they can be compared
 
 # NOTE: Shouldn't use reload_unique_features() from FeatureExtractor because it is easier if the dictionary combines every feature type into one
-def load_unique_feature_index(unique_dir: str) -> dict[str, int]:    
-    unique_feature_index: dict[str : int] = {}
+def load_unique_feature_index(unique_dir: str) -> dict[str, np.float32]:    
+    unique_feature_index: dict[str : np.float32] = {}
     index = 0 # NOTE: switched list to a counter instead to avoid traversing the dictionary twice
 
     for feature_type, feature_tag in zip(FeatureExtractor.FEATURE_TYPES, FeatureExtractor.FEATURE_TAGS):
@@ -59,7 +59,7 @@ def load_unique_feature_index(unique_dir: str) -> dict[str, int]:
                 if not parts:
                     continue
                 feat_name = parts[0].strip()
-                if feat_name and feat_naame not in unique_feature_index:
+                if feat_name and feat_name not in unique_feature_index:
                     unique_feature_index[feat_name] = index
                     index += 1
 
