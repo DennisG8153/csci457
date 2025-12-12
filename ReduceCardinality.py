@@ -26,10 +26,10 @@ import os
 from collections import defaultdict 
 import FeatureExtractor 
 
-#ROOT_DIRECTORY = r'..\rextracted_features'
-ROOT_DIRECTORY = r'..\dataset_features\subsets\2'
+ROOT_DIRECTORY = r'..\extracted_features'
+#ROOT_DIRECTORY = r'..\dataset_features\subsets\2'
 #OUT_DIRECTORY_CATEGORIZED = r"..\categorized_extracted_features"
-OUT_DIRECTORY_CATEGORIZED = r"..\2_categorized_extracted_features"
+OUT_DIRECTORY_CATEGORIZED = r"..\categorized_extracted_features"
 OUT_DIRECTORY_REDUCED = r'..\reduced_extracted_features'
 DIRECTORY_UNIQUE = r'unique_features'
 DIRECTORY_BENIGN = r'benign_features'
@@ -404,7 +404,7 @@ def reduce_dataset(in_dir: str, out_dir: str):
 
 if __name__ == "__main__":
     print(f"Attempting to reduce cardinality of features in {ROOT_DIRECTORY}")
-    print(f"Categorizing to {OUT_DIRECTORY_CATEGORIZED}")
-    catagorize_dataset(ROOT_DIRECTORY, OUT_DIRECTORY_CATEGORIZED)
-    #print(f"Reducing to {OUT_DIRECTORY_REDUCED}")
-    #reduce_dataset(OUT_DIRECTORY_CATEGORIZED, OUT_DIRECTORY_REDUCED)
+    #print(f"Categorizing to {OUT_DIRECTORY_CATEGORIZED}")
+    #catagorize_dataset(ROOT_DIRECTORY, OUT_DIRECTORY_CATEGORIZED)
+    print(f"Reducing to {OUT_DIRECTORY_REDUCED}")
+    reduce_dataset(OUT_DIRECTORY_CATEGORIZED, OUT_DIRECTORY_REDUCED)

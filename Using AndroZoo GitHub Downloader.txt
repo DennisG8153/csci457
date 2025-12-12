@@ -9,7 +9,7 @@ downloads 1000 random apks, size range between 0 and 100KB, virus rating of 0, d
 
 Need API Key from AndroZoo
 Need latest.csv from AndroZoo
-latest.csv needs to be cleaned (converted to utf-8 encoding? Not sure exactly)
+latest.csv needs to be cleaned (converted to utf-8 encoding)
 
 Put key and csv path in .az file in 3 possible locations: the cli folder, the local folder to call az from, the user folder for calling az globally
 key={key}

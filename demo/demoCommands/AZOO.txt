@@ -1,0 +1,5 @@
+py -3.8 -m venv .venv
+.venv\Scripts\Activate
+py -3.8 -m pip import azoo
+az -n 10 -s 0:10000 -vt 0:0 -o .\Datasets\Benign -t 8
+az -n 10 -s 0:10000 -vt 10: -o .\Datasets\Malicious -t 8

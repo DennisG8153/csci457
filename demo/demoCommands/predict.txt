@@ -1,0 +1,1 @@
+py -3.10 evaluate.py apk_malware_cnn_model.keras ".\reduced_extracted_features\benign_features" ".\reduced_extracted_features\malicious_features"
